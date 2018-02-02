@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+
+<!--<header th:replace="layout :: site-header" />-->
+
+<h1>Login in the Blog</h1>
+
+<form action="#" method="post" th:action="@{/teams/save}" th:object="${team}">
+    <div><label></label></div>
+    <input type="text" name="name" th:field="*{name}"/>
+    <select th:field="*{league}">
+        <option th:each="league:${leagueList}" th:value="${league.id}" th:text="${league.name}"></option>
+    </select>
+    <div><input type="submit" value="Create"/></div>
+</form>
+
+<!--<footer th:replace="layout :: site-footer" />-->
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Spring MVC Blog</title>
+</head>
+
+<body>
+
+<!--<header th:replace="layout :: site-header" />-->
+
+<table>
+    <thead>
+    <tr>
+        <th>League name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="league: ${leagues}">
+        <td th:text="${league.name}">Firstname</td>
+    </tr>
+    </tbody>
+</table>
+
+<!--<footer th:replace="layout :: site-footer" />-->
+</body>
+
+</html>
