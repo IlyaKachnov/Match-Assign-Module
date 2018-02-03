@@ -15,6 +15,29 @@ public class Match {
             mappedBy = "match")
     private Slot slot;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "home_id", nullable = false)
+    private Team homeTeam;
+
+    public Team getHomeTeam() {
+        return homeTeam;
+    }
+
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "guest_id", nullable = false)
+    private Team guestTeam;
+    public Team getGuestTeam() {
+        return guestTeam;
+    }
+
+    public void setGuestTeam(Team guestTeam) {
+        this.guestTeam = guestTeam;
+    }
+
     public Slot getSlot() {
         return slot;
     }

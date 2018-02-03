@@ -50,7 +50,7 @@ public class Team {
     }
 
 
-@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "team_user",
             joinColumns = {@JoinColumn(name = "team_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
@@ -63,5 +63,29 @@ public class Team {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @OneToMany(targetEntity = Match.class, fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "homeTeam")
+    private List<Match> matchesAsHome;
+    public List<Match> getMatchesAsHome() {
+        return matchesAsHome;
+    }
+
+    public void setMatchesAsHome(List<Match> matchesAsHome) {
+        this.matchesAsHome = matchesAsHome;
+    }
+
+    @OneToMany(targetEntity = Match.class, fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "guestTeam")
+    private List<Match> matchesAsGuest;
+    public List<Match> getMatchAsGuest() {
+        return matchesAsGuest;
+    }
+
+    public void setMatchAsGuest(List<Match> matchesAsGuest) {
+        this.matchesAsGuest = matchesAsGuest;
     }
 }

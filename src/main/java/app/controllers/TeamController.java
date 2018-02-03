@@ -34,8 +34,7 @@ public class TeamController {
     {
         teamModel.setName(team.getName());
         Long leagueId = team.getLeague().getId();
-        League selectedLeague = leagueService.findById(leagueId);
-        teamModel.setLeague(selectedLeague);
+        teamModel.setLeague(team.getLeague());
         teamService.save(teamModel);
 
         return "redirect:/leagues/" + leagueId + "/teams" ;
