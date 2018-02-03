@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+
+<!--<header th:replace="layout :: site-header" />-->
+
+<h1>Login in the Blog</h1>
+
+<form action="#" method="post" th:action="@{/stadiums/save}" th:object="${stadium}">
+    <div><label></label></div>
+    <input type="text" name="name" th:field="*{name}"/>
+    <div><input type="submit" value="Create"/></div>
+</form>
+
+<!--<footer th:replace="layout :: site-footer" />-->
+
+</body>
+
+</html>

@@ -1,14 +1,50 @@
 package app.models;
 
-import java.sql.Date;
+import javax.persistence.*;
 import java.sql.Time;
-
+import java.util.Date;
+@Entity
+@Table(name = "slots")
 public class Slot {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
+
+    @Column(length = 20)
     private String eventName;
-    private Time startTime;
-    private Time endTime;
+
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
+
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
+
+    @Temporal(TemporalType.DATE)
     private Date eventDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stadium_id")
+    private Stadium stadium;
+
+    public Stadium getStadium() {
+        return stadium;
+    }
+
+    public void setStadium(Stadium stadium) {
+        this.stadium = stadium;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "match_id")
+    private Match match;
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
 
     public Long getId() {
         return id;
@@ -26,19 +62,19 @@ public class Slot {
         this.eventName = eventName;
     }
 
-    public Time getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Time getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -50,5 +86,14 @@ public class Slot {
         this.eventDate = eventDate;
     }
 
+    public Slot() {
+    }
 
+    public Slot(String eventName, Date startTime, Date endTime, Date eventDate, Stadium stadium) {
+        this.eventName = eventName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.eventDate = eventDate;
+        this.stadium = stadium;
+    }
 }

@@ -41,7 +41,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/teams", method = RequestMethod.GET)
-    public String index(@PathVariable("id") Long id, Model model)
+    public String showTeams(@PathVariable("id") Long id, Model model)
     {
         League league = leagueService.findById(id);
 
