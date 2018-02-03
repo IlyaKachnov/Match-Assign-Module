@@ -48,7 +48,6 @@ public class UserController {
     {
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
 
-        List<Team> selectedTeams = new ArrayList<>();
         userModel.setFirstname(user.getFirstname());
         userModel.setLastname(user.getLastname());
         userModel.setEmail(user.getEmail());
@@ -57,6 +56,8 @@ public class UserController {
         String password = user.getPassword();
         userModel.setPassword(bCrypt.encode(password));
 
+//        добавить проверку на наличие выбранных команд
+        List<Team> selectedTeams = new ArrayList<>();
         List<User> associatedUsers = new ArrayList<>();
         associatedUsers.add(userModel);
         for (Team t: user.getTeamList()) {

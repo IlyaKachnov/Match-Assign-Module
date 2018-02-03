@@ -19,15 +19,6 @@ public class TeamController {
 
     @Autowired
     TeamServiceImpl teamService;
-//    @RequestMapping(value = "/leagues/{id}/teams", method = RequestMethod.GET)
-//    public String index(@PathVariable("id") Long id, Model model)
-//    {
-//        League league = leagueService.findById(id);
-//
-//        model.addAttribute("league", league);
-//
-//        return "teams/index";
-//    }
 
     @RequestMapping(value = "/teams/create", method = RequestMethod.GET)
     public String showCreateForm(Model model, Team team)

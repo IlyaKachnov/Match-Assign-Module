@@ -23,7 +23,7 @@ public class Slot {
     private Date eventDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stadium_id")
+    @JoinColumn(name = "stadium_id", nullable = false)
     private Stadium stadium;
 
     public Stadium getStadium() {
