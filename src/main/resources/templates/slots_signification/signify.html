@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<form action="#" method="post" th:action="@{'/stadium/'+${id}+'/signify/'+${slotId}}" th:object="${matchForm}">
+    <div><label></label></div>
+    <select th:field="*{id}">
+        <option th:each="match:${matches}" th:value="${match.id}" th:text="${match.homeTeam.name}+' - '+${match.guestTeam.name}"></option>
+    </select>
+    <div><input type="submit" value="Create"/></div>
+</form>
+</body>
+</html>

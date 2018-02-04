@@ -1,7 +1,8 @@
 package app.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 @Entity
 @Table(name = "slots")
@@ -14,12 +15,15 @@ public class Slot {
     private String eventName;
 
     @Temporal(TemporalType.TIME)
+    @DateTimeFormat(pattern = "HH:mm")
     private Date startTime;
 
     @Temporal(TemporalType.TIME)
+    @DateTimeFormat(pattern = "HH:mm")
     private Date endTime;
 
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date eventDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -49,7 +49,13 @@ public class SlotController {
         slotModel.setEndTime(slot.getEndTime());
         slotModel.setEventDate(slot.getEventDate());
         slotModel.setStadium(stadium);
-        slotService.save(slotModel);
+        Slot newSlot = new Slot();
+        newSlot.setEventName(slot.getEventName());
+        newSlot.setStartTime(slot.getStartTime());
+        newSlot.setEndTime(slot.getEndTime());
+        newSlot.setEventDate(slot.getEventDate());
+        newSlot.setStadium(stadium);
+        slotService.save(newSlot);
 
         return "redirect:/stadium/" + id + "/slots";
     }
