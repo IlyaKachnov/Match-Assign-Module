@@ -43,12 +43,6 @@ public class SlotController {
     public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot, Slot slotModel)
     {
         Stadium stadium = stadiumService.findById(id);
-
-        slotModel.setEventName(slot.getEventName());
-        slotModel.setStartTime(slot.getStartTime());
-        slotModel.setEndTime(slot.getEndTime());
-        slotModel.setEventDate(slot.getEventDate());
-        slotModel.setStadium(stadium);
         Slot newSlot = new Slot();
         newSlot.setEventName(slot.getEventName());
         newSlot.setStartTime(slot.getStartTime());

@@ -53,7 +53,7 @@ public class SlotsSignificationService {
             } else {
                 slotsJSON.append("\"description\": \"<a href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
-                        .append("'>Означить слот</a>\"},");
+                        .append("'>Занять слот</a>\"},");
             }
         });
         slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
