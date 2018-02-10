@@ -49,10 +49,42 @@ public class SlotController {
         newSlot.setEndTime(slot.getEndTime());
         newSlot.setEventDate(slot.getEventDate());
         newSlot.setStadium(stadium);
+
         slotService.save(newSlot);
 
-        return "redirect:/stadium/" + id + "/slots";
+        return "redirect:/stadiums/" + id + "/slots";
     }
 
+    @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/edit", method = RequestMethod.GET)
+    public String showEditForm(@PathVariable Long id, @PathVariable Long slotId, Model model)
+    {
+        Slot slot = slotService.findById(slotId);
+        model.addAttribute("slot", slot);
+        model.addAttribute("stadium", stadiumService.findById(id));
+
+        return "slots/edit";
+    }
+
+    @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/update", method = RequestMethod.POST)
+    public String updateTeam(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
+    {
+        Slot slotModel= slotService.findById(slotId);
+        slotModel.setEventName(slot.getEventName());
+        slotModel.setStartTime(slot.getStartTime());
+        slotModel.setEndTime(slot.getEndTime());
+        slotModel.setEventDate(slot.getEventDate());
+
+        slotService.save(slotModel);
+
+        return "redirect:/stadiums/" + id + "/slots";
+    }
+
+    @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.POST)
+    public String deleteUser(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
+    {
+        slotService.delete(slotId);
+
+        return "redirect:/stadiums/" + id + "/slots";
+    }
 
 }

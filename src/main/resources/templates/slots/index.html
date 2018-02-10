@@ -79,7 +79,7 @@
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
-                                <h3 class="m-portlet__head-text" th:text="${league.name}+': команды'">
+                                <h3 class="m-portlet__head-text" th:text="${stadium.name}+': слоты'">
                                 </h3>
                             </div>
                         </div>
@@ -181,11 +181,11 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a th:href="@{'/leagues/'+${league.id}+'/teams/create'}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a th:href="@{'/stadiums/'+${stadium.id}+'/slots/create'}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
 												<span>
 													<i class="la la-plus-circle"></i>
 													<span>
-														Добавить команду
+														Добавить слот
 													</span>
 												</span>
                                     </a>
@@ -199,9 +199,21 @@
                             <thead>
                             <tr>
                                 <th title="Field #1">
-                                    Название
+                                    Тип события
                                 </th>
                                 <th title="Field #2">
+                                    Дата события
+                                </th>
+                                <th title="Field #3">
+                                    Время начала
+                                </th>
+                                <th title="Field #4">
+                                    Время окончания
+                                </th>
+                                <th title="Field #4">
+                                    Статус
+                                </th>
+                                <th title="Field #5">
                                     Действия
                                 </th>
                             </tr>
@@ -209,9 +221,13 @@
                             <tbody>
                             <tr th:each="slot:${stadium.slots}">
                                 <td th:text="${slot.eventName}"></td>
+                                <td th:text="${slot.eventDate}"></td>
+                                <td th:text="${slot.startTime}"></td>
+                                <td th:text="${slot.endTime}"></td>
+                                <td th:text="${slot.match == null ? 'Пустой': 'Занят'}"></td>
                                 <td>
-                                    <a th:href="@{'/leagues/teams/'+${slot.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
-                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/leagues/teams/'+${slot.id}+'/delete'}"></form>
+                                    <a th:href="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
+                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/delete'}"></form>
                                     <a onclick="$(this).closest('td').find('.deleteForm').submit()" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
                                 </td>
                             </tr>

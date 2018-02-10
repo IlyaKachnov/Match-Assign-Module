@@ -89,7 +89,7 @@
                     </div>
                     <!--begin::Form-->
                     <form class="m-form m-form--fit m-form--label-align-right" id="m_form_1" method="post"
-                          th:action="@{'/stadiums/'+${stadium.id}+'/slots/save'}" th:object="${slot}">
+                          th:action="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/update'}" th:object="${slot}">
                         <div class="m-portlet__body">
                             <div class="m-form__content">
                                 <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert"
@@ -177,7 +177,7 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Создать" class="btn btn-success"/>
+                                        <input type="submit" value="Обновить" class="btn btn-success"/>
                                         <a class="btn btn-secondary" th:href="@{'/stadiums/'+${stadium.id}+'/slots'}">Отмена</a>
                                     </div>
                                 </div>
