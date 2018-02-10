@@ -44,29 +44,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/save", method = RequestMethod.POST)
-    public String saveUser(@ModelAttribute User user, User userModel)
+    public String saveUser(@ModelAttribute User user)
     {
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
 
+        User userModel = new User();
         userModel.setFirstname(user.getFirstname());
         userModel.setLastname(user.getLastname());
         userModel.setEmail(user.getEmail());
         userModel.setRole(user.getRole());
-
         String password = user.getPassword();
         userModel.setPassword(bCrypt.encode(password));
 
-//        добавить проверку на наличие выбранных команд
-        List<Team> selectedTeams = new ArrayList<>();
-        List<User> associatedUsers = new ArrayList<>();
-        associatedUsers.add(userModel);
-        for (Team t: user.getTeamList()) {
-            selectedTeams.add(t);
-            t.setUsers(associatedUsers);
-        }
-        userModel.setTeamList(selectedTeams);
+//        userModel.setTeamList(user.getTeamList());
 
         userService.save(userModel);
+
+        for (Team team : user.getTeamList()) {
+            team.setUser(userModel);
+            teamService.save(team);
+        }
 
         return "redirect:/users";
     }
@@ -76,8 +73,9 @@ public class UserController {
 public String showEditForm(@PathVariable("id") Long id, Model model)
 {
     User user = userService.findById(id);
-    model.addAttribute("user", user);
 
+    model.addAttribute("user", user);
+    model.addAttribute("teamList", teamService.findAll());
     return "users/edit";
 }
 
@@ -89,11 +87,21 @@ public String showEditForm(@PathVariable("id") Long id, Model model)
         userModel.setLastname(user.getLastname());
         userModel.setEmail(user.getEmail());
         userModel.setRole(user.getRole());
-//        userModel.setTeamList(user.getTeamList());
-
-//        userModel.setPassword(user.getPassword());
 
         userService.save(userModel);
+
+        List<Team> oldList = user.getTeamList();
+        List<Team> newList = userModel.getTeamList();
+
+        for (Team team : newList) {
+            team.setUser(null);
+            teamService.save(team);
+        }
+
+        for (Team team: oldList) {
+            team.setUser(userModel);
+            teamService.save(team);
+        }
 
         return "redirect:/users";
     }
@@ -101,7 +109,12 @@ public String showEditForm(@PathVariable("id") Long id, Model model)
     @RequestMapping(value = "/users/{id}/delete", method = RequestMethod.POST)
     public String deleteUser(@PathVariable("id") Long id, @ModelAttribute User user)
     {
+        User userModel = userService.findById(id);
 
+        for (Team team:userModel.getTeamList()) {
+            team.setUser(null);
+            teamService.save(team);
+        }
         userService.delete(id);
 
         return "redirect:/users";

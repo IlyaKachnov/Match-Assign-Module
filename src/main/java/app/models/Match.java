@@ -1,6 +1,9 @@
 package app.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="matches")
@@ -14,6 +17,10 @@ public class Match {
             cascade =  CascadeType.ALL,
             mappedBy = "match")
     private Slot slot;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date matchDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "home_id", nullable = false)
@@ -54,6 +61,13 @@ public class Match {
         this.id = id;
     }
 
+    public Date getMatchDate() {
+        return matchDate;
+    }
+
+    public void setMatchDate(Date matchDate) {
+        this.matchDate = matchDate;
+    }
 
     public Match() {
     }

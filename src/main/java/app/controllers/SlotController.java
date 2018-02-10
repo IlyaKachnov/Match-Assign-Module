@@ -20,16 +20,16 @@ public class SlotController {
     SlotServiceImpl slotService;
     @Resource
     StadiumServiceImpl stadiumService;
-    @RequestMapping(value = "/stadium/{id}/slots", method = RequestMethod.GET)
+    @RequestMapping(value = "/stadiums/{id}/slots", method = RequestMethod.GET)
     public String index(@PathVariable Long id, Model model)
     {
         Stadium stadium =  stadiumService.findById(id);
-        model.addAttribute("slots", stadium.getSlots());
+        model.addAttribute("stadium", stadium);
 
         return "slots/index";
     }
 
-    @RequestMapping(value = "/stadium/{id}/slots/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/stadiums/{id}/slots/create", method = RequestMethod.GET)
     public String showCreateForm(@PathVariable Long id, Model model, Slot slot)
     {
         Stadium stadium =  stadiumService.findById(id);
@@ -39,8 +39,8 @@ public class SlotController {
         return "slots/create";
     }
 
-    @RequestMapping(value = "/stadium/{id}/slots/save", method = RequestMethod.POST)
-    public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot, Slot slotModel)
+    @RequestMapping(value = "/stadiums/{id}/slots/save", method = RequestMethod.POST)
+    public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot)
     {
         Stadium stadium = stadiumService.findById(id);
         Slot newSlot = new Slot();

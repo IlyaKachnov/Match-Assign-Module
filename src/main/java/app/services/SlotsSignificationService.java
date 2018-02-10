@@ -29,33 +29,33 @@ public class SlotsSignificationService {
     public String generateSlotsJSON(Long id, String userEmail) {
         List<Slot> slots = stadiumRepository.findOne(id).getSlots();
         StringBuilder slotsJSON = new StringBuilder("[");
-        slots.forEach(slot -> {
-            slotsJSON.append("{\"title\": \"").append(slot.getEventName()).append("\",");
-            slotsJSON.append("\"start\": \"").append(slot.getEventDate())
-                    .append(" ").append(slot.getStartTime()).append("\",");
-            slotsJSON.append("\"end\": \"").append(slot.getEventDate())
-                    .append(" ").append(slot.getEndTime()).append("\",");
-            if (slot.getMatch() != null) {
-                if (slot.getMatch().getHomeTeam().getUsers().stream().anyMatch(user -> user.getEmail().equals(userEmail))) {
-                    slotsJSON.append("\"description\": \"")
-                            .append(slot.getMatch().getHomeTeam().getName())
-                            .append(" - ")
-                            .append(slot.getMatch().getGuestTeam().getName())
-                            .append(" <a href='/stadium/").append(id).append("/reject/").append(slot.getId()).append("'>Отменить</a>")
-                            .append("\"},");
-                } else {
-                    slotsJSON.append("\"description\": \"")
-                            .append(slot.getMatch().getHomeTeam().getName())
-                            .append(" - ")
-                            .append(slot.getMatch().getGuestTeam().getName())
-                            .append("\"},");
-                }
-            } else {
-                slotsJSON.append("\"description\": \"<a href='/stadium/")
-                        .append(id).append("/signify/").append(slot.getId())
-                        .append("'>Занять слот</a>\"},");
-            }
-        });
+//        slots.forEach(slot -> {
+//            slotsJSON.append("{\"title\": \"").append(slot.getEventName()).append("\",");
+//            slotsJSON.append("\"start\": \"").append(slot.getEventDate())
+//                    .append(" ").append(slot.getStartTime()).append("\",");
+//            slotsJSON.append("\"end\": \"").append(slot.getEventDate())
+//                    .append(" ").append(slot.getEndTime()).append("\",");
+//            if (slot.getMatch() != null) {
+//                if (slot.getMatch().getHomeTeam().getUsers().stream().anyMatch(user -> user.getEmail().equals(userEmail))) {
+//                    slotsJSON.append("\"description\": \"")
+//                            .append(slot.getMatch().getHomeTeam().getName())
+//                            .append(" - ")
+//                            .append(slot.getMatch().getGuestTeam().getName())
+//                            .append(" <a href='/stadium/").append(id).append("/reject/").append(slot.getId()).append("'>Отменить</a>")
+//                            .append("\"},");
+//                } else {
+//                    slotsJSON.append("\"description\": \"")
+//                            .append(slot.getMatch().getHomeTeam().getName())
+//                            .append(" - ")
+//                            .append(slot.getMatch().getGuestTeam().getName())
+//                            .append("\"},");
+//                }
+//            } else {
+//                slotsJSON.append("\"description\": \"<a href='/stadium/")
+//                        .append(id).append("/signify/").append(slot.getId())
+//                        .append("'>Занять слот</a>\"},");
+//            }
+//        });
         slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
         slotsJSON.append("]");
         return slotsJSON.toString();

@@ -32,10 +32,9 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/save", method = RequestMethod.POST)
-    public String saveStadium(@ModelAttribute Stadium stadium, Stadium stadiumModel)
+    public String saveStadium(@ModelAttribute Stadium stadium)
     {
-        stadiumModel.setName(stadium.getName());
-        stadiumService.save(stadiumModel);
+        stadiumService.save(stadium);
 
         return "redirect:/stadiums";
     }
@@ -46,7 +45,7 @@ public class StadiumController {
         Stadium stadium = stadiumService.findById(id);
         model.addAttribute("stadium", stadium);
 
-        return "redirect:/stadiums";
+        return "stadiums/edit";
     }
 
     @RequestMapping(value = "stadiums/{id}/update", method = RequestMethod.POST)

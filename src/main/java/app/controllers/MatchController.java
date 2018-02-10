@@ -40,14 +40,9 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/save", method = RequestMethod.POST)
-    public String saveMatch(@ModelAttribute Match match, Match matchModel)
+    public String saveMatch(@ModelAttribute Match match)
     {
-        Team homeTeam = match.getHomeTeam();
-        Team guestTeam = match.getGuestTeam();
-        matchModel.setHomeTeam(homeTeam);
-        matchModel.setGuestTeam(guestTeam);
-
-        matchService.save(matchModel);
+        matchService.save(match);
 
         return "redirect:/matches";
 
@@ -71,6 +66,7 @@ public class MatchController {
         Team guestTeam = match.getGuestTeam();
         matchModel.setHomeTeam(homeTeam);
         matchModel.setGuestTeam(guestTeam);
+        matchModel.setMatchDate(match.getMatchDate());
 
         matchService.save(matchModel);
 

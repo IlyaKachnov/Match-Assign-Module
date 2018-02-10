@@ -49,20 +49,15 @@ public class Team {
         this.league = league;
     }
 
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "team_user",
-            joinColumns = {@JoinColumn(name = "team_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-            )
-    @PrimaryKeyJoinColumn
-    private List<User> users;
-    public List<User> getUsers() {
-        return users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @OneToMany(targetEntity = Match.class, fetch = FetchType.LAZY,

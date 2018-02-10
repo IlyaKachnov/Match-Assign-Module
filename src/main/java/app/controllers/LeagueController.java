@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.models.League;
-import app.services.LeagueService;
+import app.services.LeagueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LeagueController {
     @Autowired
-    LeagueService leagueService;
+    LeagueServiceImpl leagueService;
     @RequestMapping(value = "/leagues", method = RequestMethod.GET)
     public String index(Model model)
     {
@@ -32,10 +32,9 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/save", method = RequestMethod.POST)
-    public String saveLeague(@ModelAttribute League league, League leagueModel)
+    public String saveLeague(@ModelAttribute League league)
     {
-        leagueModel.setName(league.getName());
-        leagueService.save(leagueModel);
+        leagueService.save(league);
 
         return "redirect:/leagues";
     }
@@ -60,7 +59,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/update", method = RequestMethod.POST)
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute League league)
+    public String updateLeague(@PathVariable("id") Long id, @ModelAttribute League league)
     {
         League leagueModel = leagueService.findById(id);
         leagueModel.setName(league.getName());
@@ -70,7 +69,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/delete", method = RequestMethod.POST)
-    public String deleteUser(@PathVariable("id") Long id, @ModelAttribute League league)
+    public String deleteLeague(@PathVariable("id") Long id, @ModelAttribute League league)
     {
         leagueService.delete(id);
 

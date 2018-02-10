@@ -17,7 +17,7 @@
     >
         <ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
             <li class="m-menu__item  m-menu__item--active" aria-haspopup="true" >
-                <a  href="index.html" class="m-menu__link ">
+                <a  th:href="@{/}" class="m-menu__link ">
                     <i class="m-menu__link-icon flaticon-line-graph"></i>
                     <span class="m-menu__link-title">
 										<span class="m-menu__link-wrap">
@@ -30,7 +30,7 @@
             </li>
             <li class="m-menu__section">
                 <h4 class="m-menu__section-text">
-                    Components
+                    Меню
                 </h4>
                 <i class="m-menu__section-icon flaticon-more-v3"></i>
             </li>
@@ -38,7 +38,7 @@
                 <a  href="#" class="m-menu__link m-menu__toggle">
                     <i class="m-menu__link-icon flaticon-layers"></i>
                     <span class="m-menu__link-text">
-										Base
+										Управление
 									</span>
                     <i class="m-menu__ver-arrow la la-angle-right"></i>
                 </a>
@@ -53,25 +53,44 @@
 											</span>
                         </li>
                         <li class="m-menu__item " aria-haspopup="true" >
-                            <a  href="components/base/state.html" class="m-menu__link ">
+                            <a th:href="@{/stadiums}" class="m-menu__link ">
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="m-menu__link-text">
-													State Colors
+													Стадионы
 												</span>
                             </a>
                         </li>
                         <li class="m-menu__item " aria-haspopup="true" >
-                            <a  href="components/base/typography.html" class="m-menu__link ">
+                            <a th:href="@{/leagues}" class="m-menu__link ">
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                                     <span></span>
                                 </i>
                                 <span class="m-menu__link-text">
-													Typography
+													Лиги
 												</span>
                             </a>
                         </li>
+                        <li class="m-menu__item " aria-haspopup="true" >
+                            <a th:href="@{/matches}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">
+													Матчи
+												</span>
+                            </a>
+                        </li>  <li class="m-menu__item " aria-haspopup="true" >
+                        <a th:href="@{/users}" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">
+													Пользователи
+												</span>
+                        </a>
+                    </li>
                     </ul>
                 </div>
             </li>

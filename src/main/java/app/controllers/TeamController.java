@@ -20,49 +20,49 @@ public class TeamController {
     @Autowired
     TeamServiceImpl teamService;
 
-    @RequestMapping(value = "/teams/create", method = RequestMethod.GET)
-    public String showCreateForm(Model model, Team team)
+    @RequestMapping(value = "/leagues/{id}/teams/create", method = RequestMethod.GET)
+    public String showCreateForm(@PathVariable Long id,  Model model, Team team)
     {
         model.addAttribute("team", team);
-        model.addAttribute("leagueList", leagueService.findAll());
+        model.addAttribute("league", leagueService.findById(id));
 
         return "teams/create";
     }
 
-    @RequestMapping(value = "/teams/save", method = RequestMethod.POST)
-    public String saveTeam(@ModelAttribute Team team, Team teamModel)
+    @RequestMapping(value = "/leagues/{id}/teams/save", method = RequestMethod.POST)
+    public String saveTeam(@PathVariable Long id, @ModelAttribute Team team)
     {
+        Team teamModel = new Team();
         teamModel.setName(team.getName());
-        Long leagueId = team.getLeague().getId();
-        teamModel.setLeague(team.getLeague());
+        League league = leagueService.findById(id);
+        teamModel.setLeague(league);
         teamService.save(teamModel);
 
-        return "redirect:/leagues/" + leagueId + "/teams" ;
+        return "redirect:/leagues/" + id + "/teams" ;
     }
 
-    @RequestMapping(value = "/teams/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model)
+    @RequestMapping(value = "leagues/teams/{teamId}/edit", method = RequestMethod.GET)
+    public String showEditForm(@PathVariable("teamId") Long teamId, Model model)
     {
-        Team team = teamService.findById(id);
+        Team team = teamService.findById(teamId);
         model.addAttribute("team", team);
-        model.addAttribute("leagueList", leagueService.findAll());
 
         return "teams/edit";
     }
 
-    @RequestMapping(value = "/teams/{id}/update", method = RequestMethod.POST)
-    public String updateTeam(@PathVariable("id") Long id, @ModelAttribute Team team)
+    @RequestMapping(value = "leagues/teams/{teamId}/update", method = RequestMethod.POST)
+    public String updateTeam(@PathVariable("teamId") Long teamId, @ModelAttribute Team team)
     {
-        Team teamModel= teamService.findById(id);
+        Team teamModel= teamService.findById(teamId);
         Long leagueId = teamModel.getLeague().getId();
         teamModel.setName(team.getName());
-        teamModel.setLeague(team.getLeague());
+
         teamService.save(teamModel);
 
         return "redirect:/leagues/" + leagueId + "/teams";
     }
 
-    @RequestMapping(value = "/teams/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "leagues/teams/{id}/delete", method = RequestMethod.POST)
     public String deleteUser(@PathVariable("id") Long id, @ModelAttribute Team team)
     {
         Long leagueId = teamService.findById(id).getLeague().getId();

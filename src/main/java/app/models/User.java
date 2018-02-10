@@ -26,8 +26,7 @@ public class User {
     @Column(length = 60)
     private String password;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @OneToMany(targetEntity = Team.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<Team> teams;
     public List<Team> getTeamList() {
         return teams;
