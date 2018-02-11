@@ -14,7 +14,7 @@ public class SlotSignificationTime {
     private  Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "league")
+    @JoinColumn(name = "league_id")
     private League league;
 
     @Temporal(TemporalType.TIME)

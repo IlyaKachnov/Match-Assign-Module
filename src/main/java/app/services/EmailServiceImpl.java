@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
         this.userRepository = userRepository;
     }
 
-    @Scheduled(fixedRate = 5000)
+//    @Scheduled(fixedRate = 5000)
     public void sendMessage() {
         StringBuilder significationTimes = new StringBuilder();
         List<SlotSignificationTime> slotSignificationTimes = slotSignificationTimeRepository.findAll();
@@ -60,6 +60,7 @@ public class EmailServiceImpl implements EmailService {
             message.setText(messageText);
             message.setFrom("nmfl2018@mail.ru");
             mailSender.send(message);
+//            System.out.println("message sent");
         });
     }
 }

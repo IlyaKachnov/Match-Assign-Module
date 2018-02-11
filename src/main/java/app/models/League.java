@@ -18,6 +18,11 @@ public class League {
     @OneToMany(targetEntity = Team.class, mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Team> teams;
 
+    @OneToOne(targetEntity = SlotSignificationTime.class, fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "league")
+    private SlotSignificationTime slotSignificationTime;
+
     public List<Team> getTeams() {
         return teams;
     }
@@ -40,6 +45,14 @@ public class League {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public SlotSignificationTime getSlotSignificationTime() {
+        return slotSignificationTime;
+    }
+
+    public void setSlotSignificationTime(SlotSignificationTime slotSignificationTime) {
+        this.slotSignificationTime = slotSignificationTime;
     }
 
     public League(Long id, String name) {

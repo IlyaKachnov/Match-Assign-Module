@@ -69,15 +69,15 @@ public class UserController {
     }
 
 
-@RequestMapping(value = "/users/{id}/edit", method = RequestMethod.GET)
-public String showEditForm(@PathVariable("id") Long id, Model model)
-{
-    User user = userService.findById(id);
+    @RequestMapping(value = "/users/{id}/edit", method = RequestMethod.GET)
+    public String showEditForm(@PathVariable("id") Long id, Model model)
+    {
+        User user = userService.findById(id);
 
-    model.addAttribute("user", user);
-    model.addAttribute("teamList", teamService.findAll());
-    return "users/edit";
-}
+        model.addAttribute("user", user);
+        model.addAttribute("teamList", teamService.findAll());
+        return "users/edit";
+    }
 
     @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
     public String updateUser(@PathVariable("id") Long id, @ModelAttribute User user)

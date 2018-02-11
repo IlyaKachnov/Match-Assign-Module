@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class SlotsSignificationController {
@@ -24,14 +25,17 @@ public class SlotsSignificationController {
     private final SlotsSignificationService slotsSignificationService;
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
+    private final SlotRepository slotRepository;
 
     @Autowired
     public SlotsSignificationController(SlotsSignificationService slotsSignificationService,
                                         MatchRepository matchRepository,
-                                        UserRepository userRepository) {
+                                        UserRepository userRepository,
+                                        SlotRepository slotRepository) {
         this.slotsSignificationService = slotsSignificationService;
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
+        this.slotRepository = slotRepository;
     }
 
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
@@ -48,9 +52,12 @@ public class SlotsSignificationController {
                                  MatchForm matchForm) {
         User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
         List<Team> userTeams = currUser.getTeamList();
+        Slot currSlot = slotRepository.findOne(slotId);
         List<Match> actualMatches = new ArrayList<>();
         userTeams.forEach(team -> {
-            actualMatches.addAll(matchRepository.findByHomeTeam(team));
+            actualMatches.addAll(matchRepository.findByHomeTeam(team).stream()
+                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate()))
+                    .collect(Collectors.toList()));
         });
         model.addAttribute("home_teams", userTeams);
         model.addAttribute("matches", actualMatches);
