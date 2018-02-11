@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 @Controller
 public class StadiumController {
     @Autowired
@@ -64,6 +66,14 @@ public class StadiumController {
         stadiumService.delete(id);
 
         return "redirect:/stadiums";
+    }
+
+    @RequestMapping(value = "/all-stadiums", method = RequestMethod.GET)
+    public String showStadiumList(Model model)
+    {
+
+        model.addAttribute("stadiums", stadiumService.findAllWithSlots());
+        return "stadiums/all-stadiums";
     }
 
 }

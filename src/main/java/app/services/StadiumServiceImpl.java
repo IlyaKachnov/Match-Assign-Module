@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,5 +34,19 @@ public class StadiumServiceImpl implements StadiumService {
     @Override
     public void delete(Long id) {
         this.stadiumRepository.delete(id);
+    }
+
+    public List<Stadium> findAllWithSlots()
+    {
+        List<Stadium> stadiumList = this.stadiumRepository.findAll();
+        List<Stadium> stadiumsWithSlots = new ArrayList<>();
+        stadiumList.forEach(stadium -> {
+            if(!stadium.getSlots().isEmpty())
+            {
+                stadiumsWithSlots.add(stadium);
+            }
+        });
+
+        return  stadiumsWithSlots;
     }
 }
