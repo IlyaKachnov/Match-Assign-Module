@@ -5,14 +5,18 @@ import app.models.Slot;
 import app.repositories.MatchRepository;
 import app.repositories.SlotRepository;
 import app.repositories.StadiumRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class SlotsSignificationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SlotsSignificationService.class);
     private final StadiumRepository stadiumRepository;
     private final MatchRepository matchRepository;
     private final SlotRepository slotRepository;
@@ -27,7 +31,13 @@ public class SlotsSignificationService {
     }
 
     public String generateSlotsJSON(Long id, String userEmail) {
-        List<Slot> slots = stadiumRepository.findOne(id).getSlots();
+        List<Slot> slots = new ArrayList<>();
+        try {
+            slots = stadiumRepository.findOne(id).getSlots();
+        } catch (NullPointerException exc) {
+            logger.info("slots not found");
+            return null;
+        }
         StringBuilder slotsJSON = new StringBuilder("[");
         slots.forEach(slot -> {
             slotsJSON.append("{\"title\": \"").append(slot.getEventName()).append("\",");

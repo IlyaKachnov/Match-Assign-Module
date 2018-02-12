@@ -41,8 +41,9 @@ public class SlotsSignificationController {
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
     public String showStadiumSlots(@PathVariable Long id, Model model,
                                    HttpServletRequest httpServletRequest) {
-        model.addAttribute("slots",
-                slotsSignificationService.generateSlotsJSON(id, httpServletRequest.getUserPrincipal().getName()));
+        String resultJSON =slotsSignificationService
+                .generateSlotsJSON(id, httpServletRequest.getUserPrincipal().getName());
+        model.addAttribute("slots", resultJSON);
         return "slots_signification/index";
     }
 

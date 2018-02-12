@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -72,6 +72,20 @@
 																<span class="m-card-user__name m--font-weight-500">
 																	Mark Andre
 																</span>
+                                                    Logged user: <span sec:authentication="name">Bob</span>
+                                                    Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+                                                    <p sec:authorize="hasAuthority('user')">Hello, user!</p>
+                                                    <!--<div class="row" sec:authorize="hasRole('user')">-->
+                                                        <!--<div class="col-md-10 col-md-offset-2">-->
+                                                            <!--<h2>User Has Role Admin</h2>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <!--<div class="row" sec:authorize="hasAuthority('user')">-->
+                                                        <!--<div class="col-md-10 col-md-offset-2">-->
+                                                            <!--<h2>User Has Authority Admin</h2>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <div sec:authorize="hasAuthority('admin')">admin</div>
                                                     <a href="" class="m-card-user__email m--font-weight-300 m-link">
                                                         mark.andre@gmail.com
                                                     </a>
