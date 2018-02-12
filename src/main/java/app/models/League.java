@@ -18,7 +18,7 @@ public class League {
     @OneToMany(targetEntity = Team.class, mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Team> teams;
 
-    @OneToOne(targetEntity = SlotSignificationTime.class, fetch = FetchType.LAZY,
+    @OneToOne(targetEntity = SlotSignificationTime.class,
             cascade =  CascadeType.ALL,
             mappedBy = "league")
     private SlotSignificationTime slotSignificationTime;

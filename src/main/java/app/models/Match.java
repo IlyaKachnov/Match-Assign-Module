@@ -13,7 +13,7 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(targetEntity = Slot.class, fetch = FetchType.LAZY,
+    @OneToOne(targetEntity = Slot.class,
             cascade =  CascadeType.ALL,
             mappedBy = "match")
     private Slot slot;

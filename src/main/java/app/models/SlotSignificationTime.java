@@ -6,14 +6,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "slot_signification_time")
+@Table(name = "slot_signification_times")
 public class SlotSignificationTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "league_id")
     private League league;
 

@@ -60,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
             message.setText(messageText);
             message.setFrom("nmfl2018@mail.ru");
             mailSender.send(message);
-//            System.out.println("message sent");
+            System.out.println("message sent");
         });
     }
 }

@@ -38,7 +38,7 @@ public class Slot {
         this.stadium = stadium;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "match_id")
     private Match match;
 
