@@ -51,16 +51,7 @@ public class SlotsSignificationController {
     public String showCreateForm(@PathVariable Long id, @PathVariable Long slotId,
                                  Model model, HttpServletRequest httpServletRequest,
                                  MatchForm matchForm) {
-        User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
-        List<Team> userTeams = currUser.getTeamList();
-        Slot currSlot = slotRepository.findOne(slotId);
-        List<Match> actualMatches = new ArrayList<>();
-        userTeams.forEach(team -> {
-            actualMatches.addAll(matchRepository.findByHomeTeam(team).stream()
-                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate()))
-                    .collect(Collectors.toList()));
-        });
-        model.addAttribute("home_teams", userTeams);
+        List<Match> actualMatches = slotsSignificationService.getActualMatches(httpServletRequest, slotId);
         model.addAttribute("matches", actualMatches);
         model.addAttribute("id", id);
         model.addAttribute("slotId", slotId);
