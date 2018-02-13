@@ -1,6 +1,7 @@
 package app.services;
 
 import app.models.User;
+import app.models.UserFullDetails;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             User user = userRepository.findByEmail(email);
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
-            return new org.springframework.security.core.userdetails
-                    .User(user.getEmail(), user.getPassword(), grantedAuthorities);
+
+            return new UserFullDetails(user.getEmail(), user.getPassword(), grantedAuthorities, user.getFirstname(), user.getLastname());
     }
+
 }

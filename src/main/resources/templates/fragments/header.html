@@ -69,8 +69,8 @@
                                                     <img src="/../../public/img/user2.jpg" th:src="@{/img/user2.jpg}" class="m--img-rounded m--marginless" alt=""/>
                                                 </div>
                                                 <div class="m-card-user__details">
-																<span class="m-card-user__name m--font-weight-500" sec:authentication="">
-																	Mark Andre
+																<span class="m-card-user__name m--font-weight-500" sec:authentication="principal.firstname">
+																	Mark
 																</span>
                                                     <!--Logged user: <span sec:authentication="name">Bob</span>-->
                                                     <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
@@ -85,7 +85,6 @@
                                                             <!--<h2>User Has Authority Admin</h2>-->
                                                         <!--</div>-->
                                                     <!--</div>-->
-                                                    <div sec:authorize="hasAuthority('admin')">admin</div>
                                                     <a href="" sec:authentication="name" class="m-card-user__email m--font-weight-300 m-link">
                                                         mark.andre@gmail.com
                                                     </a>
