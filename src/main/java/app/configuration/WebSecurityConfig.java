@@ -8,18 +8,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+//    private final HttpServletRequest request;
 
     @Autowired
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
+//        this.request = request;
     }
 
     @Bean
@@ -32,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
+                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**").hasAuthority("Администратор")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -39,7 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .and()
                 .logout()
-                    .permitAll();
+                    .permitAll()
+        .and()
+        .exceptionHandling().accessDeniedPage("/403");
     }
 
     @Autowired
@@ -47,5 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
+
     }
 }

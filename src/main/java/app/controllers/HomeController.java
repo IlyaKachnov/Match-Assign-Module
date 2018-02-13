@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index()
-    {
+    public String index() {
         return "index";
-        }
-        }
+    }
+
+    @RequestMapping("/403")
+    public String accessDenied()
+    {
+        return "errors/403";
+    }
+}
+

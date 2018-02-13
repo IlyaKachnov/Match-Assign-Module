@@ -69,16 +69,16 @@
                                                     <img src="/../../public/img/user2.jpg" th:src="@{/img/user2.jpg}" class="m--img-rounded m--marginless" alt=""/>
                                                 </div>
                                                 <div class="m-card-user__details">
-																<span class="m-card-user__name m--font-weight-500">
+																<span class="m-card-user__name m--font-weight-500" sec:authentication="">
 																	Mark Andre
 																</span>
-                                                    Logged user: <span sec:authentication="name">Bob</span>
-                                                    Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-                                                    <p sec:authorize="hasAuthority('user')">Hello, user!</p>
+                                                    <!--Logged user: <span sec:authentication="name">Bob</span>-->
+                                                    <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
+                                                    <!--<p sec:authorize="hasAuthority('Администратор')">Hello, user!</p>-->
                                                     <!--<div class="row" sec:authorize="hasRole('user')">-->
                                                         <!--<div class="col-md-10 col-md-offset-2">-->
-                                                            <!--<h2>User Has Role Admin</h2>-->
-                                                        <!--</div>-->
+                                                    <!--<h2>User Has Role Admin</h2>-->
+                                                    <!--</div>-->
                                                     <!--</div>-->
                                                     <!--<div class="row" sec:authorize="hasAuthority('user')">-->
                                                         <!--<div class="col-md-10 col-md-offset-2">-->
@@ -86,7 +86,7 @@
                                                         <!--</div>-->
                                                     <!--</div>-->
                                                     <div sec:authorize="hasAuthority('admin')">admin</div>
-                                                    <a href="" class="m-card-user__email m--font-weight-300 m-link">
+                                                    <a href="" sec:authentication="name" class="m-card-user__email m--font-weight-300 m-link">
                                                         mark.andre@gmail.com
                                                     </a>
                                                 </div>
@@ -114,8 +114,9 @@
                                                     </li>
                                                     <li class="m-nav__separator m-nav__separator--fit"></li>
                                                     <li class="m-nav__item">
-                                                        <a href="snippets/pages/user/login-1.html" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-                                                            Logout
+                                                        <form class="logout-form" style="display: none;" method="post" th:action="@{/logout}"></form>
+                                                        <a onclick="$(this).closest('.m-nav__item').find('.logout-form').submit()" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+                                                            Выйти
                                                         </a>
                                                     </li>
                                                 </ul>
