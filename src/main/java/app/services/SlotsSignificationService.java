@@ -202,6 +202,7 @@ public class SlotsSignificationService {
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
             } else {
+                slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
                 slotsJSON.append("},");
             }
         });
