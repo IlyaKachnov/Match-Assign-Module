@@ -201,6 +201,8 @@ public class SlotsSignificationService {
                 slotsJSON.append("\"description\": \"<a href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
+            } else {
+                slotsJSON.append("},");
             }
         });
         slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
