@@ -80,7 +80,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Матчи
+                                    Сессии разбора
                                 </h3>
                             </div>
                         </div>
@@ -182,11 +182,11 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a th:href="@{/matches/create}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                    <a th:href="@{/sessions/create}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
 												<span>
-													<i class="la la-cart-plus"></i>
+													<i class="la la-plus-circle"></i>
 													<span>
-														Добавить матч
+														Создать сессию
 													</span>
 												</span>
                                     </a>
@@ -200,27 +200,35 @@
                             <thead>
                             <tr>
                                 <th title="Field #1">
-                                Хозяева
+                                Дата начала
                             </th>
+                                <th title="Field #1">
+                                    Дата окончания
+                                </th>
+                                <th title="Field #1">
+                                    Время начала
+                                </th>
+                                <th title="Field #1">
+                                    Время окончания
+                                </th>
+                                <th title="Field #1">
+                                    Лига
+                                </th>
                                 <th title="Field #2">
-                                    Гости
-                                </th>
-                                <th title="Field #3">
-                                    Дата матча
-                                </th>
-                                <th>
                                     Действия
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="match:${matches}">
-                                <td th:text="${match.homeTeam.name}"></td>
-                                <td th:text="${match.guestTeam.name}"></td>
-                                <td th:text="${match.matchDate}"></td>
+                            <tr th:each="session:${sessions}">
+                                <td th:text="${session.startDate}"></td>
+                                <td th:text="${session.endDate}"></td>
+                                <td th:text="${session.startTime}"></td>
+                                <td th:text="${session.endTime}"></td>
+                                <td th:text="${session.league.name}"></td>
                                 <td>
-                                    <a th:href="@{'/matches/'+${match.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>
-                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/matches/'+${match.id}+'/delete'}"></form>
+                                    <!--<a th:href="@{'/leagues/'+${session.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn&#45;&#45;hover-accent m-btn&#45;&#45;icon m-btn&#45;&#45;icon-only m-btn&#45;&#45;pill" title="Редактировать"><i class="la la-edit"></i></a>-->
+                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/sessions/'+${session.id}+'/delete'}"></form>
                                     <a onclick="$(this).closest('td').find('.deleteForm').submit()" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
                                 </td>
                             </tr>

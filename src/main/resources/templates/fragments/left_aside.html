@@ -81,7 +81,18 @@
 													Матчи
 												</span>
                             </a>
-                        </li>  <li class="m-menu__item " aria-haspopup="true" >
+                        </li>
+                        <li class="m-menu__item " aria-haspopup="true" >
+                            <a th:href="@{/sessions}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">
+													Сессии разбора
+												</span>
+                            </a>
+                        </li>
+                        <li class="m-menu__item " aria-haspopup="true" >
                         <a th:href="@{/users}" class="m-menu__link ">
                             <i class="m-menu__link-bullet m-menu__link-bullet--dot">
                                 <span></span>
@@ -99,6 +110,14 @@
                     <i class="m-menu__link-icon flaticon-map-location"></i>
                     <span class="m-menu__link-text">
                         Стадионы
+                    </span>
+                </a>
+            </li>
+            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"  data-menu-submenu-toggle="hover">
+                <a th:href="@{/all-matches}" class="m-menu__link m-menu__toggle">
+                    <i class="m-menu__link-icon flaticon-calendar"></i>
+                    <span class="m-menu__link-text">
+                        Календарь матчей
                     </span>
                 </a>
             </li>

@@ -181,17 +181,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 order-1 order-xl-2 m--align-right">
-                                    <a th:href="@{/matches/create}" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
-												<span>
-													<i class="la la-cart-plus"></i>
-													<span>
-														Добавить матч
-													</span>
-												</span>
-                                    </a>
-                                    <div class="m-separator m-separator--dashed d-xl-none"></div>
-                                </div>
                             </div>
                         </div>
                         <!--end: Search Form -->
@@ -200,17 +189,17 @@
                             <thead>
                             <tr>
                                 <th title="Field #1">
-                                Хозяева
-                            </th>
+                                    Хозяева
+                                </th>
                                 <th title="Field #2">
                                     Гости
                                 </th>
                                 <th title="Field #3">
                                     Дата матча
                                 </th>
-                                <th>
-                                    Действия
-                                </th>
+                                <th>Время начала</th>
+                                <th>Время окончания</th>
+                                <th>Место проведения</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -218,11 +207,9 @@
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.matchDate}"></td>
-                                <td>
-                                    <a th:href="@{'/matches/'+${match.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>
-                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/matches/'+${match.id}+'/delete'}"></form>
-                                    <a onclick="$(this).closest('td').find('.deleteForm').submit()" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
-                                </td>
+                                <td th:text="${match.slot != null ? match.slot.startTime : 'Не назнанчен'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.endTime : 'Не назнанчен'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назнанчен'}"></td>
                             </tr>
                             </tbody>
                         </table>

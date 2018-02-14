@@ -82,4 +82,12 @@ public class MatchController {
         return "redirect:/matches";
     }
 
+    @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
+    public String showMatchList(Model model)
+    {
+        model.addAttribute("matches", matchService.findAll());
+
+        return "matches/all-matches";
+    }
+
 }
