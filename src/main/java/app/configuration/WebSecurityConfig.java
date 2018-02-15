@@ -1,5 +1,6 @@
 package app.configuration;
 
+import app.models.Role;
 import app.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
-                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**", "/sessions/**").hasAuthority("Администратор")
+                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**", "/sessions/**").hasAuthority(Role.adminRole)
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

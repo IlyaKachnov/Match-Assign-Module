@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class SlotsSignificationService {
 
     private static final Logger logger = LoggerFactory.getLogger(SlotsSignificationService.class);
-    private static final String adminRole = "admin";
     private final StadiumRepository stadiumRepository;
     private final MatchRepository matchRepository;
     private final SlotRepository slotRepository;
@@ -62,37 +61,6 @@ public class SlotsSignificationService {
         List<League> activeLeagues = new ArrayList<>();
         addActiveLeagues(activeLeagues, slotSignificationTimes, userLeagues);
         return generateJSON(activeLeagues, slots, userEmail, id);
-//        StringBuilder slotsJSON = new StringBuilder("[");
-//        slots.forEach(slot -> {
-//            slotsJSON.append("{\"title\": \"").append(slot.getEventName()).append("\",");
-//            slotsJSON.append("\"start\": \"").append(slot.getEventDate())
-//                    .append(" ").append(slot.getStartTime()).append("\",");
-//            slotsJSON.append("\"end\": \"").append(slot.getEventDate())
-//                    .append(" ").append(slot.getEndTime()).append("\",");
-//            if (slot.getMatch() != null) {
-//                if (slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail)) {
-//                    slotsJSON.append("\"description\": \"")
-//                            .append(slot.getMatch().getHomeTeam().getName())
-//                            .append(" - ")
-//                            .append(slot.getMatch().getGuestTeam().getName())
-//                            .append(" <a href='/stadium/").append(id).append("/reject/").append(slot.getId()).append("'>Отменить</a>")
-//                            .append("\"},");
-//                } else {
-//                    slotsJSON.append("\"description\": \"")
-//                            .append(slot.getMatch().getHomeTeam().getName())
-//                            .append(" - ")
-//                            .append(slot.getMatch().getGuestTeam().getName())
-//                            .append("\"},");
-//                }
-//            } else {
-//                slotsJSON.append("\"description\": \"<a href='/stadium/")
-//                        .append(id).append("/signify/").append(slot.getId())
-//                        .append("'>Занять слот</a>\"},");
-//            }
-//        });
-//        slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
-//        slotsJSON.append("]");
-//        return slotsJSON.toString();
     }
 
     public List<Match> getActualMatches(HttpServletRequest httpServletRequest,
@@ -100,6 +68,13 @@ public class SlotsSignificationService {
         User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
         List<Team> userTeams = currUser.getTeamList();
         Slot currSlot = slotRepository.findOne(slotId);
+
+        if (currUser.getRole().equals(Role.adminRole)) {
+            List<Match> allMatchesByDate = matchRepository.findAll().stream()
+                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate()))
+                    .collect(Collectors.toList());
+            return allMatchesByDate;
+        }
         List<Match> actualMatches = new ArrayList<>();
         List<SlotSignificationTime> slotSignificationTimes = slotSignificationTimeRepository.findAll();
         List<League> activeLeagues = new ArrayList<>();
@@ -108,8 +83,8 @@ public class SlotsSignificationService {
         userTeams.stream().filter(team -> activeLeagues.contains(team.getLeague()))
                 .forEach(team -> {
                     actualMatches.addAll(matchRepository.findByHomeTeam(team).stream()
-                            .filter(match -> match.getMatchDate()
-                                    .equals(currSlot.getEventDate()))
+                            .filter(match -> match.getMatchDate().equals(currSlot.getEventDate())
+                                    && match.getSlot() == null)
                             .collect(Collectors.toList()));
         });
         return actualMatches;
@@ -183,7 +158,8 @@ public class SlotsSignificationService {
                     .append(" ").append(slot.getEndTime()).append("\",");
             if (slot.getMatch() != null) {
                 if ((slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail) &&
-                        leagues.contains(slot.getMatch().getHomeTeam().getLeague())) ||  currUser.getRole().equals(adminRole)) {
+                        leagues.contains(slot.getMatch().getHomeTeam().getLeague())) ||
+                        currUser.getRole().equals(Role.adminRole)) {
                     slotsJSON.append("\"description\": \"")
                             .append(slot.getMatch().getHomeTeam().getName())
                             .append(" - ")
@@ -197,7 +173,7 @@ public class SlotsSignificationService {
                             .append(slot.getMatch().getGuestTeam().getName())
                             .append("\"},");
                 }
-            } else if (!leagues.isEmpty() || currUser.getRole().equals(adminRole)) {
+            } else if (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole)) {
                 slotsJSON.append("\"description\": \"<a href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
