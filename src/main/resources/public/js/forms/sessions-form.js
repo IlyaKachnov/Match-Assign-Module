@@ -25,17 +25,15 @@ var FormWidgets = function () {
 
         // timepicker
         $('#startTime').timepicker({
-            minuteStep: 1,
+            minuteStep: 10,
             showSeconds: false,
-            use24hours: true
-            // showMeridian: true,
+            showMeridian: false
         });
 
         $('#endTime').timepicker({
-            minuteStep: 1,
+            minuteStep: 10,
             showSeconds: false,
-            use24hours: true
-            // showMeridian: true
+            showMeridian: false
         });
 
         // select2
