@@ -51,7 +51,7 @@ public class SlotsSignificationService {
         User currUser = userRepository.findByEmail(userEmail);
         Set<League> userLeagues = new HashSet<>();
         List<Team> userTeams = currUser.getTeamList();
-        if (userTeams.isEmpty()) {
+        if (userTeams.isEmpty() && !currUser.getRole().equals(Role.adminRole)) {
             return null;
         }
         currUser.getTeamList().forEach(team -> {
@@ -71,7 +71,8 @@ public class SlotsSignificationService {
 
         if (currUser.getRole().equals(Role.adminRole)) {
             List<Match> allMatchesByDate = matchRepository.findAll().stream()
-                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate()))
+                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate())
+                            && match.getSlot() == null)
                     .collect(Collectors.toList());
             return allMatchesByDate;
         }
@@ -92,6 +93,9 @@ public class SlotsSignificationService {
 
     public void signifySlot(Long matchId, Long slotId) {
         Match match = matchRepository.findOne(matchId);
+        if (match.getSlot() != null) {
+            return;
+        }
         Slot currSlot = slotRepository.findOne(slotId);
         currSlot.setMatch(match);
         currSlot.setEventName("Слот занят");
