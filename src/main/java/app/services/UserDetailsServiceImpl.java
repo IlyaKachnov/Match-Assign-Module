@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-            return new UserFullDetails(user.getEmail(), user.getPassword(), grantedAuthorities, user.getFirstname(), user.getLastname());
+            return new UserFullDetails(user.getEmail(), user.getPassword(), grantedAuthorities, user.getFirstname(), user.getLastname(), user.getRole(), user.getId());
     }
 
 }

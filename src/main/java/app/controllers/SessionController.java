@@ -48,7 +48,7 @@ public class SessionController {
         return "redirect:/sessions";
     }
 
-    @RequestMapping(value = "session/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "sessions/{id}/delete", method = RequestMethod.POST)
     public String deleteSession(@PathVariable Long id)
     {
         sessionService.delete(id);

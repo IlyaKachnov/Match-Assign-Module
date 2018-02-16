@@ -19,7 +19,7 @@ public class League {
     private List<Team> teams;
 
     @OneToOne(targetEntity = SlotSignificationTime.class,
-            cascade =  CascadeType.ALL,
+            cascade =  CascadeType.REMOVE,
             mappedBy = "league")
     private SlotSignificationTime slotSignificationTime;
 
