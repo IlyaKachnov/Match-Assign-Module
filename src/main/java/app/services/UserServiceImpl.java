@@ -3,13 +3,16 @@ package app.services;
 import app.models.SlotSignificationTime;
 import app.models.Team;
 import app.models.User;
+import app.repositories.TeamRepository;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -21,10 +24,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final SlotsSignificationService slotsSignificationService;
+    private final TeamRepository teamRepository;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SlotsSignificationService slotsSignificationService) {
+    public UserServiceImpl(UserRepository userRepository, SlotsSignificationService slotsSignificationService, TeamRepository teamRepository) {
         this.slotsSignificationService = slotsSignificationService;
         this.userRepository= userRepository;
+        this.teamRepository = teamRepository;
     }
 
     @Override
@@ -56,13 +61,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    public List<SlotSignificationTime> getActualNotifications(User user){
-        List<Team> teamList = user.getTeamList();
+    public Set<SlotSignificationTime> getActualNotifications(User user){
+        List<Team> teamList = (user != null) ? user.getTeamList() : teamRepository.findAll();
         if(teamList.isEmpty())
         {
             return null;
         }
-        List<SlotSignificationTime> actualNotifications = new ArrayList<>();
+        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
             if (slotSignificationTime == null)
@@ -76,4 +81,26 @@ public class UserServiceImpl implements UserService {
 
         return actualNotifications;
     }
+
+    public Set<SlotSignificationTime> getFutureNotifications(User user) {
+        List<Team> teamList = (user != null) ? user.getTeamList() : teamRepository.findAll();
+        if(teamList.isEmpty())
+        {
+            return null;
+        }
+        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
+        teamList.forEach(team -> {
+            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
+            if (slotSignificationTime == null)
+            {
+                return;
+            }
+            if(slotsSignificationService.checkFutureSession(slotSignificationTime)){
+                actualNotifications.add(slotSignificationTime);
+            }
+        });
+
+        return actualNotifications;
+    }
+
 }

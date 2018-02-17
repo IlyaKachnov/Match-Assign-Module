@@ -44,13 +44,29 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="m_widget2_tab1_content">
                                         <div class="m-widget2">
-                                            <div th:each="n:${notifications}" th:if="${notifications != null}" class="m-widget2__item m-widget2__item--primary">
+                                            <div th:each="n:${notifications}" th:if="${notifications != null}" class="m-widget2__item m-widget2__item--danger">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">
 															<span class="m-widget2__text" th:inline="text">
 																Разбор сессии разбора для лиги [[${n.league.name}]]
-                                                                начнется [[${n.startDate}]] в [[${n.startTime}]]
+                                                                начался. Окончание разбора [[${n.endDate}]] в [[${n.endTime}]]
+															</span>
+                                                    <br></br>
+                                                    <span class="m-widget2__user-name">
+																<a th:href="@{'/all-stadiums'}" class="m-widget2__link">
+																	Перейти к разбору
+																</a>
+															</span>
+                                                </div>
+                                            </div>
+                                            <div th:each="s:${futureSessions}" th:if="${futureSessions != null}" class="m-widget2__item m-widget2__item--primary">
+                                                <div class="m-widget2__checkbox">
+                                                </div>
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text" th:inline="text">
+																Разбор сессии разбора для лиги [[${s.league.name}]]
+                                                                начнется [[${s.startDate}]] в [[${s.startTime}]]
 															</span>
                                                     <br></br>
                                                     <span class="m-widget2__user-name">
@@ -67,7 +83,7 @@
                         </div>
                         <!--end:: Widgets/Tasks -->
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
                         <!--begin:: Widgets/Support Tickets -->
                         <div class="m-portlet m-portlet--full-height ">
                             <div class="m-portlet__head">

@@ -151,6 +151,17 @@ public class SlotsSignificationService {
                 currDateTime.isBefore(endDateTime);
     }
 
+    public boolean checkFutureSession(SlotSignificationTime slotSignificationTime) {
+        LocalDateTime currDateTime = LocalDateTime.now();
+        LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalTime();
+        LocalDate startDate = Instant.ofEpochMilli(slotSignificationTime.getStartDate().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+
+        return currDateTime.isBefore(startDateTime);
+    }
+
     private String generateJSON(List<League> leagues, List<Slot> slots, String userEmail, Long id) {
         User currUser = userRepository.findByEmail(userEmail);
         StringBuilder slotsJSON = new StringBuilder("[");

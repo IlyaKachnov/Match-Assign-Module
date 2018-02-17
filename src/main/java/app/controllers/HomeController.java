@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Role;
 import app.models.SlotSignificationTime;
 import app.models.User;
 import app.services.UserServiceImpl;
@@ -23,14 +24,19 @@ public class HomeController {
     public String index(Model model, Principal principal) {
 
         User user = userService.findByEmail(principal.getName());
-        model.addAttribute("teamList", user.getTeamList());
-        model.addAttribute("notifications", userService.getActualNotifications(user));
 
-//        for (SlotSignificationTime st: userService.getActualNotifications(user)) {
-//            System.out.println(st.getLeague().getName());
-//        }
-//        System.exit(1);
-        return "index";
+        if (user.getRole().equals(Role.managerRole)){
+            model.addAttribute("teamList", user.getTeamList());
+            model.addAttribute("notifications", userService.getActualNotifications(user));
+            model.addAttribute("futureSessions", userService.getFutureNotifications(user));
+
+            return "index";
+        }
+
+        model.addAttribute("notifications", userService.getActualNotifications(null));
+        model.addAttribute("futureSessions", userService.getFutureNotifications(null));
+
+        return  "index";
     }
 
     @RequestMapping("/403")
