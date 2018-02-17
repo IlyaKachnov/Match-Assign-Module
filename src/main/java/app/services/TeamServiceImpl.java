@@ -1,12 +1,14 @@
 package app.services;
 
 import app.models.Team;
+import app.models.User;
 import app.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -33,4 +35,10 @@ public class TeamServiceImpl implements TeamService{
     public void delete(Long id) {
         this.teamRepository.delete(id);
     }
+
+    public List<Team> findWithoutUser()
+    {
+        return this.teamRepository.findAll().stream().filter(t -> t.getUser() == null).collect(Collectors.toList());
+    }
+
 }

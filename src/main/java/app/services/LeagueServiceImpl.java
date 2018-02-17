@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -33,4 +34,11 @@ public class LeagueServiceImpl implements LeagueService {
     public void delete(Long id) {
         this.leagueRepository.delete(id);
     }
+
+    @Override
+    public List<League> findWithoutSession()
+    {
+        return leagueRepository.findAll().stream().filter(l -> l.getSlotSignificationTime() == null).collect(Collectors.toList());
+    }
+
 }

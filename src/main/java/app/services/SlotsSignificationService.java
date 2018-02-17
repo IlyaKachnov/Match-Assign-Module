@@ -135,7 +135,7 @@ public class SlotsSignificationService {
         return userLeagues;
     }
 
-    private boolean checkDateTime(SlotSignificationTime slotSignificationTime) {
+    public boolean checkDateTime(SlotSignificationTime slotSignificationTime) {
         LocalDateTime currDateTime = LocalDateTime.now();
         LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
                 .atZone(ZoneId.systemDefault()).toLocalTime();

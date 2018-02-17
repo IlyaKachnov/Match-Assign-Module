@@ -12,4 +12,7 @@ public interface LeagueService {
     void delete(Long id);
 
     League findById(Long id);
+
+    List<League> findWithoutSession();
+
 }

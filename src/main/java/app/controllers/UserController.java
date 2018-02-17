@@ -37,7 +37,7 @@ public class UserController {
     public String showCreateForm(Model model, User user) {
 
         model.addAttribute("user", user);
-        model.addAttribute("teamList", teamService.findAll());
+        model.addAttribute("teamList", teamService.findWithoutUser());
 
         return "users/create";
 
@@ -55,8 +55,6 @@ public class UserController {
         userModel.setRole(user.getRole());
         String password = user.getPassword();
         userModel.setPassword(bCrypt.encode(password));
-
-//        userModel.setTeamList(user.getTeamList());
 
         userService.save(userModel);
 

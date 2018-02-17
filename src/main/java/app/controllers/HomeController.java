@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.SlotSignificationTime;
 import app.models.User;
 import app.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class HomeController {
 
         User user = userService.findByEmail(principal.getName());
         model.addAttribute("teamList", user.getTeamList());
+        model.addAttribute("notifications", userService.getActualNotifications(user));
+
+//        for (SlotSignificationTime st: userService.getActualNotifications(user)) {
+//            System.out.println(st.getLeague().getName());
+//        }
+//        System.exit(1);
         return "index";
     }
 

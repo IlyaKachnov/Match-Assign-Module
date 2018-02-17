@@ -44,13 +44,13 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="m_widget2_tab1_content">
                                         <div class="m-widget2">
-                                            <div th:each="team:${teamList}" th:if="${team.league.slotSignificationTime}" class="m-widget2__item m-widget2__item--primary">
+                                            <div th:each="n:${notifications}" th:if="${notifications != null}" class="m-widget2__item m-widget2__item--primary">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">
 															<span class="m-widget2__text" th:inline="text">
-																Разбор сессии разбора для команды [[${team.name}]]
-                                                                начнется [[${team.league.slotSignificationTime.startDate}]] в [[${team.league.slotSignificationTime.startTime}]]
+																Разбор сессии разбора для лиги [[${n.league.name}]]
+                                                                начнется [[${n.startDate}]] в [[${n.startTime}]]
 															</span>
                                                     <br></br>
                                                     <span class="m-widget2__user-name">
@@ -93,7 +93,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="team:${teamList}">
+                                    <tr th:each="team:${teamList}" th:if="${teamList != null}">
                                         <td th:text="${team.name}"></td>
                                         <td th:text="${team.league.name}"></td>
                                     </tr>

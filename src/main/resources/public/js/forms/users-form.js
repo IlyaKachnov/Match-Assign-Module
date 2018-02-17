@@ -10,8 +10,13 @@ var initWidgets = function () {
     $('#role').select2({
         placeholder: "Выберите роль",
     });
-    $('#role').on('select2:change', function(){
-        validator.element($(this)); // validate element
+    $('#role').on('change', function(){
+      if($(this).val() == 'Администратор'){
+          $('#teamList').parents().closest('.form-group').css('display', 'none');
+      }
+      if($(this).val() == 'Менеджер'){
+            $('#teamList').parents().closest('.form-group').css('display', 'flex');
+        }
     });
 
     $('#teamList').selectpicker();
@@ -42,9 +47,6 @@ var initWidgets = function () {
                 password: {
                     required: true,
                     minlength: 6
-                },
-                teamList: {
-                    required: true
                 },
             },
 

@@ -36,7 +36,7 @@ public class SessionController {
     public String showCreateForm(Model model, SlotSignificationTime slotSignificationTime)
     {
         model.addAttribute("sessionModel", slotSignificationTime);
-        model.addAttribute("leagues",leagueService.findAll());
+        model.addAttribute("leagues",leagueService.findWithoutSession());
         return "sessions/create";
     }
 
