@@ -1,5 +1,7 @@
 package app.services;
 
+import app.models.SlotSignificationTime;
+import app.models.Team;
 import app.models.User;
 import app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +41,10 @@ public class UserServiceImpl implements UserService {
     {
         userRepository.delete(id);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    
 }

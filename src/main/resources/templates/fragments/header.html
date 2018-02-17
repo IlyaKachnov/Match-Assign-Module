@@ -12,7 +12,7 @@
             <div class="m-stack__item m-brand  m-brand--skin-dark ">
                 <div class="m-stack m-stack--ver m-stack--general">
                     <div class="m-stack__item m-stack__item--middle m-brand__logo">
-                        <a href="index.html" class="m-brand__logo-wrapper">
+                        <a th:href="@{/}" class="m-brand__logo-wrapper">
                             <img alt="" src="/../../public/img/logo_default_dark.png" th:src="@{/img/logo_default_dark.png}"/>
                         </a>
                     </div>
@@ -72,19 +72,6 @@
 																<span class="m-card-user__name m--font-weight-500" sec:authentication="principal.fullName">
 																	Mark
 																</span>
-                                                    <!--Logged user: <span sec:authentication="name">Bob</span>-->
-                                                    <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>-->
-                                                    <!--<p sec:authorize="hasAuthority('Администратор')">Hello, user!</p>-->
-                                                    <!--<div class="row" sec:authorize="hasRole('user')">-->
-                                                        <!--<div class="col-md-10 col-md-offset-2">-->
-                                                    <!--<h2>User Has Role Admin</h2>-->
-                                                    <!--</div>-->
-                                                    <!--</div>-->
-                                                    <!--<div class="row" sec:authorize="hasAuthority('user')">-->
-                                                        <!--<div class="col-md-10 col-md-offset-2">-->
-                                                            <!--<h2>User Has Authority Admin</h2>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
                                                     <a href="" sec:authentication="name" class="m-card-user__email m--font-weight-300 m-link">
                                                         mark.andre@gmail.com
                                                     </a>
