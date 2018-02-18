@@ -61,9 +61,10 @@ public class SessionController {
     }
 
     @RequestMapping("/send-message")
-    public void sendMessage()
+    public String sendMessage()
     {
         emailService.sendMessage();
 
+        return "redirect:/sessions";
     }
 }
