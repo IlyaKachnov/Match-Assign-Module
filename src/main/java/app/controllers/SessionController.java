@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.models.SlotSignificationTime;
+import app.services.EmailServiceImpl;
 import app.services.LeagueService;
 import app.services.LeagueServiceImpl;
 import app.services.SessionServiceImpl;
@@ -17,11 +18,14 @@ public class SessionController {
 
     private final SessionServiceImpl sessionService;
     private final LeagueServiceImpl leagueService;
+    private final EmailServiceImpl emailService;
 
     @Autowired
-    public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService) {
+    public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService, EmailServiceImpl emailService) {
         this.sessionService = sessionService;
         this.leagueService = leagueService;
+        this.emailService = emailService;
+
     }
 
     @RequestMapping(value = "/sessions", method = RequestMethod.GET)
@@ -40,7 +44,7 @@ public class SessionController {
         return "sessions/create";
     }
 
-    @RequestMapping(value = "sessions/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/sessions/save", method = RequestMethod.POST)
     public String saveStadium(@ModelAttribute  SlotSignificationTime slotSignificationTime)
     {
         sessionService.save(slotSignificationTime);
@@ -54,5 +58,12 @@ public class SessionController {
         sessionService.delete(id);
 
         return "redirect:/sessions";
+    }
+
+    @RequestMapping("/send-message")
+    public void sendMessage()
+    {
+        emailService.sendMessage();
+
     }
 }

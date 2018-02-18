@@ -61,46 +61,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Set<SlotSignificationTime> getActualNotifications(User user){
-        List<Team> teamList = (user != null) ? user.getTeamList() : teamRepository.findAll();
-        if(teamList.isEmpty())
-        {
-            return null;
-        }
-        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
-        teamList.forEach(team -> {
-            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null)
-            {
-                return;
-            }
-            if(slotsSignificationService.checkDateTime(slotSignificationTime)){
-                actualNotifications.add(slotSignificationTime);
-            }
-        });
-
-        return actualNotifications;
-    }
-
-    public Set<SlotSignificationTime> getFutureNotifications(User user) {
-        List<Team> teamList = (user != null) ? user.getTeamList() : teamRepository.findAll();
-        if(teamList.isEmpty())
-        {
-            return null;
-        }
-        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
-        teamList.forEach(team -> {
-            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null)
-            {
-                return;
-            }
-            if(slotsSignificationService.checkFutureSession(slotSignificationTime)){
-                actualNotifications.add(slotSignificationTime);
-            }
-        });
-
-        return actualNotifications;
-    }
 
 }

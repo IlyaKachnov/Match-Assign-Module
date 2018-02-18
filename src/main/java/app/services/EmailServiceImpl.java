@@ -4,9 +4,11 @@ import app.models.SlotSignificationTime;
 import app.models.User;
 import app.repositories.SlotSignificationTimeRepository;
 import app.repositories.UserRepository;
+import com.sun.mail.smtp.SMTPSenderFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,21 +24,24 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
     private final SlotSignificationTimeRepository slotSignificationTimeRepository;
     private final UserRepository userRepository;
+    private final SlotsSignificationService slotsSignificationService;
     private final String messageTemplate = "Добрый день!\nРаспределение слотов состоится в следующие дни:\n%s\nС уважением, команда НМФЛ.";
 
     @Autowired
     public EmailServiceImpl(JavaMailSender mailSender,
                             SlotSignificationTimeRepository slotSignificationTimeRepository,
-                            UserRepository userRepository) {
+                            UserRepository userRepository, SlotsSignificationService slotsSignificationService) {
         this.mailSender = mailSender;
         this.slotSignificationTimeRepository = slotSignificationTimeRepository;
         this.userRepository = userRepository;
+        this.slotsSignificationService = slotsSignificationService;
+
     }
 
-//    @Scheduled(fixedRate = 5000)
+    //    @Scheduled(fixedRate = 5000)
     public void sendMessage() {
         StringBuilder significationTimes = new StringBuilder();
-        List<SlotSignificationTime> slotSignificationTimes = slotSignificationTimeRepository.findAll();
+        List<SlotSignificationTime> slotSignificationTimes = slotsSignificationService.getFutureSessions();
         if (slotSignificationTimes.isEmpty()) {
             logger.info("Nothing to send");
             return;
@@ -54,13 +59,19 @@ public class EmailServiceImpl implements EmailService {
     private void sendMessageToEachUser(String messageText) {
         List<User> users = userRepository.findAll();
         users.forEach(user -> {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(user.getEmail());
-            message.setSubject("NMFL");
-            message.setText(messageText);
-            message.setFrom("nmfl2018@mail.ru");
-            mailSender.send(message);
-            System.out.println("message sent");
+            try {
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setTo(user.getEmail());
+                message.setSubject("NMFL");
+                message.setText(messageText);
+                message.setFrom("nmfl2018@mail.ru");
+                mailSender.send(message);
+                System.out.println("message sent");
+            } catch (MailSendException e) {
+                e.getMessage();
+            }
+
         });
+
     }
 }

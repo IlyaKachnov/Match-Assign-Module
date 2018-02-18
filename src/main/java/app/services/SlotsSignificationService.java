@@ -135,7 +135,7 @@ public class SlotsSignificationService {
         return userLeagues;
     }
 
-    public boolean checkDateTime(SlotSignificationTime slotSignificationTime) {
+    private boolean checkDateTime(SlotSignificationTime slotSignificationTime) {
         LocalDateTime currDateTime = LocalDateTime.now();
         LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
                 .atZone(ZoneId.systemDefault()).toLocalTime();
@@ -151,7 +151,7 @@ public class SlotsSignificationService {
                 currDateTime.isBefore(endDateTime);
     }
 
-    public boolean checkFutureSession(SlotSignificationTime slotSignificationTime) {
+    private boolean checkFutureSession(SlotSignificationTime slotSignificationTime) {
         LocalDateTime currDateTime = LocalDateTime.now();
         LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
                 .atZone(ZoneId.systemDefault()).toLocalTime();
@@ -160,6 +160,76 @@ public class SlotsSignificationService {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
 
         return currDateTime.isBefore(startDateTime);
+    }
+
+    public List<SlotSignificationTime> getFutureSessions() {
+
+        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
+        List<SlotSignificationTime> futureSessions = new ArrayList<>();
+        allSessions.forEach(session ->{
+            if(checkFutureSession(session)){
+                futureSessions.add(session);
+            }
+        });
+
+        return futureSessions;
+    }
+
+    public List<SlotSignificationTime> getActualSessions() {
+
+        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
+        List<SlotSignificationTime> actualSessions = new ArrayList<>();
+        allSessions.forEach(session ->{
+            if(checkDateTime(session)){
+                actualSessions.add(session);
+            }
+        });
+
+        return actualSessions;
+    }
+
+    public Set<SlotSignificationTime> getFutureSessions(User user){
+
+        List<Team> teamList = user.getTeamList();
+        if(teamList.isEmpty())
+        {
+            return null;
+        }
+        Set<SlotSignificationTime> futureNotifications = new HashSet<>();
+        teamList.forEach(team -> {
+            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
+            if (slotSignificationTime == null)
+            {
+                return;
+            }
+            if(checkFutureSession(slotSignificationTime)){
+                futureNotifications.add(slotSignificationTime);
+            }
+        });
+
+        return futureNotifications;
+    }
+
+    public Set<SlotSignificationTime> getActualSessions(User user){
+
+        List<Team> teamList = user.getTeamList();
+        if(teamList.isEmpty())
+        {
+            return null;
+        }
+        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
+        teamList.forEach(team -> {
+            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
+            if (slotSignificationTime == null)
+            {
+                return;
+            }
+            if(checkDateTime(slotSignificationTime)){
+                actualNotifications.add(slotSignificationTime);
+            }
+        });
+
+        return actualNotifications;
     }
 
     private String generateJSON(List<League> leagues, List<Slot> slots, String userEmail, Long id) {

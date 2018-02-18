@@ -3,6 +3,7 @@ package app.controllers;
 import app.models.Role;
 import app.models.SlotSignificationTime;
 import app.models.User;
+import app.services.SlotsSignificationService;
 import app.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,15 @@ import java.time.LocalDate;
 
 @Controller
 public class HomeController {
+
+    private final UserServiceImpl userService;
+    private final SlotsSignificationService slotsSignificationService;
+
     @Autowired
-    UserServiceImpl userService;
+    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService){
+        this.userService = userService;
+        this.slotsSignificationService = slotsSignificationService;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, Principal principal) {
@@ -27,16 +35,16 @@ public class HomeController {
 
         if (user.getRole().equals(Role.managerRole)){
             model.addAttribute("teamList", user.getTeamList());
-            model.addAttribute("notifications", userService.getActualNotifications(user));
-            model.addAttribute("futureSessions", userService.getFutureNotifications(user));
+            model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
+            model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
 
             return "index";
         }
 
-        model.addAttribute("notifications", userService.getActualNotifications(null));
-        model.addAttribute("futureSessions", userService.getFutureNotifications(null));
+        model.addAttribute("notifications", slotsSignificationService.getActualSessions());
+        model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions());
 
-        return  "index";
+        return "index";
     }
 
     @RequestMapping("/403")
