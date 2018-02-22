@@ -47,11 +47,6 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/403")
-    public String accessDenied() {
-        return "errors/403";
-    }
-
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
     public String showProfile(@PathVariable Long id, Model model) {
         model.addAttribute("userForm", userService.findById(id));
