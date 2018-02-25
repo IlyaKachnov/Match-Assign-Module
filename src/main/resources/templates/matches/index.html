@@ -171,7 +171,7 @@
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.matchDate}"></td>
                                 <td>
-                                    <a th:href="@{'/matches/'+${match.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>
+                                    <a th:href="@{'/matches/'+${match.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
                                     <form class="deleteForm" style="display: none;" method="post" th:action="@{'/matches/'+${match.id}+'/delete'}"></form>
                                     <a onclick="$(this).closest('td').find('.deleteForm').submit()" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
                                 </td>

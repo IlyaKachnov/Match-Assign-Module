@@ -38,7 +38,7 @@ var FormWidgets = function () {
 
         // select2
         $('#league').select2({
-            placeholder: "Выберите роль",
+            placeholder: "Выберите лигу",
         });
         $('#league').on('select2:change', function(){
             validator.element($(this)); // validate element
