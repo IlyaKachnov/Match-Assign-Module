@@ -6,7 +6,8 @@
 
     <groupId>mediasport</groupId>
     <artifactId>match-assign-module</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <packaging>war</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -55,10 +56,16 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>1.5.10.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
     <properties>
         <java.version>1.8</java.version>
+        <tomcat.version>8.0.3</tomcat.version>
     </properties>
 
     <build>
