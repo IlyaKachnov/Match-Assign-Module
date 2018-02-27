@@ -99,22 +99,16 @@
                                         <option th:text="Менеджер" th:value="Менеджер"  th:selected="${user.role}=='Менеджер'?'selected':''">
                                         </option>
                                     </select>
-                                    <span class="m-form__help">
-												Select an option
-											</span>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Команды *
+                                    Команды
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <select class="form-control m-bootstrap-select" id="teamList" th:field="*{teamList}" multiple="multiple" name="teamList">
                                         <option th:each="team: ${teamList}" th:value="${team.id}" th:text="${team.name}"></option>
                                     </select>
-                                    <span class="m-form__help">
-												Select at least 2 and maximum 4 options
-											</span>
                                 </div>
                             </div>
                         </div>
