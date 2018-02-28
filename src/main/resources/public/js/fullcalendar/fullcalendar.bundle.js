@@ -6506,7 +6506,7 @@ var tslib_1 = __webpack_require__(0);
 var $ = __webpack_require__(1);
 var util_1 = __webpack_require__(2);
 var CoordCache_1 = __webpack_require__(38);
-var Popover_1 = __webpack_require__(86);
+//var Popover_1 = __webpack_require__(86);
 var UnzonedRange_1 = __webpack_require__(4);
 var ComponentFootprint_1 = __webpack_require__(10);
 var EventFootprint_1 = __webpack_require__(24);
@@ -6748,10 +6748,10 @@ var DayGrid = /** @class */ (function (_super) {
         _super.prototype.executeEventUnrender.call(this);
     };
     // Retrieves all rendered segment objects currently rendered on the grid
-    DayGrid.prototype.getOwnEventSegs = function () {
-        // append the segments from the "more..." popover
-        return _super.prototype.getOwnEventSegs.call(this).concat(this.popoverSegs || []);
-    };
+//    DayGrid.prototype.getOwnEventSegs = function () {
+//        // append the segments from the "more..." popover
+//        return _super.prototype.getOwnEventSegs.call(this).concat(this.popoverSegs || []);
+//    };
     /* Event Drag Visualization
     ------------------------------------------------------------------------------------------------------------------*/
     // Renders a visual indication of an event or external element being dragged.
@@ -6963,7 +6963,7 @@ var DayGrid = /** @class */ (function (_super) {
                 });
             }
             if (clickOption === 'popover') {
-                _this.showSegPopover(row, col, moreEl, reslicedAllSegs);
+//                _this.showSegPopover(row, col, moreEl, reslicedAllSegs);
             }
             else if (typeof clickOption === 'string') {
                 view.calendar.zoomTo(date, clickOption);
@@ -6971,7 +6971,7 @@ var DayGrid = /** @class */ (function (_super) {
         });
     };
     // Reveals the popover that displays all events within a cell
-    DayGrid.prototype.showSegPopover = function (row, col, moreLink, segs) {
+    /*DayGrid.prototype.showSegPopover = function (row, col, moreLink, segs) {
         var _this = this;
         var view = this.view;
         var moreWrap = moreLink.parent(); // the <div> wrapper around the <a>
@@ -7015,9 +7015,9 @@ var DayGrid = /** @class */ (function (_super) {
         // delegated-handlers for free. attach event-related handlers to the popover.
         this.bindAllSegHandlersToEl(this.segPopover.el);
         this.triggerAfterEventSegsRendered(segs);
-    };
+    };*/
     // Builds the inner DOM contents of the segment popover
-    DayGrid.prototype.renderSegPopoverContent = function (row, col, segs) {
+    /*DayGrid.prototype.renderSegPopoverContent = function (row, col, segs) {
         var view = this.view;
         var theme = view.calendar.theme;
         var title = this.getCellDate(row, col).format(this.opt('dayPopoverFormat'));
@@ -7045,7 +7045,7 @@ var DayGrid = /** @class */ (function (_super) {
             segContainer.append(segs[i].el);
         }
         return content;
-    };
+    };*/
     // Given the events within an array of segment objects, reslice them to be in a single day
     DayGrid.prototype.resliceDaySegs = function (segs, dayDate) {
         var dayStart = dayDate.clone();
@@ -8863,8 +8863,8 @@ StandardTheme.prototype.classes = {
     stateDisabled: 'fc-state-disabled',
     stateHover: 'fc-state-hover',
     stateDown: 'fc-state-down',
-    popoverHeader: 'fc-widget-header',
-    popoverContent: 'fc-widget-content',
+//    popoverHeader: 'fc-widget-header',
+//    popoverContent: 'fc-widget-content',
     // day grid
     headerRow: 'fc-widget-header',
     dayRow: 'fc-widget-content',
@@ -8913,8 +8913,8 @@ JqueryUiTheme.prototype.classes = {
     stateHover: 'ui-state-hover',
     stateDown: 'ui-state-down',
     today: 'ui-state-highlight',
-    popoverHeader: 'ui-widget-header',
-    popoverContent: 'ui-widget-content',
+//    popoverHeader: 'ui-widget-header',
+//    popoverContent: 'ui-widget-content',
     // day grid
     headerRow: 'ui-widget-header',
     dayRow: 'ui-widget-content',
@@ -13931,17 +13931,17 @@ var Popover = /** @class */ (function () {
         this.options = options || {};
     }
     // Shows the popover on the specified position. Renders it if not already
-    Popover.prototype.show = function () {
-        if (this.isHidden) {
-            if (!this.el) {
-                this.render();
-            }
-            this.el.show();
-            this.position();
-            this.isHidden = false;
-            this.trigger('show');
-        }
-    };
+//    Popover.prototype.show = function () {
+//        if (this.isHidden) {
+//            if (!this.el) {
+//                this.render();
+//            }
+//            this.el.show();
+//            this.position();
+//            this.isHidden = true;
+//            //this.trigger('show');
+//        }
+//    };
     // Hides the popover, through CSS, but does not remove it from the DOM
     Popover.prototype.hide = function () {
         if (!this.isHidden) {
@@ -13951,7 +13951,7 @@ var Popover = /** @class */ (function () {
         }
     };
     // Creates `this.el` and renders content inside of it
-    Popover.prototype.render = function () {
+    /*Popover.prototype.render = function () {
         var _this = this;
         var options = this.options;
         this.el = $('<div class="fc-popover"/>')
@@ -13970,7 +13970,7 @@ var Popover = /** @class */ (function () {
         if (options.autoHide) {
             this.listenTo($(document), 'mousedown', this.documentMousedown);
         }
-    };
+    };*/
     // Triggered when the user clicks *anywhere* in the document, for the autoHide feature
     Popover.prototype.documentMousedown = function (ev) {
         // only hide the popover if the click happened outside the popover
@@ -13988,62 +13988,62 @@ var Popover = /** @class */ (function () {
         this.stopListeningTo($(document), 'mousedown');
     };
     // Positions the popover optimally, using the top/left/right options
-    Popover.prototype.position = function () {
-        var options = this.options;
-        var origin = this.el.offsetParent().offset();
-        var width = this.el.outerWidth();
-        var height = this.el.outerHeight();
-        var windowEl = $(window);
-        var viewportEl = util_1.getScrollParent(this.el);
-        var viewportTop;
-        var viewportLeft;
-        var viewportOffset;
-        var top; // the "position" (not "offset") values for the popover
-        var left; //
-        // compute top and left
-        top = options.top || 0;
-        if (options.left !== undefined) {
-            left = options.left;
-        }
-        else if (options.right !== undefined) {
-            left = options.right - width; // derive the left value from the right value
-        }
-        else {
-            left = 0;
-        }
-        if (viewportEl.is(window) || viewportEl.is(document)) {
-            viewportEl = windowEl;
-            viewportTop = 0; // the window is always at the top left
-            viewportLeft = 0; // (and .offset() won't work if called here)
-        }
-        else {
-            viewportOffset = viewportEl.offset();
-            viewportTop = viewportOffset.top;
-            viewportLeft = viewportOffset.left;
-        }
-        // if the window is scrolled, it causes the visible area to be further down
-        viewportTop += windowEl.scrollTop();
-        viewportLeft += windowEl.scrollLeft();
-        // constrain to the view port. if constrained by two edges, give precedence to top/left
-        if (options.viewportConstrain !== false) {
-            top = Math.min(top, viewportTop + viewportEl.outerHeight() - height - this.margin);
-            top = Math.max(top, viewportTop + this.margin);
-            left = Math.min(left, viewportLeft + viewportEl.outerWidth() - width - this.margin);
-            left = Math.max(left, viewportLeft + this.margin);
-        }
-        this.el.css({
-            top: top - origin.top,
-            left: left - origin.left
-        });
-    };
+//    Popover.prototype.position = function () {
+//        var options = this.options;
+//        var origin = this.el.offsetParent().offset();
+//        var width = this.el.outerWidth();
+//        var height = this.el.outerHeight();
+//        var windowEl = $(window);
+//        var viewportEl = util_1.getScrollParent(this.el);
+//        var viewportTop;
+//        var viewportLeft;
+//        var viewportOffset;
+//        var top; // the "position" (not "offset") values for the popover
+//        var left; //
+//        // compute top and left
+//        top = options.top || 0;
+//        if (options.left !== undefined) {
+//            left = options.left;
+//        }
+//        else if (options.right !== undefined) {
+//            left = options.right - width; // derive the left value from the right value
+//        }
+//        else {
+//            left = 0;
+//        }
+//        if (viewportEl.is(window) || viewportEl.is(document)) {
+//            viewportEl = windowEl;
+//            viewportTop = 0; // the window is always at the top left
+//            viewportLeft = 0; // (and .offset() won't work if called here)
+//        }
+//        else {
+//            viewportOffset = viewportEl.offset();
+//            viewportTop = viewportOffset.top;
+//            viewportLeft = viewportOffset.left;
+//        }
+//        // if the window is scrolled, it causes the visible area to be further down
+//        viewportTop += windowEl.scrollTop();
+//        viewportLeft += windowEl.scrollLeft();
+//        // constrain to the view port. if constrained by two edges, give precedence to top/left
+//        if (options.viewportConstrain !== false) {
+//            top = Math.min(top, viewportTop + viewportEl.outerHeight() - height - this.margin);
+//            top = Math.max(top, viewportTop + this.margin);
+//            left = Math.min(left, viewportLeft + viewportEl.outerWidth() - width - this.margin);
+//            left = Math.max(left, viewportLeft + this.margin);
+//        }
+//        this.el.css({
+//            top: top - origin.top,
+//            left: left - origin.left
+//        });
+//    };
     // Triggers a callback. Calls a function in the option hash of the same name.
     // Arguments beyond the first `name` are forwarded on.
     // TODO: better code reuse for this. Repeat code
-    Popover.prototype.trigger = function (name) {
-        if (this.options[name]) {
-            this.options[name].apply(this, Array.prototype.slice.call(arguments, 1));
-        }
-    };
+//    Popover.prototype.trigger = function (name) {
+//        if (this.options[name]) {
+//            this.options[name].apply(this, Array.prototype.slice.call(arguments, 1));
+//        }
+//    };
     return Popover;
 }());
 exports.default = Popover;
@@ -14571,9 +14571,9 @@ BootstrapTheme.prototype.classes = {
     stateActive: 'active',
     stateDisabled: 'disabled',
     today: 'alert alert-info',
-    popover: 'panel panel-default',
-    popoverHeader: 'panel-heading',
-    popoverContent: 'panel-body',
+//    popover: 'panel panel-default',
+//    popoverHeader: 'panel-heading',
+//    popoverContent: 'panel-body',
     // day grid
     headerRow: 'panel-default',
     dayRow: 'panel-default',
