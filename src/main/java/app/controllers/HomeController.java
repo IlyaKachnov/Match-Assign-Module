@@ -6,12 +6,10 @@ import app.models.User;
 import app.services.SlotsSignificationService;
 import app.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -23,7 +21,7 @@ public class HomeController {
     private final SlotsSignificationService slotsSignificationService;
 
     @Autowired
-    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService){
+    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService) {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
     }
@@ -33,7 +31,7 @@ public class HomeController {
 
         User user = userService.findByEmail(principal.getName());
 
-        if (user.getRole().equals(Role.managerRole)){
+        if (user.getRole().equals(Role.managerRole)) {
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
             model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
@@ -60,6 +58,17 @@ public class HomeController {
         user.setFirstname(userForm.getFirstname());
         user.setLastname(userForm.getLastname());
 
+        userService.save(user);
+
+        return "redirect:/profile/" + id;
+    }
+
+    @RequestMapping(value = "/change-password/{id}", method = RequestMethod.POST)
+    public String changePassword(@PathVariable Long id, @RequestParam("new_password") String newPassword) {
+        User user = userService.findById(id);
+        BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
+        user.setPassword(bCrypt.encode(newPassword));
+        
         userService.save(user);
 
         return "redirect:/profile/" + id;
