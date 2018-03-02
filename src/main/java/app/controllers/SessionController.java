@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.League;
 import app.models.SlotSignificationTime;
 import app.services.EmailServiceImpl;
 import app.services.LeagueService;
@@ -31,7 +32,9 @@ public class SessionController {
     @RequestMapping(value = "/sessions", method = RequestMethod.GET)
     public String index(Model model)
     {
+
         model.addAttribute("sessions", sessionService.findAll());
+        model.addAttribute("leagues", leagueService.findAll());
 
         return "sessions/index";
     }
@@ -40,13 +43,19 @@ public class SessionController {
     public String showCreateForm(Model model, SlotSignificationTime slotSignificationTime)
     {
         model.addAttribute("sessionModel", slotSignificationTime);
-        model.addAttribute("leagues",leagueService.findWithoutSession());
+        model.addAttribute("leagues",leagueService.findAll());
         return "sessions/create";
     }
 
     @RequestMapping(value = "/sessions/save", method = RequestMethod.POST)
-    public String saveStadium(@ModelAttribute  SlotSignificationTime slotSignificationTime)
+    public String saveSession(@ModelAttribute  SlotSignificationTime slotSignificationTime)
     {
+        League league = leagueService.findById(slotSignificationTime.getLeague().getId());
+
+        if(league.getSlotSignificationTime() != null) {
+            sessionService.delete(league.getSlotSignificationTime().getId());
+        }
+
         sessionService.save(slotSignificationTime);
 
         return "redirect:/sessions";

@@ -37,7 +37,7 @@ public class UserController {
     public String showCreateForm(Model model, User user) {
 
         model.addAttribute("user", user);
-        model.addAttribute("teamList", teamService.findWithoutUser());
+        model.addAttribute("teamList", teamService.findAll());
 
         return "users/create";
 

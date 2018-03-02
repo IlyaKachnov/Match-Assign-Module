@@ -26,6 +26,7 @@ public class MatchController {
     public String index(Model model)
     {
         model.addAttribute("matches", matchService.findAll());
+        model.addAttribute("teams", teamService.findAll());
 
         return "matches/index";
     }
