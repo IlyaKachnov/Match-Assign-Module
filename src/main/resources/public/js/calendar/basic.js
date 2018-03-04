@@ -8,7 +8,7 @@ var CalendarBasic = function() {
             var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
             var TODAY = todayDate.format('YYYY-MM-DD');
             var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-            console.log("in func");
+            //console.log("in func");
             /*var calendarObj = {
                                               header: {
                                                   left: 'prev,next today',
@@ -32,12 +32,13 @@ var CalendarBasic = function() {
                                               }
                                           };*/
             var eventsList = window.events;
-            console.log(eventsList);
+            //console.log(eventsList);
             $('#m_calendar').fullCalendar({
+                locale: 'ru',
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
+                    right: 'agendaWeek,listWeek'
                 },
                 editable: false,
                 eventLimit: true, // allow "more" link when too many events
