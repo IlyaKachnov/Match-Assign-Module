@@ -2289,7 +2289,7 @@ exports.globalDefaults = {
     nextDayThreshold: '09:00:00',
     // display
     columnHeader: true,
-    defaultView: 'month',
+    defaultView: 'agendaWeek',
     aspectRatio: 1.35,
     header: {
         left: 'title',
@@ -2314,21 +2314,21 @@ exports.globalDefaults = {
     timezone: false,
     //allDayDefault: undefined,
     // locale
-    locale: null,
+    locale: 'ru',
     isRTL: false,
     buttonText: {
-        prev: "prev",
-        next: "next",
-        prevYear: "prev year",
-        nextYear: "next year",
-        year: 'year',
-        today: 'today',
-        month: 'month',
-        week: 'week',
-        day: 'day'
+        prev: "предыдущая",
+        next: "следующая",
+        prevYear: "пред. год",
+        nextYear: "след. год",
+        year: 'год',
+        today: 'сегодня',
+        month: 'месяц',
+        week: 'неделя',
+        day: 'день'
     },
     //buttonIcons: null,
-    allDayText: 'all-day',
+    allDayText: 'весь день',
     // allows setting a min-height to the event segment to prevent short events overlapping each other
     agendaEventMinHeight: 0,
     // jquery-ui theming
@@ -4964,7 +4964,7 @@ moment_ext_1.newMomentProto.toISOString = function () {
 };
 function englishMoment(mom) {
     if (mom.locale() !== 'en') {
-        return mom.clone().locale('en');
+        return mom.clone().locale('ru');
     }
     return mom;
 }
@@ -14660,9 +14660,9 @@ views.list = {
     'class': ListView_1.default,
     buttonTextKey: 'list',
     defaults: {
-        buttonText: 'list',
+        buttonText: 'список',
         listDayFormat: 'LL',
-        noEventsMessage: 'No events to display'
+        noEventsMessage: 'Нет событий для отображения'
     }
 };
 views.listDay = {
