@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Spring MVC Blog</title>
+    <title>Календарь матчей - НМФЛ</title>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet" />
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
@@ -45,7 +45,7 @@
                                     <div class="form-group m-form__group row align-items-center">
                                         <div class="col-md-4">
                                             <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input m-input--solid" placeholder="Search..." id="generalSearch"/>
+                                                <input type="text" class="form-control m-input m-input--solid" placeholder="Найти..." id="generalSearch"/>
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
 															<span>
 																<i class="la la-search"></i>
@@ -81,9 +81,9 @@
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.matchDate}"></td>
-                                <td th:text="${match.slot != null ? match.slot.startTime : 'Не назнанчен'}"></td>
-                                <td th:text="${match.slot != null ? match.slot.endTime : 'Не назнанчен'}"></td>
-                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назнанчен'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.startTime : 'Не назначен'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.endTime : 'Не назначен'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
                             </tr>
                             </tbody>
                         </table>
