@@ -41,4 +41,8 @@ public class TeamServiceImpl implements TeamService{
         return this.teamRepository.findAll().stream().filter(t -> t.getUser() == null).collect(Collectors.toList());
     }
 
+    @Override
+    public Team findByName(String name) {
+        return teamRepository.findByName(name);
+    }
 }

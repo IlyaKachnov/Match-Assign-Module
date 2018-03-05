@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LeagueController {
@@ -25,6 +28,7 @@ public class LeagueController {
     @RequestMapping(value = "/leagues/create", method = RequestMethod.GET)
     public String showCreateForm(Model model, League league) {
 
+
         model.addAttribute("league", league);
 
         return "leagues/create";
@@ -32,8 +36,15 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/save", method = RequestMethod.POST)
-    public String saveLeague(@ModelAttribute League league)
+    public String saveLeague(@ModelAttribute League league, RedirectAttributes redirectAttributes)
     {
+        if(leagueService.findByName(league.getName()) != null) {
+            redirectAttributes.addFlashAttribute("league", league);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/leagues/create";
+        }
+
         leagueService.save(league);
 
         return "redirect:/leagues";
@@ -59,9 +70,15 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/update", method = RequestMethod.POST)
-    public String updateLeague(@PathVariable("id") Long id, @ModelAttribute League league)
+    public String updateLeague(@PathVariable("id") Long id, @ModelAttribute League league, RedirectAttributes redirectAttributes)
     {
         League leagueModel = leagueService.findById(id);
+        if(leagueService.findByName(league.getName()) != null && (!league.getName().equals(leagueModel.getName()))) {
+            redirectAttributes.addFlashAttribute("league", league);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/leagues/" + id + "/edit";
+        }
         leagueModel.setName(league.getName());
         leagueService.save(leagueModel);
 

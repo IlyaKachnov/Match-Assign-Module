@@ -36,9 +36,12 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
-    public List<League> findWithoutSession()
-    {
+    public List<League> findWithoutSession() {
         return leagueRepository.findAll().stream().filter(l -> l.getSlotSignificationTime() == null).collect(Collectors.toList());
     }
 
+    @Override
+    public League findByName(String name) {
+        return leagueRepository.findByName(name);
+    }
 }

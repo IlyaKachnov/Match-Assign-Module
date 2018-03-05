@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 
@@ -30,12 +31,20 @@ public class TeamController {
     }
 
     @RequestMapping(value = "/leagues/{id}/teams/save", method = RequestMethod.POST)
-    public String saveTeam(@PathVariable Long id, @ModelAttribute Team team)
+    public String saveTeam(@PathVariable Long id, @ModelAttribute Team team, RedirectAttributes redirectAttributes)
     {
+        if(teamService.findByName(team.getName()) != null) {
+            redirectAttributes.addFlashAttribute("team", team);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/leagues/"+ id +"/teams/create";
+        }
+
         Team teamModel = new Team();
         teamModel.setName(team.getName());
         League league = leagueService.findById(id);
         teamModel.setLeague(league);
+
         teamService.save(teamModel);
 
         return "redirect:/leagues/" + id + "/teams" ;
@@ -51,9 +60,17 @@ public class TeamController {
     }
 
     @RequestMapping(value = "leagues/teams/{teamId}/update", method = RequestMethod.POST)
-    public String updateTeam(@PathVariable("teamId") Long teamId, @ModelAttribute Team team)
+    public String updateTeam(@PathVariable("teamId") Long teamId, @ModelAttribute Team team, RedirectAttributes redirectAttributes)
     {
         Team teamModel= teamService.findById(teamId);
+
+        if(teamService.findByName(team.getName()) != null && (!team.getName().equals(teamModel.getName()))) {
+            redirectAttributes.addFlashAttribute("team", team);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/leagues/teams/"+ teamId +"/edit";
+        }
+
         Long leagueId = teamModel.getLeague().getId();
         teamModel.setName(team.getName());
 

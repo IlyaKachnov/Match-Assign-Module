@@ -15,4 +15,6 @@ public interface LeagueService {
 
     List<League> findWithoutSession();
 
+    League findByName(String name);
+
 }

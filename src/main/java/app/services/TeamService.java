@@ -13,4 +13,6 @@ public interface TeamService {
 
     Team findById(Long id);
 
+    Team findByName(String name);
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import app.models.User;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -44,8 +45,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/save", method = RequestMethod.POST)
-    public String saveUser(@ModelAttribute User user)
+    public String saveUser(@ModelAttribute User user, RedirectAttributes redirectAttributes)
     {
+        if(userService.findByEmail(user.getEmail()) != null) {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/users/create";
+        }
+
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
 
         User userModel = new User();
@@ -78,9 +86,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute User user)
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute User user, RedirectAttributes redirectAttributes)
     {
         User userModel = userService.findById(id);
+        if(userService.findByEmail(user.getEmail()) != null && (!user.getEmail().equals(userModel.getEmail()))) {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/users/" + id + "/edit";
+        }
+
         userModel.setFirstname(user.getFirstname());
         userModel.setLastname(user.getLastname());
         userModel.setEmail(user.getEmail());
