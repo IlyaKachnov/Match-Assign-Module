@@ -66,7 +66,7 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/update", method = RequestMethod.POST)
-    public String updateTeam(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
+    public String updateSlot(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
     {
         Slot slotModel= slotService.findById(slotId);
         slotModel.setEventName(slot.getEventName());
@@ -80,7 +80,7 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.POST)
-    public String deleteUser(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
+    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
     {
         slotService.delete(slotId);
 

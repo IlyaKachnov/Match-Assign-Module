@@ -14,7 +14,7 @@ public class Match {
     private Long id;
 
     @OneToOne(targetEntity = Slot.class,
-            cascade =  CascadeType.ALL,
+            cascade =  CascadeType.DETACH,
             mappedBy = "match")
     private Slot slot;
 
@@ -22,7 +22,7 @@ public class Match {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date matchDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home_id", nullable = false)
     private Team homeTeam;
 
@@ -34,7 +34,7 @@ public class Match {
         this.homeTeam = homeTeam;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id", nullable = false)
     private Team guestTeam;
     public Team getGuestTeam() {

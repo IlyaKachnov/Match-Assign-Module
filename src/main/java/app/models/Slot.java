@@ -38,7 +38,7 @@ public class Slot {
         this.stadium = stadium;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "match_id")
     private Match match;
 

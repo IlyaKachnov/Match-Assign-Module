@@ -80,7 +80,7 @@ public class TeamController {
     }
 
     @RequestMapping(value = "leagues/teams/{id}/delete", method = RequestMethod.POST)
-    public String deleteUser(@PathVariable("id") Long id, @ModelAttribute Team team)
+    public String deleteTeam(@PathVariable("id") Long id, @ModelAttribute Team team)
     {
         Long leagueId = teamService.findById(id).getLeague().getId();
         teamService.delete(id);
