@@ -14,7 +14,7 @@ public class Match {
     private Long id;
 
     @OneToOne(targetEntity = Slot.class,
-            cascade =  CascadeType.DETACH,
+//            cascade =  CascadeType.ALL,
             mappedBy = "match")
     private Slot slot;
 

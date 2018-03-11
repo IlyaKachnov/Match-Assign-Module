@@ -26,7 +26,7 @@ public class User {
     @Column(length = 60)
     private String password;
 
-    @OneToMany(targetEntity = Team.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @OneToMany(targetEntity = Team.class, mappedBy = "user", fetch = FetchType.LAZY)
     private List<Team> teams;
     public List<Team> getTeamList() {
         return teams;

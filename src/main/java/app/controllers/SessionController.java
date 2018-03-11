@@ -61,6 +61,30 @@ public class SessionController {
         return "redirect:/sessions";
     }
 
+    @RequestMapping(value = "/sessions/{id}/edit", method = RequestMethod.GET)
+    public String showEditForm(@PathVariable Long id,  Model model) {
+        SlotSignificationTime significationTime = sessionService.findById(id);
+        model.addAttribute("sessionModel",significationTime);
+        model.addAttribute("leagues",leagueService.findAll());
+
+        return "sessions/edit";
+    }
+
+    @RequestMapping(value = "/sessions/{id}/update", method = RequestMethod.POST)
+    public String updateSession(@PathVariable Long id, @ModelAttribute SlotSignificationTime sessionForm){
+        SlotSignificationTime significationTime = sessionService.findById(id);
+
+        significationTime.setStartDate(sessionForm.getStartDate());
+        significationTime.setEndDate(sessionForm.getEndDate());
+        significationTime.setStartTime(sessionForm.getStartTime());
+        significationTime.setEndTime(sessionForm.getEndTime());
+        significationTime.setLeague(sessionForm.getLeague());
+
+        sessionService.save(significationTime);
+
+        return "redirect:/sessions";
+    }
+
     @RequestMapping(value = "sessions/{id}/delete", method = RequestMethod.POST)
     public String deleteSession(@PathVariable Long id)
     {

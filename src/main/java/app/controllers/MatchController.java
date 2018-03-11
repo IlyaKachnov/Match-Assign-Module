@@ -1,8 +1,10 @@
 package app.controllers;
 
 import app.models.Match;
+import app.models.Slot;
 import app.models.Team;
 import app.services.MatchServiceImpl;
+import app.services.SlotServiceImpl;
 import app.services.TeamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +18,16 @@ import javax.annotation.Resource;
 
 @Controller
 public class MatchController {
-    @Autowired
-    MatchServiceImpl matchService;
 
-    @Resource
-    TeamServiceImpl teamService;
+    private final MatchServiceImpl matchService;
+    private final TeamServiceImpl teamService;
+    private final SlotServiceImpl slotService;
+    @Autowired
+    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService, SlotServiceImpl slotService){
+        this.matchService = matchService;
+        this.teamService = teamService;
+        this.slotService = slotService;
+    }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
     public String index(Model model)
@@ -78,6 +85,9 @@ public class MatchController {
     @RequestMapping(value = "/matches/{id}/delete", method = RequestMethod.POST)
     public String deleteMatch(@PathVariable("id") Long id)
     {
+        Slot slot = slotService.findById(matchService.findById(id).getSlot().getId());
+        slot.setMatch(null);
+        slotService.save(slot);
         matchService.delete(id);
 
         return "redirect:/matches";
