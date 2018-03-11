@@ -27,6 +27,14 @@ var FormWidgets = function () {
             showSeconds: false,
             showMeridian: false
         });
+        // select2
+        $('#slotType').select2({
+            placeholder: "Выберите тип",
+        });
+        $('#slotType').on('select2:change', function(){
+            validator.element($(this)); // validate element
+        });
+
 
     }
 
@@ -49,7 +57,9 @@ var FormWidgets = function () {
                 endTime: {
                     required: true
                 },
-
+                slotType: {
+                    required: true
+                },
             },
 
             //display error alert on form submit

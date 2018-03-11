@@ -42,6 +42,18 @@ public class Slot {
     @JoinColumn(name = "match_id")
     private Match match;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id", nullable = false)
+    private SlotType slotType;
+
+    public SlotType getSlotType() {
+        return slotType;
+    }
+
+    public void setSlotType(SlotType slotType) {
+        this.slotType = slotType;
+    }
+
     public Match getMatch() {
         return match;
     }

@@ -92,6 +92,16 @@
 												</span>
                             </a>
                         </li>
+                        <li class="m-menu__item " aria-haspopup="true" th:classappend="${#httpServletRequest.requestURI.equals('/slot-types')} ? 'm-menu__item--active' : ''">
+                            <a th:href="@{/slot-types}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">
+													Тип слота
+												</span>
+                            </a>
+                        </li>
                         <li class="m-menu__item " aria-haspopup="true" th:classappend="${#httpServletRequest.requestURI.equals('/users')} ? 'm-menu__item--active' : ''">
                             <a th:href="@{/users}" class="m-menu__link ">
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot">

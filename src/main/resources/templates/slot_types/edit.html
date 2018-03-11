@@ -34,14 +34,14 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Добавить слот
+                                    Редактировать тип слота
                                 </h3>
                             </div>
                         </div>
                     </div>
                     <!--begin::Form-->
                     <form class="m-form m-form--fit m-form--label-align-right" id="m_form_1" method="post"
-                          th:action="@{'/stadiums/'+${stadium.id}+'/slots/save'}" th:object="${slot}">
+                          th:action="@{'/slot-types/'+${slotType.id}+'/update'}" th:object="${slotType}">
                         <div class="m-portlet__body">
                             <div class="m-form__content">
                                 <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert"
@@ -63,35 +63,18 @@
                                     Тип события *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <select class="form-control m-select2" id="slotType" th:field="*{slotType}"  name="slotType">
-                                        <option th:each="type: ${slotTypes}" th:value="${type.id}" th:text="${type.fullName}"></option>
-                                    </select>
+                                    <input type="text" class="form-control m-input" name="typeName"
+                                           placeholder="Введите имя" th:field="*{typeName}"/>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Дата события *
-                                </label>
-                                <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <div class='input-group'>
-                                        <input type='text' class="form-control m-input" name="eventDate"
-                                               th:field="*{eventDate}" placeholder="Дата события" id='m_datepicker'/>
-                                        <div class="input-group-append">
-													<span class="input-group-text">
-														<i class="la la-calendar-check-o"></i>
-													</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group m-form__group row">
-                                <label class="col-form-label col-lg-3 col-sm-12">
-                                    Время начала события *
+                                    Длительность*
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group date'>
-                                        <input type='text' class="form-control m-input" id='startTime'
-                                               placeholder="Select time" name="startTime" th:field="*{startTime}"/>
+                                        <input type='text' class="form-control m-input" id='duration'
+                                               placeholder="Select time" name="duration" th:field="*{duration}"/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
 														<i class="la la-clock-o"></i>
@@ -100,13 +83,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-3 col-sm-12">Можно занять? *</label>
+                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                    <div class="m-checkbox-inline">
+                                        <label class="m-checkbox">
+                                            <input type="checkbox" name="isEditable" th:field="*{editable}" />Да/нет
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="m-portlet__foot m-portlet__foot--fit">
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Создать" class="btn btn-success"/>
-                                        <a class="btn btn-secondary" th:href="@{'/stadiums/'+${stadium.id}+'/slots'}">Отмена</a>
+                                        <input type="submit" value="Обновить" class="btn btn-success"/>
+                                        <a class="btn btn-secondary" th:href="@{'/slot-types'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +119,7 @@
 <script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
 <script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
 <!--begin::Page Resources -->
-<script src="/../../public/js/forms/users-form.js" th:src="@{/js/forms/slots-form.js}" type="text/javascript"></script>
+<script src="/../../public/js/forms/users-form.js" th:src="@{/js/forms/slot-types-form.js}" type="text/javascript"></script>
 <!--end::Page Resources -->
 </body>
 </html>
