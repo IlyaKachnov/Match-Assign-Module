@@ -242,7 +242,8 @@ public class SlotsSignificationService {
             slotsJSON.append("\"end\": \"").append(slot.getEventDate())
                     .append(" ").append(slot.getEndTime()).append("\",");
             if (slot.getMatch() != null) {
-                if ((slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail) &&
+                if ((slot.getMatch().getHomeTeam().getUser() != null &&
+                        slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail) &&
                         leagues.contains(slot.getMatch().getHomeTeam().getLeague())) ||
                         currUser.getRole().equals(Role.adminRole)) {
                     slotsJSON.append("\"description\": \"")
@@ -263,8 +264,7 @@ public class SlotsSignificationService {
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
             } else {
-                slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
-                slotsJSON.append("},");
+                slotsJSON.append("\"description\": \"\"},");
             }
         });
         slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
