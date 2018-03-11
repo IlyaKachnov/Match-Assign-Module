@@ -59,7 +59,7 @@ public class SlotTypeController {
         SlotType type = slotTypeService.findById(id);
         type.setDuration(slotType.getDuration());
         type.setTypeName(slotType.getTypeName());
-        type.setEditable(slotType.getEditable());
+        type.setSignifiable(slotType.getSignifiable());
         slotTypeService.save(type);
 
         return "redirect:/slot-types";

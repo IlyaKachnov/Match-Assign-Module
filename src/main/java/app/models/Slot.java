@@ -10,9 +10,9 @@ public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
-
-    @Column(length = 20)
-    private String eventName;
+//
+//    @Column(length = 20)
+//    private String eventName;
 
     @Temporal(TemporalType.TIME)
     @DateTimeFormat(pattern = "HH:mm")
@@ -69,14 +69,14 @@ public class Slot {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
+//
+//    public String getEventName() {
+//        return eventName;
+//    }
+//
+//    public void setEventName(String eventName) {
+//        this.eventName = eventName;
+//    }
 
     public Date getStartTime() {
         return startTime;
@@ -105,8 +105,7 @@ public class Slot {
     public Slot() {
     }
 
-    public Slot(String eventName, Date startTime, Date endTime, Date eventDate, Stadium stadium) {
-        this.eventName = eventName;
+    public Slot(Date startTime, Date endTime, Date eventDate, Stadium stadium) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.eventDate = eventDate;

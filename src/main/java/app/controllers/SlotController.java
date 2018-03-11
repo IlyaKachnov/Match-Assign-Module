@@ -94,7 +94,7 @@ public class SlotController {
     public String updateSlot(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
     {
         Slot slotModel= slotService.findById(slotId);
-        slotModel.setEventName(slot.getEventName());
+        slotModel.setSlotType(slot.getSlotType());
         slotModel.setStartTime(slot.getStartTime());
         slotModel.setEventDate(slot.getEventDate());
         slotModel.setSlotType(slot.getSlotType());

@@ -62,7 +62,9 @@ public class SlotsSignificationController {
     @RequestMapping(value = "stadium/{id}/signify/{slotId}", method = RequestMethod.POST)
     public String signifySlot(@PathVariable Long id, @PathVariable Long slotId,
                               @ModelAttribute MatchForm matchForm) {
-        slotsSignificationService.signifySlot(matchForm.getId(), slotId);
+        if (matchForm.getId() != null) {
+            slotsSignificationService.signifySlot(matchForm.getId(), slotId);
+        }
         return "redirect:/stadium/" + id;
     }
 

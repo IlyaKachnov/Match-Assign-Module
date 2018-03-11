@@ -93,7 +93,7 @@
                             <tr th:each="sT:${slotTypes}">
                                 <td th:text="${sT.typeName}"></td>
                                 <td th:text="${sT.formattedDate}"></td>
-                                <td th:text="${sT.editable ? 'Да' : 'Нет'}"></td>
+                                <td th:text="${sT.signifiable ? 'Да' : 'Нет'}"></td>
                                 <td>
                                     <a th:href="@{'/slot-types/'+${sT.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
                                     <form class="deleteForm" style="display: none;" method="post" th:action="@{'/slot-types/'+${sT.id}+'/delete'}"></form>

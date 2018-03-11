@@ -19,7 +19,7 @@ var FormWidgets = function () {
         validator = $( "#m_form_1" ).validate({
             // define validation rules
             rules: {
-                matches: {
+                id: {
                     required: true
                 },
             },

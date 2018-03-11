@@ -10,13 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "slot_types")
+@Table(name = "slot_types", uniqueConstraints = {@UniqueConstraint(columnNames = {"typeName", "duration"})})
 public class SlotType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, unique = true, nullable = false)
+    @Column(length = 50, nullable = false)
     private String typeName;
 
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class SlotType {
     private Date duration;
 
     @Column(nullable = false, columnDefinition = "TINYINT NOT NULL", length = 1)
-    private Boolean isEditable;
+    private Boolean isSignifiable;
 
     @OneToMany(targetEntity = Slot.class, mappedBy = "slotType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Slot> slots;
@@ -68,12 +68,12 @@ public class SlotType {
         this.duration = duration;
     }
 
-    public Boolean getEditable() {
-        return isEditable;
+    public Boolean getSignifiable() {
+        return isSignifiable;
     }
 
-    public void setEditable(Boolean editable) {
-        isEditable = editable;
+    public void setSignifiable(Boolean signifiable) {
+        isSignifiable = signifiable;
     }
 
     public SlotType() {

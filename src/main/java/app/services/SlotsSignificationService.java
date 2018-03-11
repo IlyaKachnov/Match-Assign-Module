@@ -97,15 +97,15 @@ public class SlotsSignificationService {
             return;
         }
         Slot currSlot = slotRepository.findOne(slotId);
-        currSlot.setMatch(match);
-        currSlot.setEventName("Слот занят");
+        if (currSlot.getSlotType().getSignifiable()) {
+            currSlot.setMatch(match);
+        }
         slotRepository.save(currSlot);
     }
 
     public void rejectSlot(Long slotId) {
         Slot currSlot = slotRepository.findOne(slotId);
         currSlot.setMatch(null);
-        currSlot.setEventName("Пустой слот");
         slotRepository.save(currSlot);
     }
 
@@ -236,7 +236,7 @@ public class SlotsSignificationService {
         User currUser = userRepository.findByEmail(userEmail);
         StringBuilder slotsJSON = new StringBuilder("[");
         slots.forEach(slot -> {
-            slotsJSON.append("{\"title\": \"").append(slot.getEventName()).append("\",");
+            slotsJSON.append("{\"title\": \"").append(slot.getSlotType().getTypeName()).append("\",");
             slotsJSON.append("\"start\": \"").append(slot.getEventDate())
                     .append(" ").append(slot.getStartTime()).append("\",");
             slotsJSON.append("\"end\": \"").append(slot.getEventDate())
@@ -259,7 +259,8 @@ public class SlotsSignificationService {
                             .append(slot.getMatch().getGuestTeam().getName())
                             .append("\"},");
                 }
-            } else if (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole)) {
+            } else if (slot.getSlotType().getSignifiable() &&
+                    (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole))) {
                 slotsJSON.append("\"description\": \"<a href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
