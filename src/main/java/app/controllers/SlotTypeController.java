@@ -16,12 +16,12 @@ public class SlotTypeController {
 
     private final SlotTypeServiceImpl slotTypeService;
 
-    public SlotTypeController(SlotTypeServiceImpl slotTypeService){
+    public SlotTypeController(SlotTypeServiceImpl slotTypeService) {
         this.slotTypeService = slotTypeService;
     }
 
     @RequestMapping(value = "/slot-types", method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model) {
 
         model.addAttribute("slotTypes", slotTypeService.findAll());
 
@@ -29,7 +29,7 @@ public class SlotTypeController {
     }
 
     @RequestMapping(value = "/slot-types/create", method = RequestMethod.GET)
-    public String showCreateForm(Model model, SlotType slotType){
+    public String showCreateForm(Model model, SlotType slotType) {
 
         model.addAttribute("slotType", slotType);
 
@@ -37,7 +37,14 @@ public class SlotTypeController {
     }
 
     @RequestMapping(value = "/slot-types/save", method = RequestMethod.POST)
-    public String saveSlotType(@ModelAttribute SlotType slotType){
+    public String saveSlotType(@ModelAttribute SlotType slotType, RedirectAttributes redirectAttributes) {
+
+        if(slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration())) {
+            redirectAttributes.addFlashAttribute("slotType", slotType);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/slot-types/create";
+        }
 
         slotTypeService.save(slotType);
 
@@ -45,7 +52,7 @@ public class SlotTypeController {
     }
 
     @RequestMapping(value = "/slot-types/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model){
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
 
         SlotType type = slotTypeService.findById(id);
         model.addAttribute("slotType", type);
@@ -54,9 +61,19 @@ public class SlotTypeController {
     }
 
     @RequestMapping(value = "/slot-types/{id}/update", method = RequestMethod.POST)
-    public String updateSlotType(@PathVariable Long id, @ModelAttribute SlotType slotType, RedirectAttributes redirectAttributes){
+    public String updateSlotType(@PathVariable Long id, @ModelAttribute SlotType slotType, RedirectAttributes redirectAttributes) {
 
         SlotType type = slotTypeService.findById(id);
+
+        if(slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration()) &&
+                !((slotType.getDuration().equals(type.getDuration())) &&
+                (slotType.getTypeName().equals(type.getTypeName())))) {
+            redirectAttributes.addFlashAttribute("slotType", slotType);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/slot-types/{id}/edit";
+        }
+
         type.setDuration(slotType.getDuration());
         type.setTypeName(slotType.getTypeName());
         type.setSignifiable(slotType.getSignifiable());
@@ -66,7 +83,7 @@ public class SlotTypeController {
     }
 
     @RequestMapping(value = "/slot-types/{id}/delete", method = RequestMethod.POST)
-    public String deleteSlotType(@PathVariable Long id){
+    public String deleteSlotType(@PathVariable Long id) {
 
         slotTypeService.delete(id);
 

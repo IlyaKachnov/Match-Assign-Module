@@ -30,6 +30,18 @@
             <div class="m-content">
                 <!--begin::Portlet-->
                 <div class="m-portlet">
+                    <div th:if="${error}" class="m-alert m-alert--icon alert alert-danger" role="alert">
+                        <div class="m-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="m-alert__text">
+                            <strong>Указанный тип уже существует уже существует!</strong>
+                        </div>
+                        <div class="m-alert__close">
+                            <button type="button" class="close" data-close="alert" aria-label="Hide">
+                            </button>
+                        </div>
+                    </div>
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
@@ -88,7 +100,7 @@
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class="m-checkbox-inline">
                                         <label class="m-checkbox">
-                                            <input type="checkbox" name="isSignifiable" th:field="*{signifiable}" />Да/нет
+                                            <input type="checkbox" name="isSignifiable" th:field="*{signifiable}" />Да
                                             <span></span>
                                         </label>
                                     </div>

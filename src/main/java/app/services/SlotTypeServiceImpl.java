@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,7 +31,17 @@ public class SlotTypeServiceImpl implements SlotTypeService {
     }
 
     @Override
+    public SlotType findByTypeName(String name) {
+        return slotTypeRepository.findByTypeName(name);
+    }
+
+    @Override
     public void delete(Long id) {
         slotTypeRepository.delete(id);
+    }
+
+    @Override
+    public boolean findExisted(String name, Date duration) {
+        return slotTypeRepository.findAll().stream().anyMatch(sT -> sT.getTypeName().equals(name) && sT.getDuration().equals(duration));
     }
 }

@@ -97,9 +97,9 @@
                             <tbody>
                             <tr th:each="slot:${stadium.slots}">
                                 <td th:text="${slot.slotType.typeName}"></td>
-                                <td th:text="${slot.eventDate}"></td>
-                                <td th:text="${slot.startTime}"></td>
-                                <td th:text="${slot.endTime}"></td>
+                                <td th:text="${#dates.format(slot.eventDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${#dates.format(slot.startTime, 'HH:mm')}"></td>
+                                <td th:text="${#dates.format(slot.endTime, 'HH:mm')}"></td>
                                 <td th:text="${slot.match == null ? 'Пустой': 'Занят'}"></td>
                                 <td>
                                     <a th:href="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>

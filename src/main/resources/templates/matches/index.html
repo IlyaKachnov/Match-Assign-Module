@@ -105,7 +105,7 @@
                             <tr th:each="match:${matches}">
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
-                                <td th:text="${match.matchDate}"></td>
+                                <td th:text="${#dates.format(match.matchDate, 'dd.MM.yyyy')}"></td>
                                 <td>
                                     <a th:href="@{'/matches/'+${match.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
                                     <form class="deleteForm" style="display: none;" method="post" th:action="@{'/matches/'+${match.id}+'/delete'}"></form>

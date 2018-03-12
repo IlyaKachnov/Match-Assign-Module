@@ -80,9 +80,9 @@
                             <tr th:each="match:${matches}">
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
-                                <td th:text="${match.matchDate}"></td>
-                                <td th:text="${match.slot != null ? match.slot.startTime : 'Не назначен'}"></td>
-                                <td th:text="${match.slot != null ? match.slot.endTime : 'Не назначен'}"></td>
+                                <td th:text="${#dates.format(match.matchDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${match.slot != null ? #dates.format(match.slot.startTime, 'HH:mm') : 'Не назначен'}"></td>
+                                <td th:text="${match.slot != null ? #dates.format(match.slot.endTime, 'HH:mm') : 'Не назначен'}"></td>
                                 <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
                             </tr>
                             </tbody>
