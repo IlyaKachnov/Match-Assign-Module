@@ -7,6 +7,28 @@ var DatatableHtmlTableDemo = function() {
   var demo = function() {
 
     var datatable = $('.m-datatable').mDatatable({
+        translate: {
+            records: {
+                processing: 'Загрузка...',
+                noRecords: 'Ничего не найдено'
+            },
+            toolbar: {
+                pagination: {
+                    items: {
+                        default: {
+                            first: 'Первый',
+                            prev: 'Предыдущий',
+                            next: 'Следующий',
+                            last: 'Последний',
+                            more: 'Еще',
+                            input: 'Номер страницы',
+                            select: 'Показать на странице'
+                        },
+                        info: 'Показано {{start}} - {{end}} из {{total}} записей'
+                    }
+                }
+            }
+        },
       data: {
         saveState: {cookie: false},
       },
@@ -14,15 +36,11 @@ var DatatableHtmlTableDemo = function() {
         input: $('#generalSearch'),
       },
       columns: [
-        {
-          field: 'Deposit Paid',
-          type: 'number',
-        },
-        {
-          field: 'Order Date',
-          type: 'date',
-          format: 'YYYY-MM-DD',
-        },
+          {
+              field: "Действия",
+              title: "Действия",
+              sortable: false,
+          },
       ],
     });
   };

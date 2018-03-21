@@ -42,11 +42,11 @@ var DatatableHtmlTableDemo = function() {
                 // width: "90%",
             },
                 {
-                    field: "Действия",
-                    title: "Действия",
+                    field: "Перейти к слотам",
+                    title: "Перейти к слотам",
                     width: 150,
                     sortable: false,
-            }
+                }
             ]
 
         });

@@ -7,13 +7,6 @@ var DatatableHtmlTableDemo = function() {
     var demo = function() {
 
         var datatable = $('.m-datatable').mDatatable({
-            data: {
-                saveState: {cookie: false},
-            },
-            search: {
-                input: $('#generalSearch'),
-            },
-            pagination: true,
             translate: {
                 records: {
                     processing: 'Загрузка...',
@@ -36,19 +29,23 @@ var DatatableHtmlTableDemo = function() {
                     }
                 }
             },
-            columns: [{
-                field: "Название",
-                title: "Название",
-                // width: "90%",
+            data: {
+                saveState: {cookie: false},
             },
+            search: {
+                input: $('#generalSearch'),
+            },
+            columns: [
+                {
+                    field: "Статус",
+                    title: "Статус",
+                },
                 {
                     field: "Действия",
                     title: "Действия",
-                    width: 150,
                     sortable: false,
-            }
-            ]
-
+                },
+            ],
         });
     };
 

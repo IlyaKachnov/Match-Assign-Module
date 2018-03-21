@@ -46,7 +46,7 @@ var DatatableHtmlTableDemo = function() {
                     title: "Действия",
                     width: 150,
                     sortable: false,
-            }
+                }
             ]
 
         });

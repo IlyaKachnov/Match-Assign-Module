@@ -20,6 +20,7 @@ public class Match {
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false)
     private Date matchDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

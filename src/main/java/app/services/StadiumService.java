@@ -13,4 +13,6 @@ public interface StadiumService {
     void save(Stadium stadium);
 
     void delete(Long id);
+
+    Stadium findByName(String name);
 }

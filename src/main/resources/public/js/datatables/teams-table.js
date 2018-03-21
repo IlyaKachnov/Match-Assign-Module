@@ -44,9 +44,9 @@ var DatatableHtmlTableDemo = function() {
                 {
                     field: "Действия",
                     title: "Действия",
-                    width: 150,
+                    width: 125,
                     sortable: false,
-            }
+                }
             ]
 
         });

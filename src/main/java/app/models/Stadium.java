@@ -10,7 +10,7 @@ public class Stadium {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 60)
+    @Column(length = 50, unique = true, nullable = false)
     private String name;
 
     @OneToMany(targetEntity = Slot.class, mappedBy = "stadium",

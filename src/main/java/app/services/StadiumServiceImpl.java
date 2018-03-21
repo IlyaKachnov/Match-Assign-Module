@@ -36,6 +36,11 @@ public class StadiumServiceImpl implements StadiumService {
         this.stadiumRepository.delete(id);
     }
 
+    @Override
+    public Stadium findByName(String name) {
+        return stadiumRepository.findByName(name);
+    }
+
     public List<Stadium> findAllWithSlots()
     {
         List<Stadium> stadiumList = this.stadiumRepository.findAll();

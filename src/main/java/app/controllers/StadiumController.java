@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -34,8 +35,15 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/save", method = RequestMethod.POST)
-    public String saveStadium(@ModelAttribute Stadium stadium)
+    public String saveStadium(@ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes)
     {
+        if(stadiumService.findByName(stadium.getName()) != null) {
+            redirectAttributes.addFlashAttribute("stadium", stadium);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/stadiums/create";
+        }
+
         stadiumService.save(stadium);
 
         return "redirect:/stadiums";
@@ -51,9 +59,15 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/{id}/update", method = RequestMethod.POST)
-    public String updateStadium(@PathVariable Long id, @ModelAttribute Stadium stadium)
+    public String updateStadium(@PathVariable Long id, @ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes)
     {
         Stadium stadiumModel = stadiumService.findById(id);
+        if(stadiumService.findByName(stadium.getName()) != null && (!stadium.getName().equals(stadiumModel.getName()))) {
+            redirectAttributes.addFlashAttribute("stadium", stadium);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/stadiums/" + id + "/edit";
+        }
         stadiumModel.setName(stadium.getName());
         stadiumService.save(stadiumModel);
 
