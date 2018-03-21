@@ -6,7 +6,19 @@ var FormWidgets = function () {
 
     var initWidgets = function() {
         // datepicker
+
+        $.fn.datepicker.dates['ru'] = {
+            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+            daysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек"],
+            today: "Сегодня",
+            clear: "Очистить",
+            weekStart: 1
+        };
         $('#startDate').datepicker({
+            language: 'ru',
             todayHighlight: true,
             format: 'yyyy-mm-dd',
             templates: {
@@ -15,6 +27,7 @@ var FormWidgets = function () {
             }
         });
         $('#endDate').datepicker({
+            language: 'ru',
             todayHighlight: true,
             format: 'yyyy-mm-dd',
             templates: {
@@ -62,13 +75,34 @@ var FormWidgets = function () {
                     date: true
                 },
 
-                starTime: {
+                startTime: {
                     required: true
                 },
                 endTime: {
                     required: true
                 },
 
+            },
+            messages: {
+              league: {
+                  required: "Поле обязательно для заполнения",
+              },
+                endDate: {
+                    required: "Поле обязательно для заполнения",
+                    date: "Неверный формат даты",
+                },
+                startDate: {
+                    required: "Поле обязательно для заполнения",
+                    date: "Неверный формат даты",
+                },
+                startTime: {
+                    required: "Поле обязательно для заполнения",
+                    date: "Неверный формат даты",
+                },
+                endTime: {
+                    required: "Поле обязательно для заполнения",
+                    date: "Неверный формат даты",
+                },
             },
 
             //display error alert on form submit

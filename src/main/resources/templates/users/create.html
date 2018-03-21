@@ -128,6 +128,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <select class="form-control m-bootstrap-select" id="teamList" th:field="*{teamList}" multiple="multiple" name="teamList">
+                                        <option value=""></option>
                                         <option th:each="team: ${teamList}" th:value="${team.id}" th:text="${team.name}"></option>
                                     </select>
                                 </div>

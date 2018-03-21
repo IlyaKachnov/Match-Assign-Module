@@ -12,6 +12,11 @@ var FormControls = function () {
                     // minlength: 10
                 },
             },
+            messages: {
+                name: {
+                    required: "Поле обязательно для заполнения",
+                },
+            },
 
             //display error alert on form submit
             invalidHandler: function(event, validator) {

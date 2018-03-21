@@ -23,6 +23,11 @@ var FormWidgets = function () {
                     required: true
                 },
             },
+            messages: {
+                id: {
+                    required: "Поле обязательно для заполнения",
+                }
+            },
 
             //display error alert on form submit
             invalidHandler: function(event, validator) {

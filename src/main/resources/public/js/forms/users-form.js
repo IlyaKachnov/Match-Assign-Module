@@ -9,6 +9,7 @@ var initWidgets = function () {
     // select2
     $('#role').select2({
         placeholder: "Выберите роль",
+
     });
     $('#role').on('change', function(){
       if($(this).val() == 'Администратор'){
@@ -48,6 +49,26 @@ var initWidgets = function () {
                     required: true,
                     minlength: 6
                 },
+            },
+            messages: {
+                email: {
+                    required: "Поле обязательно для заполнения",
+                    email: "Укажите корректный email",
+                    minlength: "Введите минимум 6 символов",
+                },
+                firstname: {
+                    required: "Поле обязательно для заполнения",
+                },
+                lastname: {
+                    required: "Поле обязательно для заполнения",
+                },
+                role: {
+                    required: "Необходимо выбрать роль",
+                },
+                password: {
+                    required: "Поле обязательно для заполнения",
+                    minlength: "Введите минимум 6 символов",
+                }
             },
 
             //display error alert on form submit

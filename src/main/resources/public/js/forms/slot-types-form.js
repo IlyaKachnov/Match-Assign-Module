@@ -30,9 +30,14 @@ var FormWidgets = function () {
                     required: true,
                     time:true,
                 },
-                isEditable : {
-                    required:true,
-                }
+            },
+            messages: {
+                typeName: {
+                    required: "Поле обязательно для заполнения",
+                },
+                duration: {
+                    required: "Поле обязательно для заполнения",
+                },
             },
 
             //display error alert on form submit

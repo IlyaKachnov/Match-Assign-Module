@@ -1,5 +1,51 @@
 //== Class definition
 
+var SweetAlertTable = function () {
+    var initAlert = function () {
+        var alert = $(document).on('click', '#m_sweetalert', function(e) {
+            e.preventDefault();
+            var href = $(this).attr("data-href");
+            var nRow = $(this).closest('tr');
+            var token = $("meta[name='_csrf']").attr("content");
+
+            swal({
+                title: 'Удалить запись?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Удалить',
+                cancelButtonText: "Отмена",
+            }).then(function(result) {
+                if (result.value) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": token,
+                        },
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: href,
+                        success: function () {
+                            nRow.find('td').remove();
+                            swal(
+                                'Удалено!',
+                                'Запись была успешно удалена',
+                                'success'
+                            )
+                        }
+                    });
+                }
+            });
+        });
+    };
+
+    return {
+        //== Public functions
+        init: function() {
+            initAlert();
+        },
+    };
+}();
+
 var DatatableHtmlTableDemo = function() {
   //== Private functions
 
@@ -56,4 +102,5 @@ var DatatableHtmlTableDemo = function() {
 
 jQuery(document).ready(function() {
   DatatableHtmlTableDemo.init();
+  SweetAlertTable.init();
 });

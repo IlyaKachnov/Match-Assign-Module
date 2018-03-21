@@ -64,16 +64,13 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input" name="matchDate" th:field="*{matchDate}" placeholder="Select date" id='m_datepicker'/>
+                                        <input type='text' class="form-control m-input" name="matchDate" th:field="*{matchDate}" placeholder="Выберите дату" id='m_datepicker'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
 														<i class="la la-calendar-check-o"></i>
 													</span>
                                         </div>
                                     </div>
-                                    <span class="m-form__help">
-												Select a date
-											</span>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
@@ -84,9 +81,6 @@
                                     <select class="form-control m-select2" id="homeTeam" name="homeTeam" th:field="*{homeTeam}">
                                         <option th:each="team:${teams}" th:value="${team.id}" th:text="${team.name}"></option>
                                     </select>
-                                    <span class="m-form__help">
-												Select an option
-											</span>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
@@ -97,9 +91,6 @@
                                     <select class="form-control m-select2" id="guestTeam" name="guestTeam" th:field="*{guestTeam}">
                                         <option th:each="team:${teams}" th:value="${team.id}" th:text="${team.name}"></option>
                                     </select>
-                                    <span class="m-form__help">
-												Select an option
-											</span>
                                 </div>
                             </div>
                         </div>

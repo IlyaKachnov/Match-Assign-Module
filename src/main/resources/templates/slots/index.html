@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ - Слоты</title>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet" />
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
@@ -103,8 +105,7 @@
                                 <td th:text="${slot.match == null ? 'Пустой': 'Занят'}"></td>
                                 <td>
                                     <a th:href="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/edit'}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Редактировать"><i class="la la-edit"></i></a>
-                                    <form class="deleteForm" style="display: none;" method="post" th:action="@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/delete'}"></form>
-                                    <a onclick="$(this).closest('td').find('.deleteForm').submit()" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
+                                    <a href="#" th:attr="data-href=@{'/stadiums/'+${stadium.id}+'/slots/'+${slot.id}+'/delete'}" id="m_sweetalert" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
                                 </td>
                             </tr>
                             </tbody>

@@ -21,6 +21,20 @@ var FormControls = function () {
                     equalTo: "#new_password",
                 },
             },
+            messages: {
+              old_password: {
+                  required: "Поле обязательно для заполнения",
+              },
+              new_password: {
+                  required: "Поле обязательно для заполнения",
+                  minlength: "Введите минимум 6 символов",
+              },
+                confirm_password: {
+                    required: "Поле обязательно для заполнения",
+                    minlength: "Введите минимум 6 символов",
+                    equalTo: "Пароли не совпадают",
+                },
+            },
 
             //display error alert on form submit
             invalidHandler: function(event, validator) {

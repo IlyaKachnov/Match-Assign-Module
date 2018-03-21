@@ -5,10 +5,20 @@ var FormWidgets = function () {
     var validator;
 
     var initWidgets = function() {
-        // datepicker
+        $.fn.datepicker.dates['ru'] = {
+            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+            daysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Нов", "Дек"],
+            today: "Сегодня",
+            clear: "Очистить",
+            weekStart: 1
+        };
         $('#m_datepicker').datepicker({
             todayHighlight: true,
             autoclose: true,
+            language: 'ru',
             format: 'yyyy-mm-dd',
             templates: {
                 leftArrow: '<i class="la la-angle-left"></i>',
@@ -46,6 +56,12 @@ var FormWidgets = function () {
                 },
                 guestTeam: {
                     required: true
+                },
+            },
+            messages: {
+                matchDate: {
+                    required: "Поле обязательно для заполнения",
+                    date: "Неверный формат даты",
                 },
             },
 

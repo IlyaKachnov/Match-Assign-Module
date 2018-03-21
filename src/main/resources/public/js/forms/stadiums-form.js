@@ -9,10 +9,13 @@ var FormControls = function () {
             rules: {
                 name: {
                     required: true,
-                    // minlength: 10
                 },
             },
-
+            messages: {
+              name: {
+                  required: "Поле обязательно для заполнения",
+              },
+            },
             //display error alert on form submit
             invalidHandler: function(event, validator) {
                 var alert = $('#m_form_1_msg');
