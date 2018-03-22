@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Role;
 import app.models.Team;
 import app.services.TeamServiceImpl;
 import app.services.UserServiceImpl;
@@ -66,9 +67,11 @@ public class UserController {
 
         userService.save(userModel);
 
-        for (Team team : user.getTeamList()) {
-            team.setUser(userModel);
-            teamService.save(team);
+        if(user.getRole().equals(Role.managerRole)) {
+            for (Team team : user.getTeamList()) {
+                team.setUser(userModel);
+                teamService.save(team);
+            }
         }
 
         return "redirect:/users";
@@ -106,16 +109,18 @@ public class UserController {
         List<Team> oldList = user.getTeamList();
         List<Team> newList = userModel.getTeamList();
 
-        for (Team team : newList) {
-            team.setUser(null);
-            teamService.save(team);
-        }
 
-        for (Team team: oldList) {
-            team.setUser(userModel);
-            teamService.save(team);
-        }
 
+            for (Team team : newList) {
+                team.setUser(null);
+                teamService.save(team);
+            }
+        if(user.getRole().equals(Role.managerRole)) {
+            for (Team team : oldList) {
+                team.setUser(userModel);
+                teamService.save(team);
+            }
+        }
         return "redirect:/users";
     }
 

@@ -28,7 +28,7 @@
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div th:if="${!notifications.isEmpty()}" th:class="${#authorization.expression('hasAuthority(''Менеджер'')')} ? 'col-xl-6' : 'col-xl-12'" >
                         <!--begin:: Widgets/Tasks -->
                         <div class="m-portlet m-portlet--full-height ">
                             <div class="m-portlet__head">
@@ -44,7 +44,7 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="m_widget2_tab1_content">
                                         <div class="m-widget2">
-                                            <div th:each="n:${notifications}" th:if="${notifications != null}" class="m-widget2__item m-widget2__item--danger">
+                                            <div th:each="n:${notifications}" th:if="${!notifications.isEmpty()}" class="m-widget2__item m-widget2__item--danger">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">
@@ -60,7 +60,7 @@
 															</span>
                                                 </div>
                                             </div>
-                                            <div th:each="s:${futureSessions}" th:if="${futureSessions != null}" class="m-widget2__item m-widget2__item--primary">
+                                            <div th:each="s:${futureSessions}" th:if="${!futureSessions.isEmpty()}" class="m-widget2__item m-widget2__item--primary">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">

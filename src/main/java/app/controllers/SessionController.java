@@ -86,7 +86,7 @@ public class SessionController {
     }
 
     @RequestMapping(value = "sessions/{id}/delete", method = RequestMethod.POST)
-    public String deleteSession(@PathVariable Long id)
+    public String deleteSession(@PathVariable Long id, @ModelAttribute SlotSignificationTime significationTime)
     {
         sessionService.delete(id);
 

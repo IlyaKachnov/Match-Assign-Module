@@ -11,12 +11,15 @@ var initWidgets = function () {
         placeholder: "Выберите роль",
 
     });
+
     $('#role').on('change', function(){
-      if($(this).val() == 'Администратор'){
-          $('#teamList').parents().closest('.form-group').css('display', 'none');
-      }
-      if($(this).val() == 'Менеджер'){
-            $('#teamList').parents().closest('.form-group').css('display', 'flex');
+        if($(this).val() == 'Администратор'){
+            $('#teamList').selectpicker("deselectAll");
+            $('#teamList').attr('disabled', 'disabled').css("cursor", "not-allowed");
+
+        }
+        if($(this).val() == 'Менеджер'){
+            $('#teamList').removeAttr('disabled').css("cursor", "auto");
         }
     });
 
@@ -79,7 +82,8 @@ var initWidgets = function () {
             },
 
             submitHandler: function (form) {
-                form[0].submit(); // submit the form
+
+               form[0].submit(); // submit the form
             }
         });
     }

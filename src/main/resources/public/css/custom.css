@@ -1,0 +1,28 @@
+.select2-selection--single {
+    height: auto !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    position: relative;
+    padding: 0.65rem 1rem;
+    line-height: 1.25;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow,
+.select2-container--default .select2-selection--multiple .select2-selection__arrow {
+    font-family: "LineAwesome";
+    text-decoration: inherit;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    border: 0;
+    top: 50%;
+    position: absolute;
+    margin-top: 0;
+    margin-left: 0;
+    font-size: 0.85rem;
+    left: auto;
+    display: inline-block;
+    width: 1.9rem;
+}

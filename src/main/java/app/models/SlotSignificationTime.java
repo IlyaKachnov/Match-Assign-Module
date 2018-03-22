@@ -11,10 +11,10 @@ public class SlotSignificationTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
-    @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "league_id")
+    @OneToOne
+    @JoinColumn(name = "league_id", nullable = false)
     private League league;
 
     @Temporal(TemporalType.TIME)
