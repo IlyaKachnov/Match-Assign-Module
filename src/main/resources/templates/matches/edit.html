@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -66,7 +68,8 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input" name="matchDate" th:field="*{matchDate}" placeholder="Select date" id='m_datepicker'/>
+                                        <input type='text' class="form-control m-input" name="matchDate"
+                                               th:field="*{matchDate}" placeholder="Select date" id='m_datepicker'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
 														<i class="la la-calendar-check-o"></i>
@@ -80,8 +83,10 @@
                                     Хозяева *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <select class="form-control m-select2" id="homeTeam" name="homeTeam" th:field="*{homeTeam}">
-                                        <option th:each="team:${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                                    <select class="form-control m-select2" id="homeTeam" name="homeTeam"
+                                            th:field="*{homeTeam}">
+                                        <option th:each="team:${teams}" th:value="${team.id}"
+                                                th:text="${team.name}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -90,8 +95,10 @@
                                     Гости *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <select class="form-control m-select2" id="guestTeam" name="guestTeam" th:field="*{guestTeam}">
-                                        <option th:each="team:${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                                    <select class="form-control m-select2" id="guestTeam" name="guestTeam"
+                                            th:field="*{guestTeam}">
+                                        <option th:each="team:${teams}" th:value="${team.id}"
+                                                th:text="${team.name}"></option>
                                     </select>
                                 </div>
                             </div>
@@ -120,7 +127,8 @@
 <script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
 <script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
 <!--begin::Page Resources -->
-<script src="/../../public/js/forms/matches-form.js" th:src="@{/js/forms/matches-form.js}" type="text/javascript"></script>
+<script src="/../../public/js/forms/matches-form.js" th:src="@{/js/forms/matches-form.js}"
+        type="text/javascript"></script>
 <!--end::Page Resources -->
 </body>
 </html>

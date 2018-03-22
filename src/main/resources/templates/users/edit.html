@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -105,12 +107,14 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <select class="form-control m-select2" id="role" name="role" th:field="*{role}">
-                                        <option value="" >
+                                        <option value="">
                                             Выберите роль
                                         </option>
-                                        <option th:text="Администратор" th:value="Администратор" th:selected="${#strings.equals(user.role, 'Администратор')}?'selected':''">
+                                        <option th:text="Администратор" th:value="Администратор"
+                                                th:selected="${#strings.equals(user.role, 'Администратор')}?'selected':''">
                                         </option>
-                                        <option th:text="Менеджер" th:value="Менеджер"  th:selected="${#strings.equals(user.role, 'Менеджер')}?'selected':''">
+                                        <option th:text="Менеджер" th:value="Менеджер"
+                                                th:selected="${#strings.equals(user.role, 'Менеджер')}?'selected':''">
                                         </option>
                                     </select>
                                 </div>
@@ -120,8 +124,10 @@
                                     Команды
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <select class="form-control m-bootstrap-select" id="teamList" th:field="*{teamList}" multiple="multiple" name="teamList">
-                                        <option th:each="team: ${teamList}" th:value="${team.id}" th:text="${team.name}"></option>
+                                    <select class="form-control m-bootstrap-select" id="teamList" th:field="*{teamList}"
+                                            multiple="multiple" name="teamList">
+                                        <option th:each="team: ${teamList}" th:value="${team.id}"
+                                                th:text="${team.name}"></option>
                                     </select>
                                 </div>
                             </div>

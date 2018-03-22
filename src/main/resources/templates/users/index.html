@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ - Пользователи</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
@@ -93,7 +95,7 @@
                                     Роль
                                 </th>
                                 <!--<th title="Field #5">-->
-                                    <!--Управляемые команды-->
+                                <!--Управляемые команды-->
                                 <!--</th>-->
                                 <th title="Field #6">
                                     Действия
@@ -111,7 +113,9 @@
                                     <a th:href="@{'/users/'+${user.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Редактировать"><i class="la la-edit"></i></a>
-                                    <a href="#" th:attr="data-href=@{'/users/'+${user.id}+'/delete'}" id="m_sweetalert" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Удалить"><i class="la la-trash"></i></a>
+                                    <a href="#" th:attr="data-href=@{'/users/'+${user.id}+'/delete'}" id="m_sweetalert"
+                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                       title="Удалить"><i class="la la-trash"></i></a>
                                 </td>
                             </tr>
                             </tbody>

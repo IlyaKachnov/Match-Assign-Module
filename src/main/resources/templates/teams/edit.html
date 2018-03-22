@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -52,7 +54,8 @@
                         </div>
                     </div>
                     <!--begin::Form-->
-                    <form class="m-form m-form--fit m-form--label-align-right" id="m_form_1" method="post" th:action="@{'/leagues/teams/'+${team.id}+'/update'}" th:object="${team}">
+                    <form class="m-form m-form--fit m-form--label-align-right" id="m_form_1" method="post"
+                          th:action="@{'/leagues/teams/'+${team.id}+'/update'}" th:object="${team}">
                         <div class="m-portlet__body">
                             <div class="m-form__content">
                                 <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert"
@@ -84,7 +87,8 @@
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
                                         <input type="submit" value="Обновить" class="btn btn-success"/>
-                                        <a class="btn btn-secondary" th:href="@{'/leagues/'+${team.league.id}+'/teams'}">Отмена</a>
+                                        <a class="btn btn-secondary"
+                                           th:href="@{'/leagues/'+${team.league.id}+'/teams'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

@@ -3,6 +3,8 @@
 
 <head>
     <title>НМФЛ</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -65,8 +67,10 @@
                                     Тип события *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <select class="form-control m-select2" id="slotType" th:field="*{slotType}"  name="slotType">
-                                        <option th:each="type: ${slotTypes}" th:value="${type.id}" th:text="${type.fullName}"></option>
+                                    <select class="form-control m-select2" id="slotType" th:field="*{slotType}"
+                                            name="slotType">
+                                        <option th:each="type: ${slotTypes}" th:value="${type.id}"
+                                                th:text="${type.fullName}"></option>
                                     </select>
                                 </div>
                             </div>
