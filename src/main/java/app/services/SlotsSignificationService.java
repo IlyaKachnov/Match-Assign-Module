@@ -191,10 +191,10 @@ public class SlotsSignificationService {
     public Set<SlotSignificationTime> getFutureSessions(User user){
 
         List<Team> teamList = user.getTeamList();
-        if(teamList.isEmpty())
-        {
-            return null;
-        }
+//        if(teamList.isEmpty())
+//        {
+//            return null;
+//        }
         Set<SlotSignificationTime> futureNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
@@ -213,10 +213,10 @@ public class SlotsSignificationService {
     public Set<SlotSignificationTime> getActualSessions(User user){
 
         List<Team> teamList = user.getTeamList();
-        if(teamList.isEmpty())
-        {
-            return null;
-        }
+//        if(teamList.isEmpty())
+//        {
+//            return null;
+//        }
         Set<SlotSignificationTime> actualNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();

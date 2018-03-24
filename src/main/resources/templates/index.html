@@ -78,7 +78,7 @@
 															</span>
                                                 </div>
                                             </div>
-                                            <div th:if="${futureSessions == null and notifications == null}">
+                                            <div th:if="${futureSessions.isEmpty() and notifications.isEmpty()}">
                                                 <div class="m-widget2__desc">
 															<span class="m-widget2__text"  style="width: 100% !important; text-align: center !important; display: block">
 															Активных сессий не найдено
