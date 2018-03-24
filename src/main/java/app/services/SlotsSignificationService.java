@@ -91,16 +91,23 @@ public class SlotsSignificationService {
         return actualMatches;
     }
 
-    public void signifySlot(Long matchId, Long slotId) {
+    public synchronized void signifySlot(Long matchId, Long slotId) {
         Match match = matchRepository.findOne(matchId);
-        if (match.getSlot() != null) {
+        if (match != null && match.getSlot() != null) {
             return;
         }
-        Slot currSlot = slotRepository.findOne(slotId);
-        if (currSlot.getSlotType().getSignifiable()) {
-            currSlot.setMatch(match);
+        if (match != null && match.getHomeTeam() != null) {
+            Optional<SlotSignificationTime> slotSignificationTimeOptional = slotSignificationTimeRepository.findAll()
+                    .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(match.getHomeTeam().getLeague()))
+                    .findAny();
+            if (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get())) {
+                Slot currSlot = slotRepository.findOne(slotId);
+                if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
+                    currSlot.setMatch(match);
+                }
+                slotRepository.save(currSlot);
+            }
         }
-        slotRepository.save(currSlot);
     }
 
     public void rejectSlot(Long slotId) {
