@@ -91,7 +91,8 @@ public class SlotsSignificationService {
         return actualMatches;
     }
 
-    public synchronized void signifySlot(Long matchId, Long slotId) {
+    public synchronized void signifySlot(Long matchId, Long slotId, String userEmail) {
+        User currUser = userRepository.findByEmail(userEmail);
         Match match = matchRepository.findOne(matchId);
         if (match != null && match.getSlot() != null) {
             return;
@@ -100,7 +101,8 @@ public class SlotsSignificationService {
             Optional<SlotSignificationTime> slotSignificationTimeOptional = slotSignificationTimeRepository.findAll()
                     .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(match.getHomeTeam().getLeague()))
                     .findAny();
-            if (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get())) {
+            if (currUser.getRole().equals(Role.adminRole) ||
+                    (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()))) {
                 Slot currSlot = slotRepository.findOne(slotId);
                 if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
                     currSlot.setMatch(match);
@@ -110,10 +112,22 @@ public class SlotsSignificationService {
         }
     }
 
-    public void rejectSlot(Long slotId) {
+    public void rejectSlot(Long slotId,  String userEmail) {
         Slot currSlot = slotRepository.findOne(slotId);
-        currSlot.setMatch(null);
-        slotRepository.save(currSlot);
+        Match currMatch = currSlot.getMatch();
+        User currUser = userRepository.findByEmail(userEmail);
+        if (currUser.getRole().equals(Role.adminRole)) {
+            currSlot.setMatch(null);
+            slotRepository.save(currSlot);
+        } else if (currMatch != null && currMatch.getHomeTeam() != null) {
+            Optional<SlotSignificationTime> slotSignificationTimeOptional = slotSignificationTimeRepository.findAll()
+                    .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(currMatch.getHomeTeam().getLeague()))
+                    .findAny();
+            if (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get())) {
+                currSlot.setMatch(null);
+                slotRepository.save(currSlot);
+            }
+        }
     }
 
     private void addActiveLeagues(List<League> activeLeagues,

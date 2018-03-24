@@ -61,16 +61,16 @@ public class SlotsSignificationController {
 
     @RequestMapping(value = "stadium/{id}/signify/{slotId}", method = RequestMethod.POST)
     public String signifySlot(@PathVariable Long id, @PathVariable Long slotId,
-                              @ModelAttribute MatchForm matchForm) {
+                              @ModelAttribute MatchForm matchForm, HttpServletRequest httpServletRequest) {
         if (matchForm.getId() != null) {
-            slotsSignificationService.signifySlot(matchForm.getId(), slotId);
+            slotsSignificationService.signifySlot(matchForm.getId(), slotId, httpServletRequest.getUserPrincipal().getName());
         }
         return "redirect:/stadium/" + id;
     }
 
     @RequestMapping(value = "stadium/{id}/reject/{slotId}", method = RequestMethod.GET)
-    public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId) {
-        slotsSignificationService.rejectSlot(slotId);
+    public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId,  HttpServletRequest httpServletRequest) {
+        slotsSignificationService.rejectSlot(slotId, httpServletRequest.getUserPrincipal().getName());
         return "redirect:/stadium/" + id;
     }
 }
