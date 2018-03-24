@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Primary
@@ -34,4 +35,21 @@ public class SessionServiceImpl implements SessionService {
     public void delete(Long id) {
         this.repository.delete(id);
     }
+
+    public SlotSignificationTime getWithLeague(SlotSignificationTime significationTime) {
+        Optional<SlotSignificationTime> optional = repository.findAll().stream().filter(sT -> sT.getLeague()
+                .equals(significationTime.getLeague()) && !sT.getLeague()
+                .equals(significationTime.getLeague()))
+                .findAny();
+
+        optional.get().setStartDate(significationTime.getStartDate());
+        optional.get().setEndDate(significationTime.getEndDate());
+        optional.get().setStartTime(significationTime.getStartTime());
+        optional.get().setEndTime(significationTime.getEndTime());
+
+        return optional.get();
+
+    }
+
+
 }
