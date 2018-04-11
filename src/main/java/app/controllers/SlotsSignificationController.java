@@ -6,6 +6,7 @@ import app.repositories.SlotRepository;
 import app.repositories.StadiumRepository;
 import app.repositories.UserRepository;
 import app.services.SlotsSignificationService;
+import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,16 +27,19 @@ public class SlotsSignificationController {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
     private final SlotRepository slotRepository;
+    private final StadiumServiceImpl stadiumService;
 
     @Autowired
     public SlotsSignificationController(SlotsSignificationService slotsSignificationService,
                                         MatchRepository matchRepository,
                                         UserRepository userRepository,
-                                        SlotRepository slotRepository) {
+                                        SlotRepository slotRepository,
+                                        StadiumServiceImpl stadiumService) {
         this.slotsSignificationService = slotsSignificationService;
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
         this.slotRepository = slotRepository;
+        this.stadiumService = stadiumService;
     }
 
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
@@ -44,6 +48,8 @@ public class SlotsSignificationController {
         String resultJSON =slotsSignificationService
                 .generateSlotsJSON(id, httpServletRequest.getUserPrincipal().getName());
         model.addAttribute("slots", resultJSON);
+        model.addAttribute("stadiumsList", stadiumService.findAllWithSlots());
+        model.addAttribute("currentStadium", stadiumService.findById(id));
         return "slots_signification/index";
     }
 

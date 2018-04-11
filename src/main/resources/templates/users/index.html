@@ -109,7 +109,7 @@
                                 <td th:text="${user.lastname}"></td>
                                 <td th:text="${user.email}"></td>
                                 <td th:text="${user.role}"></td>
-                                <td><span th:each="team, index:${user.teamList}" th:text="!${index.last} ? ${team.name} + ', ' : ${team.name}"></span></td>
+                                <td><span th:each="team, index:${user.teamList}" th:text="!${index.last} ? ${team.name} + ', ' : ${team.name}"></span><span th:if="${user.teamList.isEmpty()}">—</span></td>
                                 <td>
                                     <a th:href="@{'/users/'+${user.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
