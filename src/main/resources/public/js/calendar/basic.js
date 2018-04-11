@@ -40,6 +40,9 @@ var CalendarBasic = function() {
                     center: 'title',
                     right: 'agendaWeek,listWeek'
                 },
+                columnFormat: 'ddd D.MM',
+                slotLabelFormat: 'H:mm',
+                timeFormat: 'H:mm',
                 editable: false,
                 eventLimit: true, // allow "more" link when too many events
                 navLinks: true,
