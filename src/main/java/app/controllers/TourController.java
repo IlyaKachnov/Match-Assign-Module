@@ -19,13 +19,13 @@ public class TourController {
     private final LeagueServiceImpl leagueService;
 
     @Autowired
-    public TourController(TourServiceImpl tourService, LeagueServiceImpl leagueService){
+    public TourController(TourServiceImpl tourService, LeagueServiceImpl leagueService) {
         this.tourService = tourService;
         this.leagueService = leagueService;
     }
 
     @RequestMapping(value = "/tours", method = RequestMethod.GET)
-    public String index(Model model){
+    public String index(Model model) {
 
         model.addAttribute("tours", tourService.findAll());
 
@@ -33,7 +33,7 @@ public class TourController {
     }
 
     @RequestMapping(value = "/tours/create", method = RequestMethod.GET)
-    public String showCreateForm(Model model, Tour tourForm){
+    public String showCreateForm(Model model, Tour tourForm) {
 
         model.addAttribute("tourForm", tourForm);
         model.addAttribute("leagueList", leagueService.findAll());
@@ -42,7 +42,15 @@ public class TourController {
     }
 
     @RequestMapping(value = "/tours/save", method = RequestMethod.POST)
-    public String saveTour(@ModelAttribute Tour tourForm, RedirectAttributes redirectAttributes){
+    public String saveTour(@ModelAttribute Tour tourForm, RedirectAttributes redirectAttributes) {
+
+        if (tourService.findByName(tourForm.getName()) != null) {
+            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/tours/create";
+        }
+
 
         tourService.save(tourForm);
 
@@ -50,7 +58,7 @@ public class TourController {
     }
 
     @RequestMapping(value = "tours/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model){
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
 
         Tour tourForm = tourService.findById(id);
         model.addAttribute("tourForm", tourForm);
@@ -61,9 +69,16 @@ public class TourController {
     }
 
     @RequestMapping(value = "tours/{id}/update", method = RequestMethod.POST)
-    public String updateTour(@PathVariable("id") Long id, @ModelAttribute Tour tourForm, RedirectAttributes redirectAttributes){
+    public String updateTour(@PathVariable("id") Long id, @ModelAttribute Tour tourForm, RedirectAttributes redirectAttributes) {
 
         Tour tour = tourService.findById(id);
+
+        if (tourService.findByName(tourForm.getName()) != null && (!tourForm.getName().equals(tour.getName()))) {
+            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+            redirectAttributes.addFlashAttribute("error", true);
+
+            return "redirect:/tours/" + id + "/edit";
+        }
 
         tour.setName(tourForm.getName());
         tour.setStartDate(tourForm.getStartDate());
@@ -76,8 +91,7 @@ public class TourController {
     }
 
     @RequestMapping(value = "/tours/{id}/delete", method = RequestMethod.POST)
-    public String deleteTour(@PathVariable("id") Long id)
-    {
+    public String deleteTour(@PathVariable("id") Long id) {
         tourService.delete(id);
 
         return "redirect:/tours";

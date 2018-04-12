@@ -3,9 +3,7 @@ package app.controllers;
 import app.models.Match;
 import app.models.Slot;
 import app.models.Team;
-import app.services.MatchServiceImpl;
-import app.services.SlotServiceImpl;
-import app.services.TeamServiceImpl;
+import app.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +20,13 @@ public class MatchController {
     private final MatchServiceImpl matchService;
     private final TeamServiceImpl teamService;
     private final SlotServiceImpl slotService;
+    private final LeagueServiceImpl leagueService;
     @Autowired
-    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService, SlotServiceImpl slotService){
+    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService, SlotServiceImpl slotService, LeagueServiceImpl leagueService){
         this.matchService = matchService;
         this.teamService = teamService;
         this.slotService = slotService;
+        this.leagueService = leagueService;
     }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
@@ -43,6 +43,7 @@ public class MatchController {
     {
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("match", match);
+        model.addAttribute("leagueList", leagueService.findAll());
 
         return "matches/create";
     }
@@ -62,6 +63,7 @@ public class MatchController {
         Match match = matchService.findById(id);
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("match", match);
+        model.addAttribute("leagueList", leagueService.findAll());
 
         return "matches/edit";
     }

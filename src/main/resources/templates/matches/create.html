@@ -80,6 +80,19 @@
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
+                                    Тур *
+                                </label>
+                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                    <select class="form-control m-select2" id="m_select2_2" name="tour" th:field="*{tour}" >
+                                        <optgroup th:if="${!league.tours.isEmpty()}" th:each="league:${leagueList}" th:label="${league.name}">
+                                            <option th:each="tour:${league.tours}" th:text="${tour.fullInfo}" th:value="${tour.id}">
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-3 col-sm-12">
                                     Хозяева *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">

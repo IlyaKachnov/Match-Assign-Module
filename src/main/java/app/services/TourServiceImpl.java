@@ -33,4 +33,9 @@ public class TourServiceImpl implements TourService {
     public void delete(Long id) {
         tourRepository.delete(id);
     }
+
+    @Override
+    public Tour findByName(String name) {
+        return tourRepository.findByName(name);
+    }
 }

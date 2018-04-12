@@ -13,4 +13,5 @@ public interface TourService {
 
     Tour findById(Long id);
 
+    Tour findByName(String name);
 }

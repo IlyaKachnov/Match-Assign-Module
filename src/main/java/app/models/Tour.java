@@ -3,7 +3,10 @@ package app.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tours")
@@ -28,6 +31,17 @@ public class Tour {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "league_id", nullable = false)
     private League league;
+
+    @OneToMany(targetEntity = Match.class, mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Match> matches;
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
 
     public Tour() {
     }
@@ -72,4 +86,10 @@ public class Tour {
         this.league = league;
     }
 
+    public String getFullInfo() {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM");
+
+        return name + ", " + format.format(startDate) + " - " + format.format(endDate);
+    }
 }

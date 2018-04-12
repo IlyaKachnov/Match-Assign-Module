@@ -1,10 +1,15 @@
 //== Class definition
+var Select2 = {
+    init: function () {
+            $("#m_select2_2, #m_select2_2_validate").select2({placeholder: "Выберите тур"})
+    }
+};
 
 var FormWidgets = function () {
     //== Private functions
     var validator;
 
-    var initWidgets = function() {
+    var initWidgets = function () {
         $.fn.datepicker.dates['ru'] = {
             days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
             daysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
@@ -31,20 +36,20 @@ var FormWidgets = function () {
         $('#homeTeam').select2({
             // placeholder: "Выберите хозяев",
         });
-        $('#homeTeam').on('select2:change', function(){
+        $('#homeTeam').on('select2:change', function () {
             validator.element($(this)); // validate element
         });
         $('#guestTeam').select2({
             // placeholder: "Выберите гостей",
         });
-        $('#guestTeam').on('select2:change', function(){
+        $('#guestTeam').on('select2:change', function () {
             validator.element($(this)); // validate element
         });
 
     }
 
     var initValidation = function () {
-        validator = $( "#m_form_1" ).validate({
+        validator = $("#m_form_1").validate({
             // define validation rules
             rules: {
                 matchDate: {
@@ -66,7 +71,7 @@ var FormWidgets = function () {
             },
 
             //display error alert on form submit
-            invalidHandler: function(event, validator) {
+            invalidHandler: function (event, validator) {
                 var alert = $('#m_form_1_msg');
                 alert.removeClass('m--hide').show();
                 mApp.scrollTo(alert, -200);
@@ -80,13 +85,14 @@ var FormWidgets = function () {
 
     return {
         // public functions
-        init: function() {
+        init: function () {
             initWidgets();
             initValidation();
         }
     };
 }();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     FormWidgets.init();
+    Select2.init();
 });

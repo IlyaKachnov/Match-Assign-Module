@@ -104,6 +104,12 @@
                                     Дата матча
                                 </th>
                                 <th>
+                                    Лига
+                                </th>
+                                <th>
+                                    Тур
+                                </th>
+                                <th>
                                     Действия
                                 </th>
                             </tr>
@@ -113,6 +119,8 @@
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${#dates.format(match.matchDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${match.tour.league.name}"></td>
+                                <td th:text="${match.tour.fullInfo}"></td>
                                 <td>
                                     <a th:href="@{'/matches/'+${match.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
@@ -138,7 +146,7 @@
 <script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
 <script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
 <!--begin::Page Resources -->
-<script src="/../../public/js/datatables/html-table.js" th:src="@{/js/datatables/html-table.js}"
+<script src="/../../public/js/datatables/matches-table.js" th:src="@{/js/datatables/matches-table.js}"
         type="text/javascript"></script>
 <!--end::Page Resources -->
 </body>

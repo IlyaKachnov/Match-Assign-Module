@@ -78,6 +78,8 @@
                                 <th>Время начала</th>
                                 <th>Время окончания</th>
                                 <th>Место проведения</th>
+                                <th>Тур</th>
+                                <th>Лига</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,6 +90,8 @@
                                 <td th:text="${match.slot != null ? #dates.format(match.slot.startTime, 'HH:mm') : 'Не назначен'}"></td>
                                 <td th:text="${match.slot != null ? #dates.format(match.slot.endTime, 'HH:mm') : 'Не назначен'}"></td>
                                 <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
+                                <td th:text="${match.tour.fullInfo}"></td>
+                                <td th:text="${match.tour.league.name}"></td>
                             </tr>
                             </tbody>
                         </table>
