@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
-                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**", "/sessions/**").hasAuthority(Role.adminRole)
+                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**", "/sessions/**","/tours/**", "/slot-types/**" ).hasAuthority(Role.adminRole)
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

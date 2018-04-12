@@ -90,6 +90,17 @@
                             </a>
                         </li>
                         <li class="m-menu__item " aria-haspopup="true"
+                            th:classappend="${#httpServletRequest.requestURI.equals('/tours')} ? 'm-menu__item--active' : ''">
+                            <a th:href="@{/tours}" class="m-menu__link ">
+                                <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                    <span></span>
+                                </i>
+                                <span class="m-menu__link-text">
+													Туры
+												</span>
+                            </a>
+                        </li>
+                        <li class="m-menu__item " aria-haspopup="true"
                             th:classappend="${#httpServletRequest.requestURI.equals('/sessions')} ? 'm-menu__item--active' : ''">
                             <a th:href="@{/sessions}" class="m-menu__link ">
                                 <i class="m-menu__link-bullet m-menu__link-bullet--dot">

@@ -18,6 +18,17 @@ public class League {
     @OneToMany(targetEntity = Team.class, mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Team> teams;
 
+    @OneToMany(targetEntity = Tour.class, mappedBy = "league", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Tour> tours;
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
     @OneToOne(targetEntity = SlotSignificationTime.class,
             cascade =  CascadeType.ALL,
             mappedBy = "league")
