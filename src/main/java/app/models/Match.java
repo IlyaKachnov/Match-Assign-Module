@@ -3,6 +3,7 @@ package app.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -77,6 +78,11 @@ public class Match {
 
     public Date getMatchDate() {
         return matchDate;
+    }
+
+    public String getFormattedDate() {
+
+        return (new SimpleDateFormat("dd.MM.YYYY")).format(matchDate);
     }
 
     public void setMatchDate(Date matchDate) {

@@ -21,12 +21,15 @@ public class MatchController {
     private final TeamServiceImpl teamService;
     private final SlotServiceImpl slotService;
     private final LeagueServiceImpl leagueService;
+    private final TourServiceImpl tourService;
     @Autowired
-    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService, SlotServiceImpl slotService, LeagueServiceImpl leagueService){
+    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
+                           SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService){
         this.matchService = matchService;
         this.teamService = teamService;
         this.slotService = slotService;
         this.leagueService = leagueService;
+        this.tourService = tourService;
     }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
@@ -98,7 +101,12 @@ public class MatchController {
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
     public String showMatchList(Model model)
     {
-        model.addAttribute("matches", matchService.findAll());
+        model.addAttribute("matches", matchService.generateJSON());
+        model.addAttribute("teams", teamService.findAll());
+        model.addAttribute("tours", tourService.generateJSON());
+        model.addAttribute("leagues", leagueService.generateJSON());
+        model.addAttribute("leagueList", leagueService.findAll());
+        model.addAttribute("tourList", tourService.findAll());
 
         return "matches/all-matches";
     }

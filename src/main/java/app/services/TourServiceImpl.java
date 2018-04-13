@@ -38,4 +38,18 @@ public class TourServiceImpl implements TourService {
     public Tour findByName(String name) {
         return tourRepository.findByName(name);
     }
+
+    @Override
+    public String generateJSON() {
+        StringBuilder json = new StringBuilder("{");
+        List<Tour> tours = tourRepository.findAll();
+        tours.forEach(tour -> {
+            json.append("\"").append(tour.getFullInfo()).append("\"").append(":");
+            json.append("{\"title\": \"").append(tour.getFullInfo()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("}");
+
+        return json.toString();
+    }
 }

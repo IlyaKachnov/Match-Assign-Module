@@ -16,21 +16,40 @@ public class MatchServiceImpl implements MatchService{
 
     @Override
     public List<Match> findAll() {
-        return this.matchRepository.findAll();
+        return matchRepository.findAll();
     }
 
     @Override
     public Match findById(Long id) {
-        return this.matchRepository.findOne(id);
+        return matchRepository.findOne(id);
     }
 
     @Override
     public void save(Match match) {
-        this.matchRepository.save(match);
+        matchRepository.save(match);
     }
 
     @Override
     public void delete(Long id) {
-        this.matchRepository.delete(id);
+        matchRepository.delete(id);
+    }
+
+    public String generateJSON(){
+
+    List<Match> matches = matchRepository.findAll();
+    StringBuilder json = new StringBuilder("[");
+
+    matches.forEach(match -> {
+        json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
+                json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
+                json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
+                json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
+                json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("]");
+
+    return json.toString();
+
     }
 }
