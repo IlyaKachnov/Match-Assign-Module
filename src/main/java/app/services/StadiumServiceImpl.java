@@ -41,17 +41,15 @@ public class StadiumServiceImpl implements StadiumService {
         return stadiumRepository.findByName(name);
     }
 
-    public List<Stadium> findAllWithSlots()
-    {
+    public List<Stadium> findAllWithSlots() {
         List<Stadium> stadiumList = this.stadiumRepository.findAll();
         List<Stadium> stadiumsWithSlots = new ArrayList<>();
         stadiumList.forEach(stadium -> {
-            if(!stadium.getSlots().isEmpty())
-            {
+            if (!stadium.getSlots().isEmpty()) {
                 stadiumsWithSlots.add(stadium);
             }
         });
 
-        return  stadiumsWithSlots;
+        return stadiumsWithSlots;
     }
 }

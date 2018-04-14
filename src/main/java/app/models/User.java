@@ -28,6 +28,7 @@ public class User {
 
     @OneToMany(targetEntity = Team.class, mappedBy = "user", fetch = FetchType.LAZY)
     private List<Team> teams;
+
     public List<Team> getTeamList() {
         return teams;
     }
@@ -76,13 +77,11 @@ public class User {
         this.role = role;
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
 
         this.password = password;
     }
@@ -93,7 +92,7 @@ public class User {
         this.lastname = lastname;
         this.email = email;
         this.role = role;
-        this.password  = password;
+        this.password = password;
     }
 
     public User() {

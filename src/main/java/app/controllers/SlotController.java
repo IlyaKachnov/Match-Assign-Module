@@ -19,30 +19,28 @@ import java.util.Date;
 @Controller
 public class SlotController {
 
-    private final  SlotServiceImpl slotService;
-    private final  StadiumServiceImpl stadiumService;
+    private final SlotServiceImpl slotService;
+    private final StadiumServiceImpl stadiumService;
     private final SlotTypeServiceImpl slotTypeService;
 
     @Autowired
     public SlotController(SlotServiceImpl slotService, StadiumServiceImpl stadiumService, SlotTypeServiceImpl slotTypeService) {
         this.slotService = slotService;
-        this.stadiumService =stadiumService;
-        this.slotTypeService =slotTypeService;
+        this.stadiumService = stadiumService;
+        this.slotTypeService = slotTypeService;
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots", method = RequestMethod.GET)
-    public String index(@PathVariable Long id, Model model)
-    {
-        Stadium stadium =  stadiumService.findById(id);
+    public String index(@PathVariable Long id, Model model) {
+        Stadium stadium = stadiumService.findById(id);
         model.addAttribute("stadium", stadium);
 
         return "slots/index";
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/create", method = RequestMethod.GET)
-    public String showCreateForm(@PathVariable Long id, Model model, Slot slot)
-    {
-        Stadium stadium =  stadiumService.findById(id);
+    public String showCreateForm(@PathVariable Long id, Model model, Slot slot) {
+        Stadium stadium = stadiumService.findById(id);
         model.addAttribute("stadium", stadium);
         model.addAttribute("slot", slot);
         model.addAttribute("slotTypes", slotTypeService.findAll());
@@ -51,8 +49,7 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/save", method = RequestMethod.POST)
-    public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot)
-    {
+    public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot) {
         Stadium stadium = stadiumService.findById(id);
         Slot newSlot = new Slot();
         newSlot.setStartTime(slot.getStartTime());
@@ -80,8 +77,7 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable Long id, @PathVariable Long slotId, Model model)
-    {
+    public String showEditForm(@PathVariable Long id, @PathVariable Long slotId, Model model) {
         Slot slot = slotService.findById(slotId);
         model.addAttribute("slot", slot);
         model.addAttribute("stadium", stadiumService.findById(id));
@@ -91,9 +87,8 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/update", method = RequestMethod.POST)
-    public String updateSlot(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
-    {
-        Slot slotModel= slotService.findById(slotId);
+    public String updateSlot(@PathVariable Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot) {
+        Slot slotModel = slotService.findById(slotId);
         slotModel.setSlotType(slot.getSlotType());
         slotModel.setStartTime(slot.getStartTime());
         slotModel.setEventDate(slot.getEventDate());
@@ -116,8 +111,7 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.POST)
-    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot)
-    {
+    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot) {
         slotService.delete(slotId);
 
         return "redirect:/stadiums/" + id + "/slots";

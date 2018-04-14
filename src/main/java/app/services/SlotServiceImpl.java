@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Primary
-public class SlotServiceImpl implements SlotService{
+public class SlotServiceImpl implements SlotService {
 
     @Autowired
     SlotRepository slotRepository;

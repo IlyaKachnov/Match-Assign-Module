@@ -27,9 +27,9 @@ public class UserController {
 
     @Resource
     TeamServiceImpl teamService;
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String index(Model model)
-    {
+    public String index(Model model) {
         model.addAttribute("allUsers", userService.findAll());
 
         return "users/index";
@@ -46,9 +46,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/save", method = RequestMethod.POST)
-    public String saveUser(@ModelAttribute User user, RedirectAttributes redirectAttributes)
-    {
-        if(userService.findByEmail(user.getEmail()) != null) {
+    public String saveUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        if (userService.findByEmail(user.getEmail()) != null) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -67,7 +66,7 @@ public class UserController {
 
         userService.save(userModel);
 
-        if(user.getRole().equals(Role.managerRole)) {
+        if (user.getRole().equals(Role.managerRole)) {
             for (Team team : user.getTeamList()) {
                 team.setUser(userModel);
                 teamService.save(team);
@@ -79,8 +78,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/users/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model)
-    {
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
 
         model.addAttribute("user", user);
@@ -89,10 +87,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}/update", method = RequestMethod.POST)
-    public String updateUser(@PathVariable("id") Long id, @ModelAttribute User user, RedirectAttributes redirectAttributes)
-    {
+    public String updateUser(@PathVariable("id") Long id, @ModelAttribute User user, RedirectAttributes redirectAttributes) {
         User userModel = userService.findById(id);
-        if(userService.findByEmail(user.getEmail()) != null && (!user.getEmail().equals(userModel.getEmail()))) {
+        if (userService.findByEmail(user.getEmail()) != null && (!user.getEmail().equals(userModel.getEmail()))) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -110,12 +107,11 @@ public class UserController {
         List<Team> newList = userModel.getTeamList();
 
 
-
-            for (Team team : newList) {
-                team.setUser(null);
-                teamService.save(team);
-            }
-        if(user.getRole().equals(Role.managerRole)) {
+        for (Team team : newList) {
+            team.setUser(null);
+            teamService.save(team);
+        }
+        if (user.getRole().equals(Role.managerRole)) {
             for (Team team : oldList) {
                 team.setUser(userModel);
                 teamService.save(team);
@@ -125,11 +121,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}/delete", method = RequestMethod.POST)
-    public String deleteUser(@PathVariable("id") Long id, @ModelAttribute User user)
-    {
+    public String deleteUser(@PathVariable("id") Long id, @ModelAttribute User user) {
         User userModel = userService.findById(id);
 
-        for (Team team:userModel.getTeamList()) {
+        for (Team team : userModel.getTeamList()) {
             team.setUser(null);
             teamService.save(team);
         }

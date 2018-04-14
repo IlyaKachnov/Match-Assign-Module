@@ -15,6 +15,7 @@ public class SlotTypeServiceImpl implements SlotTypeService {
 
     @Autowired
     SlotTypeRepository slotTypeRepository;
+
     @Override
     public List<SlotType> findAll() {
         return slotTypeRepository.findAll();

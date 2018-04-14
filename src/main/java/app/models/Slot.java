@@ -4,12 +4,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+
 @Entity
 @Table(name = "slots")
 public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 //
 //    @Column(length = 20)
 //    private String eventName;

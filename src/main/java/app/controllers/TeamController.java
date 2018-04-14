@@ -22,8 +22,7 @@ public class TeamController {
     TeamServiceImpl teamService;
 
     @RequestMapping(value = "/leagues/{id}/teams/create", method = RequestMethod.GET)
-    public String showCreateForm(@PathVariable Long id,  Model model, Team team)
-    {
+    public String showCreateForm(@PathVariable Long id, Model model, Team team) {
         model.addAttribute("team", team);
         model.addAttribute("league", leagueService.findById(id));
 
@@ -31,13 +30,12 @@ public class TeamController {
     }
 
     @RequestMapping(value = "/leagues/{id}/teams/save", method = RequestMethod.POST)
-    public String saveTeam(@PathVariable Long id, @ModelAttribute Team team, RedirectAttributes redirectAttributes)
-    {
-        if(teamService.findByName(team.getName()) != null) {
+    public String saveTeam(@PathVariable Long id, @ModelAttribute Team team, RedirectAttributes redirectAttributes) {
+        if (teamService.findByName(team.getName()) != null) {
             redirectAttributes.addFlashAttribute("team", team);
             redirectAttributes.addFlashAttribute("error", true);
 
-            return "redirect:/leagues/"+ id +"/teams/create";
+            return "redirect:/leagues/" + id + "/teams/create";
         }
 
         Team teamModel = new Team();
@@ -47,12 +45,11 @@ public class TeamController {
 
         teamService.save(teamModel);
 
-        return "redirect:/leagues/" + id + "/teams" ;
+        return "redirect:/leagues/" + id + "/teams";
     }
 
     @RequestMapping(value = "leagues/teams/{teamId}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("teamId") Long teamId, Model model)
-    {
+    public String showEditForm(@PathVariable("teamId") Long teamId, Model model) {
         Team team = teamService.findById(teamId);
         model.addAttribute("team", team);
 
@@ -60,15 +57,14 @@ public class TeamController {
     }
 
     @RequestMapping(value = "leagues/teams/{teamId}/update", method = RequestMethod.POST)
-    public String updateTeam(@PathVariable("teamId") Long teamId, @ModelAttribute Team team, RedirectAttributes redirectAttributes)
-    {
-        Team teamModel= teamService.findById(teamId);
+    public String updateTeam(@PathVariable("teamId") Long teamId, @ModelAttribute Team team, RedirectAttributes redirectAttributes) {
+        Team teamModel = teamService.findById(teamId);
 
-        if(teamService.findByName(team.getName()) != null && (!team.getName().equals(teamModel.getName()))) {
+        if (teamService.findByName(team.getName()) != null && (!team.getName().equals(teamModel.getName()))) {
             redirectAttributes.addFlashAttribute("team", team);
             redirectAttributes.addFlashAttribute("error", true);
 
-            return "redirect:/leagues/teams/"+ teamId +"/edit";
+            return "redirect:/leagues/teams/" + teamId + "/edit";
         }
 
         Long leagueId = teamModel.getLeague().getId();
@@ -80,8 +76,7 @@ public class TeamController {
     }
 
     @RequestMapping(value = "leagues/teams/{id}/delete", method = RequestMethod.POST)
-    public String deleteTeam(@PathVariable("id") Long id, @ModelAttribute Team team)
-    {
+    public String deleteTeam(@PathVariable("id") Long id, @ModelAttribute Team team) {
         Long leagueId = teamService.findById(id).getLeague().getId();
         teamService.delete(id);
 

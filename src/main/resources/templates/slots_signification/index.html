@@ -40,20 +40,22 @@
 												<span class="m-portlet__head-icon">
 													<i class="flaticon-calendar"></i>
 												</span>
-                                        <h3 class="m-portlet__head-text" th:text="${'Календарь - стадион '+currentStadium.name}">
+                                        <h3 class="m-portlet__head-text"
+                                            th:text="${'Календарь - стадион '+currentStadium.name}">
                                             Календарь
                                         </h3>
                                     </div>
                                 </div>
                                 <div class="m-portlet__head-tools">
-                                    <div class="form-group m-form__group row" style="margin-bottom: 0 !important;" title="Выбрать стадион">
+                                    <div class="form-group m-form__group row" style="margin-bottom: 0 !important;"
+                                         title="Выбрать стадион">
                                         <div class="col-lg-12 col-md-12 col-sm-12 pull-right">
                                             <select class="form-control m-bootstrap-select m_selectpicker"
                                                     onchange="location = this.value;">
                                                 <option th:each="stadium: ${stadiumsList}"
                                                         th:value="@{'/stadium/'+${stadium.id}}"
                                                         th:text="${stadium.name}"
-                                                th:selected="${currentStadium.id.equals(stadium.id)}">
+                                                        th:selected="${currentStadium.id.equals(stadium.id)}">
                                                 </option>
                                             </select>
                                         </div>

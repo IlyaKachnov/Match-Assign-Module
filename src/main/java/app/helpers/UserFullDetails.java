@@ -13,8 +13,7 @@ public class UserFullDetails extends User {
     private String fullName;
 
     public UserFullDetails(String username, String password, Collection<? extends GrantedAuthority> authorities,
-                           String firstname, String lastname, String role, Long id)
-    {
+                           String firstname, String lastname, String role, Long id) {
         super(username, password, true, true, true, true, authorities);
         this.firstname = firstname;
         this.lastname = lastname;

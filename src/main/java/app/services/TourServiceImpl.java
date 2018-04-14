@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -40,12 +42,20 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
+    public Set<String> getToursInfo() {
+        return tourRepository.findAll().stream()
+                .map(Tour::getFullInfo)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public String generateJSON() {
         StringBuilder json = new StringBuilder("{");
-        List<Tour> tours = tourRepository.findAll();
-        tours.forEach(tour -> {
-            json.append("\"").append(tour.getFullInfo()).append("\"").append(":");
-            json.append("{\"title\": \"").append(tour.getFullInfo()).append("\"},");
+        Set<String> toursInfo = getToursInfo();
+
+        toursInfo.forEach(s -> {
+            json.append("\"").append(s).append("\"").append(":");
+            json.append("{\"title\": \"").append(s).append("\"},");
         });
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("}");

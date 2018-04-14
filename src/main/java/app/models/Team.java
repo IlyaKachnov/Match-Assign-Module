@@ -41,6 +41,7 @@ public class Team {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "league_id", nullable = false)
     private League league;
+
     public League getLeague() {
         return league;
     }
@@ -52,6 +53,7 @@ public class Team {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
     public User getUser() {
         return user;
     }
@@ -61,9 +63,10 @@ public class Team {
     }
 
     @OneToMany(targetEntity = Match.class, fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
+            cascade = CascadeType.ALL,
             mappedBy = "homeTeam")
     private List<Match> matchesAsHome;
+
     public List<Match> getMatchesAsHome() {
         return matchesAsHome;
     }
@@ -73,9 +76,10 @@ public class Team {
     }
 
     @OneToMany(targetEntity = Match.class, fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
+            cascade = CascadeType.ALL,
             mappedBy = "guestTeam")
     private List<Match> matchesAsGuest;
+
     public List<Match> getMatchAsGuest() {
         return matchesAsGuest;
     }

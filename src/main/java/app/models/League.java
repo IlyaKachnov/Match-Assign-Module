@@ -30,7 +30,7 @@ public class League {
     }
 
     @OneToOne(targetEntity = SlotSignificationTime.class,
-            cascade =  CascadeType.ALL,
+            cascade = CascadeType.ALL,
             mappedBy = "league")
     private SlotSignificationTime slotSignificationTime;
 

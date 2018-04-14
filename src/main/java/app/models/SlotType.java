@@ -53,7 +53,7 @@ public class SlotType {
     public String getFormattedDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(this.duration);
-        if(calendar.get(Calendar.HOUR) == 0) {
+        if (calendar.get(Calendar.HOUR) == 0) {
             return calendar.get(Calendar.MINUTE) + " мин";
         }
 

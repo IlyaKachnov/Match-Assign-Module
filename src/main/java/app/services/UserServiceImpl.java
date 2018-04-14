@@ -25,34 +25,31 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SlotsSignificationService slotsSignificationService;
     private final TeamRepository teamRepository;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, SlotsSignificationService slotsSignificationService, TeamRepository teamRepository) {
         this.slotsSignificationService = slotsSignificationService;
-        this.userRepository= userRepository;
+        this.userRepository = userRepository;
         this.teamRepository = teamRepository;
     }
 
     @Override
-    public List<User> findAll()
-    {
+    public List<User> findAll() {
         return this.userRepository.findAll();
     }
 
     @Override
-    public void save(User user)
-    {
+    public void save(User user) {
         userRepository.save(user);
     }
 
     @Override
-    public User findById(Long id)
-    {
+    public User findById(Long id) {
         return userRepository.findOne(id);
     }
 
     @Override
-    public void delete(Long id)
-    {
+    public void delete(Long id) {
         userRepository.delete(id);
     }
 

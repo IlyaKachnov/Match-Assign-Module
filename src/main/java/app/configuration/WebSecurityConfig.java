@@ -31,16 +31,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
-                    .antMatchers("/leagues/**","/stadiums/**", "/matches/**","/users/**", "/sessions/**","/tours/**", "/slot-types/**" ).hasAuthority(Role.adminRole)
-                    .anyRequest().authenticated()
-                    .and()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
+                .antMatchers("/leagues/**", "/stadiums/**", "/matches/**", "/users/**", "/sessions/**", "/tours/**", "/slot-types/**").hasAuthority(Role.adminRole)
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
+                .loginPage("/login")
+                .permitAll()
+                .and()
                 .logout()
-                    .permitAll();
+                .permitAll();
     }
 
     @Autowired

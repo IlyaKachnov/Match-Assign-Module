@@ -68,7 +68,7 @@ public class HomeController {
         User user = userService.findById(id);
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
         user.setPassword(bCrypt.encode(newPassword));
-        
+
         userService.save(user);
 
         return "redirect:/profile/" + id;

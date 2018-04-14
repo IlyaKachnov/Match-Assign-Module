@@ -17,9 +17,9 @@ import javax.servlet.http.HttpSession;
 public class LeagueController {
     @Autowired
     LeagueServiceImpl leagueService;
+
     @RequestMapping(value = "/leagues", method = RequestMethod.GET)
-    public String index(Model model)
-    {
+    public String index(Model model) {
         model.addAttribute("leagues", leagueService.findAll());
 
         return "leagues/index";
@@ -36,9 +36,8 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/save", method = RequestMethod.POST)
-    public String saveLeague(@ModelAttribute League league, RedirectAttributes redirectAttributes)
-    {
-        if(leagueService.findByName(league.getName()) != null) {
+    public String saveLeague(@ModelAttribute League league, RedirectAttributes redirectAttributes) {
+        if (leagueService.findByName(league.getName()) != null) {
             redirectAttributes.addFlashAttribute("league", league);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -51,8 +50,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/teams", method = RequestMethod.GET)
-    public String showTeams(@PathVariable("id") Long id, Model model)
-    {
+    public String showTeams(@PathVariable("id") Long id, Model model) {
         League league = leagueService.findById(id);
 
         model.addAttribute("league", league);
@@ -61,8 +59,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model)
-    {
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
         League league = leagueService.findById(id);
         model.addAttribute("league", league);
 
@@ -70,10 +67,9 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/update", method = RequestMethod.POST)
-    public String updateLeague(@PathVariable("id") Long id, @ModelAttribute League league, RedirectAttributes redirectAttributes)
-    {
+    public String updateLeague(@PathVariable("id") Long id, @ModelAttribute League league, RedirectAttributes redirectAttributes) {
         League leagueModel = leagueService.findById(id);
-        if(leagueService.findByName(league.getName()) != null && (!league.getName().equals(leagueModel.getName()))) {
+        if (leagueService.findByName(league.getName()) != null && (!league.getName().equals(leagueModel.getName()))) {
             redirectAttributes.addFlashAttribute("league", league);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -86,8 +82,7 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/delete", method = RequestMethod.POST)
-    public String deleteLeague(@PathVariable("id") Long id, @ModelAttribute League league)
-    {
+    public String deleteLeague(@PathVariable("id") Long id, @ModelAttribute League league) {
         leagueService.delete(id);
 
         return "redirect:/leagues";

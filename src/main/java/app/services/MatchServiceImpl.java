@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @Primary
-public class MatchServiceImpl implements MatchService{
+public class MatchServiceImpl implements MatchService {
     @Autowired
     MatchRepository matchRepository;
 
@@ -34,22 +34,22 @@ public class MatchServiceImpl implements MatchService{
         matchRepository.delete(id);
     }
 
-    public String generateJSON(){
+    public String generateJSON() {
 
-    List<Match> matches = matchRepository.findAll();
-    StringBuilder json = new StringBuilder("[");
+        List<Match> matches = matchRepository.findAll();
+        StringBuilder json = new StringBuilder("[");
 
-    matches.forEach(match -> {
-        json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
-                json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
-                json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
-                json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
-                json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
+        matches.forEach(match -> {
+            json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
+            json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
+            json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
+            json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
+            json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
         });
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("]");
 
-    return json.toString();
+        return json.toString();
 
     }
 }

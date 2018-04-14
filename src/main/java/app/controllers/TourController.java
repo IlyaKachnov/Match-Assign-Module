@@ -44,12 +44,12 @@ public class TourController {
     @RequestMapping(value = "/tours/save", method = RequestMethod.POST)
     public String saveTour(@ModelAttribute Tour tourForm, RedirectAttributes redirectAttributes) {
 
-        if (tourService.findByName(tourForm.getName()) != null) {
-            redirectAttributes.addFlashAttribute("tourForm", tourForm);
-            redirectAttributes.addFlashAttribute("error", true);
-
-            return "redirect:/tours/create";
-        }
+//        if (tourService.findByName(tourForm.getName()) != null) {
+//            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+//            redirectAttributes.addFlashAttribute("error", true);
+//
+//            return "redirect:/tours/create";
+//        }
 
 
         tourService.save(tourForm);
@@ -73,12 +73,12 @@ public class TourController {
 
         Tour tour = tourService.findById(id);
 
-        if (tourService.findByName(tourForm.getName()) != null && (!tourForm.getName().equals(tour.getName()))) {
-            redirectAttributes.addFlashAttribute("tourForm", tourForm);
-            redirectAttributes.addFlashAttribute("error", true);
-
-            return "redirect:/tours/" + id + "/edit";
-        }
+//        if (tourService.findByName(tourForm.getName()) != null && (!tourForm.getName().equals(tour.getName()))) {
+//            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+//            redirectAttributes.addFlashAttribute("error", true);
+//
+//            return "redirect:/tours/" + id + "/edit";
+//        }
 
         tour.setName(tourForm.getName());
         tour.setStartDate(tourForm.getStartDate());

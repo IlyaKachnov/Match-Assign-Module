@@ -39,7 +39,7 @@ public class SlotTypeController {
     @RequestMapping(value = "/slot-types/save", method = RequestMethod.POST)
     public String saveSlotType(@ModelAttribute SlotType slotType, RedirectAttributes redirectAttributes) {
 
-        if(slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration())) {
+        if (slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration())) {
             redirectAttributes.addFlashAttribute("slotType", slotType);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -65,9 +65,9 @@ public class SlotTypeController {
 
         SlotType type = slotTypeService.findById(id);
 
-        if(slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration()) &&
+        if (slotTypeService.findExisted(slotType.getTypeName(), slotType.getDuration()) &&
                 !((slotType.getDuration().equals(type.getDuration())) &&
-                (slotType.getTypeName().equals(type.getTypeName())))) {
+                        (slotType.getTypeName().equals(type.getTypeName())))) {
             redirectAttributes.addFlashAttribute("slotType", slotType);
             redirectAttributes.addFlashAttribute("error", true);
 

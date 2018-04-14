@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Primary
-public class TeamServiceImpl implements TeamService{
+public class TeamServiceImpl implements TeamService {
     @Autowired
     TeamRepository teamRepository;
 
@@ -36,8 +36,7 @@ public class TeamServiceImpl implements TeamService{
         this.teamRepository.delete(id);
     }
 
-    public List<Team> findWithoutUser()
-    {
+    public List<Team> findWithoutUser() {
         return this.teamRepository.findAll().stream().filter(t -> t.getUser() == null).collect(Collectors.toList());
     }
 

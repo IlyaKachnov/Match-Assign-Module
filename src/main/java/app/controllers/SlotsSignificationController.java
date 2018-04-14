@@ -45,7 +45,7 @@ public class SlotsSignificationController {
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
     public String showStadiumSlots(@PathVariable Long id, Model model,
                                    HttpServletRequest httpServletRequest) {
-        String resultJSON =slotsSignificationService
+        String resultJSON = slotsSignificationService
                 .generateSlotsJSON(id, httpServletRequest.getUserPrincipal().getName());
         model.addAttribute("slots", resultJSON);
         model.addAttribute("stadiumsList", stadiumService.findAllWithSlots());
@@ -75,7 +75,7 @@ public class SlotsSignificationController {
     }
 
     @RequestMapping(value = "stadium/{id}/reject/{slotId}", method = RequestMethod.GET)
-    public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId,  HttpServletRequest httpServletRequest) {
+    public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId, HttpServletRequest httpServletRequest) {
         slotsSignificationService.rejectSlot(slotId, httpServletRequest.getUserPrincipal().getName());
         return "redirect:/stadium/" + id;
     }

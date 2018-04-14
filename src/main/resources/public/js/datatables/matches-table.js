@@ -75,6 +75,14 @@ var DatatableDataLocalDemo = function () {
                     format: "DD.MM.YYYY"
                 },
                 {
+                    field: "League",
+                    title: "Лига",
+                    // callback function support for column rendering
+                    template: function (row) {
+                        return '<span>' + leagues[row.League].title + '</span>';
+                    }
+                },
+                {
                     field: "Tour",
                     title: "Тур",
                     // callback function support for column rendering
@@ -82,14 +90,7 @@ var DatatableDataLocalDemo = function () {
                         return '<span>' + tours[row.Tour].title + '</span>';
                     }
                 },
-                {
-                    field: "League",
-                    title: "Лига",
-                    // callback function support for column rendering
-                    template: function (row) {
-                        return '<span>' + leagues[row.League].title + '</span>';
-                    }
-                }]
+          ]
         });
 
         var query = datatable.getDataSourceQuery();

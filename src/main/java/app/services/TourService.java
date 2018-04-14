@@ -3,6 +3,7 @@ package app.services;
 import app.models.Tour;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TourService {
     List<Tour> findAll();
@@ -16,4 +17,6 @@ public interface TourService {
     Tour findByName(String name);
 
     String generateJSON();
+
+    Set<String> getToursInfo();
 }

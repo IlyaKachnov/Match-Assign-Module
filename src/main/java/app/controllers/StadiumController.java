@@ -19,25 +19,22 @@ public class StadiumController {
     StadiumServiceImpl stadiumService;
 
     @RequestMapping(value = "/stadiums", method = RequestMethod.GET)
-    public String index(Model model)
-    {
+    public String index(Model model) {
         model.addAttribute("stadiums", stadiumService.findAll());
 
         return "stadiums/index";
     }
 
     @RequestMapping(value = "/stadiums/create", method = RequestMethod.GET)
-    public String showCreateForm(Model model, Stadium stadium)
-    {
+    public String showCreateForm(Model model, Stadium stadium) {
         model.addAttribute("stadium", stadium);
 
         return "stadiums/create";
     }
 
     @RequestMapping(value = "stadiums/save", method = RequestMethod.POST)
-    public String saveStadium(@ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes)
-    {
-        if(stadiumService.findByName(stadium.getName()) != null) {
+    public String saveStadium(@ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes) {
+        if (stadiumService.findByName(stadium.getName()) != null) {
             redirectAttributes.addFlashAttribute("stadium", stadium);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -50,8 +47,7 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable Long id,  Model model)
-    {
+    public String showEditForm(@PathVariable Long id, Model model) {
         Stadium stadium = stadiumService.findById(id);
         model.addAttribute("stadium", stadium);
 
@@ -59,10 +55,9 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/{id}/update", method = RequestMethod.POST)
-    public String updateStadium(@PathVariable Long id, @ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes)
-    {
+    public String updateStadium(@PathVariable Long id, @ModelAttribute Stadium stadium, RedirectAttributes redirectAttributes) {
         Stadium stadiumModel = stadiumService.findById(id);
-        if(stadiumService.findByName(stadium.getName()) != null && (!stadium.getName().equals(stadiumModel.getName()))) {
+        if (stadiumService.findByName(stadium.getName()) != null && (!stadium.getName().equals(stadiumModel.getName()))) {
             redirectAttributes.addFlashAttribute("stadium", stadium);
             redirectAttributes.addFlashAttribute("error", true);
 
@@ -75,16 +70,14 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/{id}/delete", method = RequestMethod.POST)
-    public String deleteStadium(@PathVariable Long id)
-    {
+    public String deleteStadium(@PathVariable Long id) {
         stadiumService.delete(id);
 
         return "redirect:/stadiums";
     }
 
     @RequestMapping(value = "/all-stadiums", method = RequestMethod.GET)
-    public String showStadiumList(Model model)
-    {
+    public String showStadiumList(Model model) {
 
         model.addAttribute("stadiums", stadiumService.findAllWithSlots());
         return "stadiums/all-stadiums";

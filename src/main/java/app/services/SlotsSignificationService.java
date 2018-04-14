@@ -64,7 +64,7 @@ public class SlotsSignificationService {
     }
 
     public List<Match> getActualMatches(HttpServletRequest httpServletRequest,
-                                                        Long slotId) {
+                                        Long slotId) {
         User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
         List<Team> userTeams = currUser.getTeamList();
         Slot currSlot = slotRepository.findOne(slotId);
@@ -87,7 +87,7 @@ public class SlotsSignificationService {
                             .filter(match -> match.getMatchDate().equals(currSlot.getEventDate())
                                     && match.getSlot() == null)
                             .collect(Collectors.toList()));
-        });
+                });
         return actualMatches;
     }
 
@@ -112,7 +112,7 @@ public class SlotsSignificationService {
         }
     }
 
-    public void rejectSlot(Long slotId,  String userEmail) {
+    public void rejectSlot(Long slotId, String userEmail) {
         Slot currSlot = slotRepository.findOne(slotId);
         Match currMatch = currSlot.getMatch();
         User currUser = userRepository.findByEmail(userEmail);
@@ -187,8 +187,8 @@ public class SlotsSignificationService {
 
         List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
         List<SlotSignificationTime> futureSessions = new ArrayList<>();
-        allSessions.forEach(session ->{
-            if(checkFutureSession(session)){
+        allSessions.forEach(session -> {
+            if (checkFutureSession(session)) {
                 futureSessions.add(session);
             }
         });
@@ -200,8 +200,8 @@ public class SlotsSignificationService {
 
         List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
         List<SlotSignificationTime> actualSessions = new ArrayList<>();
-        allSessions.forEach(session ->{
-            if(checkDateTime(session)){
+        allSessions.forEach(session -> {
+            if (checkDateTime(session)) {
                 actualSessions.add(session);
             }
         });
@@ -209,7 +209,7 @@ public class SlotsSignificationService {
         return actualSessions;
     }
 
-    public Set<SlotSignificationTime> getFutureSessions(User user){
+    public Set<SlotSignificationTime> getFutureSessions(User user) {
 
         List<Team> teamList = user.getTeamList();
 //        if(teamList.isEmpty())
@@ -219,11 +219,10 @@ public class SlotsSignificationService {
         Set<SlotSignificationTime> futureNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null)
-            {
+            if (slotSignificationTime == null) {
                 return;
             }
-            if(checkFutureSession(slotSignificationTime)){
+            if (checkFutureSession(slotSignificationTime)) {
                 futureNotifications.add(slotSignificationTime);
             }
         });
@@ -231,7 +230,7 @@ public class SlotsSignificationService {
         return futureNotifications;
     }
 
-    public Set<SlotSignificationTime> getActualSessions(User user){
+    public Set<SlotSignificationTime> getActualSessions(User user) {
 
         List<Team> teamList = user.getTeamList();
 //        if(teamList.isEmpty())
@@ -241,11 +240,10 @@ public class SlotsSignificationService {
         Set<SlotSignificationTime> actualNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null)
-            {
+            if (slotSignificationTime == null) {
                 return;
             }
-            if(checkDateTime(slotSignificationTime)){
+            if (checkDateTime(slotSignificationTime)) {
                 actualNotifications.add(slotSignificationTime);
             }
         });

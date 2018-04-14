@@ -106,6 +106,9 @@
                             <thead>
                             <tr>
                                 <th title="Field #1">
+                                    Лига
+                                </th>
+                                <th title="Field #1">
                                     Дата начала
                                 </th>
                                 <th title="Field #1">
@@ -117,9 +120,6 @@
                                 <th title="Field #1">
                                     Время окончания
                                 </th>
-                                <th title="Field #1">
-                                    Лига
-                                </th>
                                 <th title="Field #2">
                                     Действия
                                 </th>
@@ -127,11 +127,11 @@
                             </thead>
                             <tbody>
                             <tr th:each="session:${sessions}">
+                                <td th:text="${session.league.name}"></td>
                                 <td th:text="${#dates.format(session.startDate, 'dd.MM.yyyy')}"></td>
                                 <td th:text="${#dates.format(session.endDate, 'dd.MM.yyyy')}"></td>
                                 <td th:text="${#dates.format(session.startTime, 'HH:mm')}"></td>
                                 <td th:text="${#dates.format(session.endTime,'HH:mm')}"></td>
-                                <td th:text="${session.league.name}"></td>
                                 <td>
                                     <a th:href="@{'/sessions/'+${session.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"

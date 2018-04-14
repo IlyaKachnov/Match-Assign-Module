@@ -22,9 +22,10 @@ public class MatchController {
     private final SlotServiceImpl slotService;
     private final LeagueServiceImpl leagueService;
     private final TourServiceImpl tourService;
+
     @Autowired
     public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
-                           SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService){
+                           SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService) {
         this.matchService = matchService;
         this.teamService = teamService;
         this.slotService = slotService;
@@ -33,8 +34,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
-    public String index(Model model)
-    {
+    public String index(Model model) {
         model.addAttribute("matches", matchService.findAll());
         model.addAttribute("teams", teamService.findAll());
 
@@ -42,8 +42,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/create", method = RequestMethod.GET)
-    public String showCreateForm(Model model, Match match)
-    {
+    public String showCreateForm(Model model, Match match) {
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("match", match);
         model.addAttribute("leagueList", leagueService.findAll());
@@ -52,8 +51,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/save", method = RequestMethod.POST)
-    public String saveMatch(@ModelAttribute Match match)
-    {
+    public String saveMatch(@ModelAttribute Match match) {
         matchService.save(match);
 
         return "redirect:/matches";
@@ -61,8 +59,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/{id}/edit", method = RequestMethod.GET)
-    public String showEditForm(@PathVariable("id") Long id, Model model)
-    {
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
         Match match = matchService.findById(id);
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("match", match);
@@ -72,8 +69,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/{id}/update", method = RequestMethod.POST)
-    public String updateMatch(@PathVariable Long id, @ModelAttribute Match match)
-    {
+    public String updateMatch(@PathVariable Long id, @ModelAttribute Match match) {
         Match matchModel = matchService.findById(id);
         Team homeTeam = match.getHomeTeam();
         Team guestTeam = match.getGuestTeam();
@@ -88,8 +84,7 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/matches/{id}/delete", method = RequestMethod.POST)
-    public String deleteMatch(@PathVariable("id") Long id)
-    {
+    public String deleteMatch(@PathVariable("id") Long id) {
         Slot slot = slotService.findById(matchService.findById(id).getSlot().getId());
         slot.setMatch(null);
         slotService.save(slot);
@@ -99,14 +94,13 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
-    public String showMatchList(Model model)
-    {
+    public String showMatchList(Model model) {
         model.addAttribute("matches", matchService.generateJSON());
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("tours", tourService.generateJSON());
         model.addAttribute("leagues", leagueService.generateJSON());
         model.addAttribute("leagueList", leagueService.findAll());
-        model.addAttribute("tourList", tourService.findAll());
+        model.addAttribute("tourList", tourService.getToursInfo());
 
         return "matches/all-matches";
     }
