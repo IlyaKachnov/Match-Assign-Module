@@ -40,9 +40,12 @@ public class MatchServiceImpl implements MatchService {
         StringBuilder json = new StringBuilder("[");
 
         matches.forEach(match -> {
+            String isDelayed = match.getDelayed() ? "Да" : "Нет";
+
             json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
             json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
             json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
+            json.append("\"Delayed\": \"").append(isDelayed).append("\",");
             json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
             json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
         });

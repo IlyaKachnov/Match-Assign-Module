@@ -75,7 +75,8 @@ public class MatchController {
         Team guestTeam = match.getGuestTeam();
         matchModel.setHomeTeam(homeTeam);
         matchModel.setGuestTeam(guestTeam);
-        matchModel.setMatchDate(match.getMatchDate());
+        matchModel.setTour(match.getTour());
+        matchModel.setDelayed(match.getDelayed());
 
         matchService.save(matchModel);
 
@@ -85,9 +86,11 @@ public class MatchController {
 
     @RequestMapping(value = "/matches/{id}/delete", method = RequestMethod.POST)
     public String deleteMatch(@PathVariable("id") Long id) {
-        Slot slot = slotService.findById(matchService.findById(id).getSlot().getId());
-        slot.setMatch(null);
-        slotService.save(slot);
+        if(matchService.findById(id).getSlot()!= null){
+            Slot slot = slotService.findById(matchService.findById(id).getSlot().getId());
+            slot.setMatch(null);
+            slotService.save(slot);
+        }
         matchService.delete(id);
 
         return "redirect:/matches";

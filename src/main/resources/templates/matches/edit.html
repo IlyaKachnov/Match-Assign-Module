@@ -64,18 +64,18 @@
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Дата матча *
+                                    Тур *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <div class='input-group'>
-                                        <input type='text' class="form-control m-input" name="matchDate"
-                                               th:field="*{matchDate}" placeholder="Select date" id='m_datepicker'/>
-                                        <div class="input-group-append">
-													<span class="input-group-text">
-														<i class="la la-calendar-check-o"></i>
-													</span>
-                                        </div>
-                                    </div>
+                                    <select class="form-control m-select2" id="m_select2_2" name="tour"
+                                            th:field="*{tour}">
+                                        <optgroup th:if="${!league.tours.isEmpty()}" th:each="league:${leagueList}"
+                                                  th:label="${league.name}">
+                                            <option th:each="tour:${league.tours}" th:text="${tour.fullInfo}"
+                                                    th:value="${tour.id}">
+                                            </option>
+                                        </optgroup>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group m-form__group row">
@@ -100,6 +100,17 @@
                                         <option th:each="team:${teams}" th:value="${team.id}"
                                                 th:text="${team.name}"></option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-3 col-sm-12">Переносимый матч? *</label>
+                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                    <div class="m-checkbox-inline">
+                                        <label class="m-checkbox">
+                                            <input type="checkbox" name="isDelayed" th:field="*{delayed}"/>Да
+                                            <span></span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

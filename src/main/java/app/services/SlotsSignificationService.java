@@ -71,8 +71,12 @@ public class SlotsSignificationService {
 
         if (currUser.getRole().equals(Role.adminRole)) {
             List<Match> allMatchesByDate = matchRepository.findAll().stream()
-                    .filter(match -> match.getMatchDate().equals(currSlot.getEventDate())
-                            && match.getSlot() == null)
+                    .filter(match -> (
+                            (match.getMatchDate() == null ||
+                            match.getMatchDate().equals(currSlot.getEventDate()))
+                            && match.getSlot() == null
+                            && consistsWithTour(match, currSlot.getEventDate())
+                    ))
                     .collect(Collectors.toList());
             return allMatchesByDate;
         }
@@ -84,8 +88,12 @@ public class SlotsSignificationService {
         userTeams.stream().filter(team -> activeLeagues.contains(team.getLeague()))
                 .forEach(team -> {
                     actualMatches.addAll(matchRepository.findByHomeTeam(team).stream()
-                            .filter(match -> match.getMatchDate().equals(currSlot.getEventDate())
-                                    && match.getSlot() == null)
+                            .filter(match ->
+                                    (match.getMatchDate() == null ||
+                                    match.getMatchDate().equals(currSlot.getEventDate()))
+                                    && match.getSlot() == null
+                                    && consistsWithTour(match, currSlot.getEventDate())
+                            )
                             .collect(Collectors.toList()));
                 });
         return actualMatches;
@@ -106,8 +114,10 @@ public class SlotsSignificationService {
                 Slot currSlot = slotRepository.findOne(slotId);
                 if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
                     currSlot.setMatch(match);
+                    match.setMatchDate(currSlot.getEventDate());
                 }
                 slotRepository.save(currSlot);
+                matchRepository.save(match);
             }
         }
     }
@@ -117,14 +127,18 @@ public class SlotsSignificationService {
         Match currMatch = currSlot.getMatch();
         User currUser = userRepository.findByEmail(userEmail);
         if (currUser.getRole().equals(Role.adminRole)) {
+            currMatch.setMatchDate(null);
             currSlot.setMatch(null);
+            matchRepository.save(currMatch);
             slotRepository.save(currSlot);
         } else if (currMatch != null && currMatch.getHomeTeam() != null) {
             Optional<SlotSignificationTime> slotSignificationTimeOptional = slotSignificationTimeRepository.findAll()
                     .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(currMatch.getHomeTeam().getLeague()))
                     .findAny();
             if (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get())) {
+                currMatch.setMatchDate(null);
                 currSlot.setMatch(null);
+                matchRepository.save(currMatch);
                 slotRepository.save(currSlot);
             }
         }
@@ -290,5 +304,17 @@ public class SlotsSignificationService {
         slotsJSON.deleteCharAt(slotsJSON.lastIndexOf(","));
         slotsJSON.append("]");
         return slotsJSON.toString();
+    }
+
+    private boolean consistsWithTour(Match match, Date eventDate){
+        if(match.getDelayed()){
+            return true;
+        }
+
+        if(eventDate.after(match.getTour().getStartDate()) && eventDate.before(match.getTour().getEndDate())){
+            return true;
+        }
+
+        return false;
     }
 }

@@ -20,16 +20,16 @@ var FormWidgets = function () {
             clear: "Очистить",
             weekStart: 1
         };
-        $('#m_datepicker').datepicker({
-            todayHighlight: true,
-            autoclose: true,
-            language: 'ru',
-            format: 'yyyy-mm-dd',
-            templates: {
-                leftArrow: '<i class="la la-angle-left"></i>',
-                rightArrow: '<i class="la la-angle-right"></i>'
-            }
-        });
+        // $('#m_datepicker').datepicker({
+        //     todayHighlight: true,
+        //     autoclose: true,
+        //     language: 'ru',
+        //     format: 'yyyy-mm-dd',
+        //     templates: {
+        //         leftArrow: '<i class="la la-angle-left"></i>',
+        //         rightArrow: '<i class="la la-angle-right"></i>'
+        //     }
+        // });
 
 
         // select2
@@ -52,10 +52,10 @@ var FormWidgets = function () {
         validator = $("#m_form_1").validate({
             // define validation rules
             rules: {
-                matchDate: {
-                    required: true,
-                    date: true
-                },
+                // matchDate: {
+                //     required: true,
+                //     date: true
+                // },
                 homeTeam: {
                     required: true
                 },
@@ -64,10 +64,7 @@ var FormWidgets = function () {
                 },
             },
             messages: {
-                matchDate: {
-                    required: "Поле обязательно для заполнения",
-                    date: "Неверный формат даты",
-                },
+
             },
 
             //display error alert on form submit

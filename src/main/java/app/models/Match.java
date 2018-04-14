@@ -21,8 +21,10 @@ public class Match {
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(nullable = false)
     private Date matchDate;
+
+    @Column(nullable = false, columnDefinition = "TINYINT NOT NULL", length = 1)
+    private Boolean isDelayed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home_id", nullable = false)
@@ -82,11 +84,23 @@ public class Match {
 
     public String getFormattedDate() {
 
+        if(matchDate == null){
+            return "Не назначен";
+        }
+
         return (new SimpleDateFormat("dd.MM.YYYY")).format(matchDate);
     }
 
     public void setMatchDate(Date matchDate) {
         this.matchDate = matchDate;
+    }
+
+    public Boolean getDelayed() {
+        return isDelayed;
+    }
+
+    public void setDelayed(Boolean delayed) {
+        isDelayed = delayed;
     }
 
     public Match() {

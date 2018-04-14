@@ -75,6 +75,10 @@ var DatatableDataLocalDemo = function () {
                     format: "DD.MM.YYYY"
                 },
                 {
+                    field: "Delayed",
+                    title: "Переносимый"
+                },
+                {
                     field: "League",
                     title: "Лига",
                     // callback function support for column rendering

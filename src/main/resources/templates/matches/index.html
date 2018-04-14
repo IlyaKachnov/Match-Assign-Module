@@ -103,6 +103,7 @@
                                 <th title="Field #3">
                                     Дата матча
                                 </th>
+                                <th>Переносимый матч</th>
                                 <th>
                                     Лига
                                 </th>
@@ -119,6 +120,7 @@
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.formattedDate}"></td>
+                                <td th:text="${match.delayed ? 'Да' : 'Нет'}"></td>
                                 <td th:text="${match.tour.league.name}"></td>
                                 <td th:text="${match.tour.fullInfo}"></td>
                                 <td>
