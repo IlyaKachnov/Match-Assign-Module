@@ -42,7 +42,7 @@ var FormWidgets = function () {
         $('#slotType').select2({
             placeholder: "Выберите тип",
         });
-        $('#slotType').on('select2:change', function () {
+        $('#slotType').on('change', function () {
             validator.element($(this)); // validate element
         });
 

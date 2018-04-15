@@ -1,14 +1,11 @@
 //== Class definition
-var Select2 = {
-    init: function () {
-            $("#m_select2_2, #m_select2_2_validate").select2({placeholder: "Выберите тур"})
-    }
-};
 
 var FormWidgets = function () {
     //== Private functions
     var validator;
-
+    // if(teamList != null){
+    //     console.log(JSON.stringify(teamList));
+    // }
     var initWidgets = function () {
         $.fn.datepicker.dates['ru'] = {
             days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
@@ -20,33 +17,65 @@ var FormWidgets = function () {
             clear: "Очистить",
             weekStart: 1
         };
-        // $('#m_datepicker').datepicker({
-        //     todayHighlight: true,
-        //     autoclose: true,
-        //     language: 'ru',
-        //     format: 'yyyy-mm-dd',
-        //     templates: {
-        //         leftArrow: '<i class="la la-angle-left"></i>',
-        //         rightArrow: '<i class="la la-angle-right"></i>'
-        //     }
-        // });
-
 
         // select2
         $('#homeTeam').select2({
             // placeholder: "Выберите хозяев",
         });
-        $('#homeTeam').on('select2:change', function () {
+        $('#homeTeam').on('change', function () {
             validator.element($(this)); // validate element
         });
         $('#guestTeam').select2({
             // placeholder: "Выберите гостей",
         });
-        $('#guestTeam').on('select2:change', function () {
+        $('#guestTeam').on('change', function () {
             validator.element($(this)); // validate element
         });
 
-    }
+        $("#m_select2_2").select2({
+            placeholder: "Выберите тур",
+            allowClear: true
+        });
+        $("#m_select2_2").on("change", function () {
+            var id = $(this).find("option:selected").parent().data("id");
+            var token = $("meta[name='_csrf']").attr("content");
+            var homeList = $("#homeTeam");
+            var guestList = $("#guestTeam");
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": token,
+                },
+            });
+            $.ajax({
+                url: "/matches/" + id + "/change",
+                type: "GET",
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    homeList.empty().select2({
+                        data: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.name,
+                            }
+                        })
+                    });
+                    guestList.empty().select2({
+                        data: $.map(data, function (item) {
+                            return {
+                                id: item.id,
+                                text: item.name,
+                            }
+                        })
+                    });
+                }
+            });
+        });
+
+        $('#m_select2_2').on('change', function () {
+            validator.element($(this)); // validate element
+        });
+
+    };
 
     var initValidation = function () {
         validator = $("#m_form_1").validate({
@@ -62,10 +91,11 @@ var FormWidgets = function () {
                 guestTeam: {
                     required: true
                 },
+                tour: {
+                    required: true
+                }
             },
-            messages: {
-
-            },
+            messages: {},
 
             //display error alert on form submit
             invalidHandler: function (event, validator) {
@@ -91,5 +121,4 @@ var FormWidgets = function () {
 
 jQuery(document).ready(function () {
     FormWidgets.init();
-    Select2.init();
 });

@@ -5,6 +5,8 @@
     <title>НМФЛ</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -68,9 +70,10 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <select class="form-control m-select2" id="m_select2_2" name="tour"
-                                            th:field="*{tour}">
+                                            th:field="*{tour}" placeholder="Выберите тур">
+                                        <option value=""></option>
                                         <optgroup th:if="${!league.tours.isEmpty()}" th:each="league:${leagueList}"
-                                                  th:label="${league.name}">
+                                                  th:label="${league.name}" th:attr="data-id=${league.id}">
                                             <option th:each="tour:${league.tours}" th:text="${tour.fullInfo}"
                                                     th:value="${tour.id}">
                                             </option>

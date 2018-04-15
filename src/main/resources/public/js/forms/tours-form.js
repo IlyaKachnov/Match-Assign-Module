@@ -39,7 +39,7 @@ var FormWidgets = function () {
         $('#leagueList').select2({
             placeholder: "Выберите лигу",
         });
-        $('#leagueList').on('select2:change', function () {
+        $('#leagueList').on('change', function () {
             validator.element($(this)); // validate element
         });
 

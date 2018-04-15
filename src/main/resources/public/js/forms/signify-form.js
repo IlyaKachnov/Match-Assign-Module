@@ -10,7 +10,7 @@ var FormWidgets = function () {
         $('#matches').select2({
             // placeholder: "Выберите хозяев",
         });
-        $('#matches').on('select2:change', function(){
+        $('#matches').on('change', function(){
             validator.element($(this)); // validate element
         });
     }

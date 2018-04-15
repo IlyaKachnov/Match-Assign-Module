@@ -19,4 +19,6 @@ public interface LeagueService {
 
     String generateJSON();
 
+    String getTeamsJSON(Long id);
+
 }

@@ -1,6 +1,7 @@
 package app.services;
 
 import app.models.League;
+import app.models.Team;
 import app.repositories.LeagueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -55,6 +56,20 @@ public class LeagueServiceImpl implements LeagueService {
         });
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("}");
+
+        return json.toString();
+    }
+
+    @Override
+    public String getTeamsJSON(Long id) {
+        List<Team> teamList = leagueRepository.findOne(id).getTeams();
+        StringBuilder json = new StringBuilder("[");
+        teamList.forEach(team -> {
+            json.append("{\"id\": \"").append(team.getId()).append("\",");
+            json.append("\"name\": \"").append(team.getName()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("]");
 
         return json.toString();
     }

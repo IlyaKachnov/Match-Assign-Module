@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.League;
 import app.models.Match;
 import app.models.Slot;
 import app.models.Team;
@@ -7,12 +8,10 @@ import app.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 public class MatchController {
@@ -61,7 +60,8 @@ public class MatchController {
     @RequestMapping(value = "/matches/{id}/edit", method = RequestMethod.GET)
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Match match = matchService.findById(id);
-        model.addAttribute("teams", teamService.findAll());
+        List<Team> teams = match.getTour().getLeague().getTeams();
+        model.addAttribute("teams", teams);
         model.addAttribute("match", match);
         model.addAttribute("leagueList", leagueService.findAll());
 
@@ -108,4 +108,10 @@ public class MatchController {
         return "matches/all-matches";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/matches/{id}/change", method = RequestMethod.GET)
+    public String onChangeTeams(@PathVariable("id") Long id) {
+
+        return leagueService.getTeamsJSON(id);
+    }
 }
