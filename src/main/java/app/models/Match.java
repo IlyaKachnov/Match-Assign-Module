@@ -14,10 +14,12 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(targetEntity = Slot.class,
-//            cascade =  CascadeType.ALL,
-            mappedBy = "match")
+    @OneToOne(targetEntity = Slot.class, mappedBy = "match")
     private Slot slot;
+
+
+    @OneToOne(targetEntity = SlotMessage.class, mappedBy = "match", cascade = CascadeType.ALL)
+    private SlotMessage slotMessage;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -84,7 +86,7 @@ public class Match {
 
     public String getFormattedDate() {
 
-        if(matchDate == null){
+        if (matchDate == null) {
             return "Не назначен";
         }
 
@@ -101,6 +103,14 @@ public class Match {
 
     public void setDelayed(Boolean delayed) {
         isDelayed = delayed;
+    }
+
+    public SlotMessage getSlotMessage() {
+        return slotMessage;
+    }
+
+    public void setSlotMessage(SlotMessage slotMessage) {
+        this.slotMessage = slotMessage;
     }
 
     public Match() {

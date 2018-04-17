@@ -79,6 +79,10 @@ var DatatableDataLocalDemo = function () {
                     title: "Переносимый"
                 },
                 {
+                    field: "Stadium",
+                    title: "Место проведения"
+                },
+                {
                     field: "League",
                     title: "Лига",
                     // callback function support for column rendering

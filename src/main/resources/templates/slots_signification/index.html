@@ -5,6 +5,8 @@
     <title>НМФЛ - Слоты</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
     <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -67,6 +69,40 @@
                             </div>
                         </div>
                         <!--end::Portlet-->
+                        <div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                            Сообщение
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">
+												&times;
+											</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="message-form" method="post">
+                                            <div class="form-group">
+                                                <label for="message-text" class="form-control-label">
+                                                    Текст:
+                                                </label>
+                                                <textarea class="form-control" id="message-text" rows="8" name="text"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Закрыть
+                                        </button>
+                                        <button id="submit-form" type="button" class="btn btn-primary">
+                                            Создать
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

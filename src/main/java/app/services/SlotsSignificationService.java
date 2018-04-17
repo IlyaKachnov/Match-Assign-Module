@@ -21,18 +21,21 @@ public class SlotsSignificationService {
     private final SlotRepository slotRepository;
     private final SlotSignificationTimeRepository slotSignificationTimeRepository;
     private final UserRepository userRepository;
+    private final SlotMessageRepository messageRepository;
 
     @Autowired
     public SlotsSignificationService(StadiumRepository stadiumRepository,
                                      MatchRepository matchRepository,
                                      SlotRepository slotRepository,
                                      SlotSignificationTimeRepository slotSignificationTimeRepository,
-                                     UserRepository userRepository) {
+                                     UserRepository userRepository,
+                                     SlotMessageRepository messageRepository) {
         this.stadiumRepository = stadiumRepository;
         this.matchRepository = matchRepository;
         this.slotRepository = slotRepository;
         this.slotSignificationTimeRepository = slotSignificationTimeRepository;
         this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     public String generateSlotsJSON(Long id, String userEmail) {
@@ -73,9 +76,9 @@ public class SlotsSignificationService {
             List<Match> allMatchesByDate = matchRepository.findAll().stream()
                     .filter(match -> (
                             (match.getMatchDate() == null ||
-                            match.getMatchDate().equals(currSlot.getEventDate()))
-                            && match.getSlot() == null
-                            && consistsWithTour(match, currSlot.getEventDate())
+                                    match.getMatchDate().equals(currSlot.getEventDate()))
+                                    && match.getSlot() == null
+                                    && consistsWithTour(match, currSlot.getEventDate())
                     ))
                     .collect(Collectors.toList());
             return allMatchesByDate;
@@ -90,9 +93,9 @@ public class SlotsSignificationService {
                     actualMatches.addAll(matchRepository.findByHomeTeam(team).stream()
                             .filter(match ->
                                     (match.getMatchDate() == null ||
-                                    match.getMatchDate().equals(currSlot.getEventDate()))
-                                    && match.getSlot() == null
-                                    && consistsWithTour(match, currSlot.getEventDate())
+                                            match.getMatchDate().equals(currSlot.getEventDate()))
+                                            && match.getSlot() == null
+                                            && consistsWithTour(match, currSlot.getEventDate())
                             )
                             .collect(Collectors.toList()));
                 });
@@ -102,6 +105,7 @@ public class SlotsSignificationService {
     public synchronized void signifySlot(Long matchId, Long slotId, String userEmail) {
         User currUser = userRepository.findByEmail(userEmail);
         Match match = matchRepository.findOne(matchId);
+        SlotMessage message = match.getSlotMessage();
         if (match != null && match.getSlot() != null) {
             return;
         }
@@ -110,11 +114,17 @@ public class SlotsSignificationService {
                     .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(match.getHomeTeam().getLeague()))
                     .findAny();
             if (currUser.getRole().equals(Role.adminRole) ||
-                    (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()))) {
+                    (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()))
+                    || match.getHomeTeam().getUser().equals(currUser)) {
+
                 Slot currSlot = slotRepository.findOne(slotId);
                 if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
                     currSlot.setMatch(match);
                     match.setMatchDate(currSlot.getEventDate());
+                }
+                if (message != null) {
+                    message.setConsidered(true);
+                    messageRepository.save(message);
                 }
                 slotRepository.save(currSlot);
                 matchRepository.save(match);
@@ -125,17 +135,29 @@ public class SlotsSignificationService {
     public void rejectSlot(Long slotId, String userEmail) {
         Slot currSlot = slotRepository.findOne(slotId);
         Match currMatch = currSlot.getMatch();
+        SlotMessage message = currMatch.getSlotMessage();
+
         User currUser = userRepository.findByEmail(userEmail);
         if (currUser.getRole().equals(Role.adminRole)) {
+            if (message != null) {
+                message.setConsidered(true);
+                messageRepository.save(message);
+            }
             currMatch.setMatchDate(null);
             currSlot.setMatch(null);
             matchRepository.save(currMatch);
             slotRepository.save(currSlot);
         } else if (currMatch != null && currMatch.getHomeTeam() != null) {
             Optional<SlotSignificationTime> slotSignificationTimeOptional = slotSignificationTimeRepository.findAll()
-                    .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(currMatch.getHomeTeam().getLeague()))
+                    .stream()
+                    .filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(currMatch.getHomeTeam().getLeague()))
                     .findAny();
-            if (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get())) {
+            if ((slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()))
+                    || currMatch.getHomeTeam().getUser().equals(currUser)) {
+                if (message != null) {
+                    message.setConsidered(true);
+                    messageRepository.save(message);
+                }
                 currMatch.setMatchDate(null);
                 currSlot.setMatch(null);
                 matchRepository.save(currMatch);
@@ -270,6 +292,7 @@ public class SlotsSignificationService {
         StringBuilder slotsJSON = new StringBuilder("[");
         slots.forEach(slot -> {
             slotsJSON.append("{\"title\": \"").append(slot.getSlotType().getTypeName()).append("\",");
+            slotsJSON.append("\"message\": \"").append(getMessage(slot)).append("\",");
             slotsJSON.append("\"start\": \"").append(slot.getEventDate())
                     .append(" ").append(slot.getStartTime()).append("\",");
             slotsJSON.append("\"end\": \"").append(slot.getEventDate())
@@ -277,24 +300,25 @@ public class SlotsSignificationService {
             if (slot.getMatch() != null) {
                 if ((slot.getMatch().getHomeTeam().getUser() != null &&
                         slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail) &&
-                        leagues.contains(slot.getMatch().getHomeTeam().getLeague())) ||
-                        currUser.getRole().equals(Role.adminRole)) {
-                    slotsJSON.append("\"description\": \"")
-                            .append(slot.getMatch().getHomeTeam().getName())
-                            .append(" - ")
-                            .append(slot.getMatch().getGuestTeam().getName())
-                            .append(" <a href='/stadium/").append(id).append("/reject/").append(slot.getId()).append("'>Отменить</a>")
+                        leagues.contains(slot.getMatch().getHomeTeam().getLeague()))
+                        || currUser.getRole().equals(Role.adminRole)
+                        || slot.getMatch().getHomeTeam().getUser().equals(currUser)) {
+                    slotsJSON.append(addMatchTeams(slot.getMatch()))
+                            .append(" <a class='add-new' href='/stadium/").append(id).append("/reject/")
+                            .append(slot.getId()).append("'>Отменить слот</a>")
                             .append("\"},");
+                } else if (slot.getMatch().getGuestTeam().getUser() != null &&
+                        slot.getMatch().getGuestTeam().getUser().getEmail().equals(userEmail)) {
+                    slotsJSON.append(addMatchTeams(slot.getMatch()))
+                            .append(showCreateMessageLink(slot.getMatch()));
                 } else {
-                    slotsJSON.append("\"description\": \"")
-                            .append(slot.getMatch().getHomeTeam().getName())
-                            .append(" - ")
-                            .append(slot.getMatch().getGuestTeam().getName())
+                    slotsJSON.append(addMatchTeams(slot.getMatch()))
                             .append("\"},");
                 }
+                //TODO чтобы юзер если у него есть команды которые в матче как хоязин и у матча есть сообщения
             } else if (slot.getSlotType().getSignifiable() &&
                     (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole))) {
-                slotsJSON.append("\"description\": \"<a href='/stadium/")
+                slotsJSON.append("\"description\": \" <a class='add-new' href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
             } else {
@@ -306,15 +330,53 @@ public class SlotsSignificationService {
         return slotsJSON.toString();
     }
 
-    private boolean consistsWithTour(Match match, Date eventDate){
-        if(match.getDelayed()){
+    private boolean consistsWithTour(Match match, Date eventDate) {
+        if (match.getDelayed()) {
             return true;
         }
 
-        if(eventDate.after(match.getTour().getStartDate()) && eventDate.before(match.getTour().getEndDate())){
+        if (eventDate.after(match.getTour().getStartDate()) && eventDate.before(match.getTour().getEndDate())) {
             return true;
         }
 
         return false;
     }
+
+    private String getMessage(Slot slot) {
+
+        if (slot.getMatch() == null) {
+            return "";
+        }
+        SlotMessage message = slot.getMatch().getSlotMessage();
+        return (message != null)
+                ? "<span tabindex='0' role='button' " +
+                "class='m-badge "+ (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
+                "' data-toggle='m-popover' " +
+                "data-trigger='focus' data-content='"
+                + message.getMessage() + "' data-original-title='Сообщение' " +
+                "style='outline: none; margin-left: 2px;'>!</span>"
+                : "";
+    }
+
+    private String showCreateMessageLink(Match match) {
+        //TODO: show delete link
+        if (match.getSlotMessage() != null) {
+            return "\"},";
+        }
+
+        return " <a class='add-msg' href='#m_modal_4' data-action='/save-message/" +
+                match.getId() + "'" + " data-toggle='modal' data-target='#m_modal_4'>Предложить другое время</a>" +
+                "\"},";
+    }
+
+    private String addMatchTeams(Match match) {
+        return "\"description\": \"" + match.getHomeTeam().getName()
+                + " - " + match.getGuestTeam().getName();
+
+    }
+
+//    private boolean hasMatchMessage(User user) {
+//    user.getTeamList().stream().filter(team -> (team.getMatchesAsHome())).findAny();
+//
+//    }
 }

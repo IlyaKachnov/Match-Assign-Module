@@ -41,11 +41,13 @@ public class MatchServiceImpl implements MatchService {
 
         matches.forEach(match -> {
             String isDelayed = match.getDelayed() ? "Да" : "Нет";
+            String stadium = (match.getSlot() != null) ? match.getSlot().getStadium().getName() : "Не назначен";
 
             json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
             json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
             json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
             json.append("\"Delayed\": \"").append(isDelayed).append("\",");
+            json.append("\"Stadium\": \"").append(stadium).append("\",");
             json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
             json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
         });

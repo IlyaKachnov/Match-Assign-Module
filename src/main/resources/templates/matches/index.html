@@ -79,7 +79,7 @@
                                     <a th:if="${!teams.isEmpty()}" th:href="@{/matches/create}"
                                        class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
 												<span>
-													<i class="la la-plus"></i>
+													<i class="la la-plus-circle"></i>
 													<span>
 														Добавить матч
 													</span>
@@ -103,6 +103,7 @@
                                 <th title="Field #3">
                                     Дата матча
                                 </th>
+                                <th>Стадион</th>
                                 <th>Переносимый матч</th>
                                 <th>
                                     Лига
@@ -121,6 +122,7 @@
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.formattedDate}"></td>
                                 <td th:text="${match.delayed ? 'Да' : 'Нет'}"></td>
+                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
                                 <td th:text="${match.tour.league.name}"></td>
                                 <td th:text="${match.tour.fullInfo}"></td>
                                 <td>

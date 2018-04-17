@@ -26,3 +26,6 @@
     display: inline-block;
     width: 1.9rem;
 }
+.fc-content a, .fc-content .m-badge {
+    outline: none;
+}
