@@ -12,8 +12,13 @@ import java.util.List;
 @Primary
 public class SlotMessageServiceImpl implements SlotMessageService{
 
-    @Autowired
-    SlotMessageRepository slotMessageRepository;
+    private final SlotMessageRepository slotMessageRepository;
+    private final EmailServiceImpl emailService;
+
+    public SlotMessageServiceImpl(SlotMessageRepository slotMessageRepository, EmailServiceImpl emailService) {
+        this.slotMessageRepository = slotMessageRepository;
+        this.emailService = emailService;
+    }
 
     @Override
     public SlotMessage findById(Long id) {
@@ -28,6 +33,8 @@ public class SlotMessageServiceImpl implements SlotMessageService{
     @Override
     public void save(SlotMessage slotMessage) {
         slotMessageRepository.save(slotMessage);
+        emailService.sendNotification(slotMessage.getMatch().getHomeTeam().getUser().getEmail(), slotMessage);
+
     }
 
     @Override

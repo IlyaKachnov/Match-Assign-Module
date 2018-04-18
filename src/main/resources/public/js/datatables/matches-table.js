@@ -10,28 +10,6 @@ var DatatableDataLocalDemo = function () {
         var tours = JSON.parse(tourData);
         var leagues = JSON.parse(leagueData);
         var datatable = $('.m_datatable').mDatatable({
-            translate: {
-                records: {
-                    processing: 'Загрузка...',
-                    noRecords: 'Ничего не найдено'
-                },
-                toolbar: {
-                    pagination: {
-                        items: {
-                            default: {
-                                first: 'Первый',
-                                prev: 'Предыдущий',
-                                next: 'Следующий',
-                                last: 'Последний',
-                                more: 'Еще',
-                                input: 'Номер страницы',
-                                select: 'Показать на странице'
-                            },
-                            info: 'Показано {{start}} - {{end}} из {{total}} записей'
-                        }
-                    }
-                }
-            },
             // datasource definition
             data: {
                 type: 'local',
@@ -57,6 +35,29 @@ var DatatableDataLocalDemo = function () {
                 input: $('#generalSearch')
             },
 
+            translate: {
+                records: {
+                    processing: 'Загрузка...',
+                    noRecords: 'Ничего не найдено'
+                },
+                toolbar: {
+                    pagination: {
+                        items: {
+                            default: {
+                                first: 'Первый',
+                                prev: 'Предыдущий',
+                                next: 'Следующий',
+                                last: 'Последний',
+                                more: 'Еще',
+                                input: 'Номер страницы',
+                                select: 'Показать на странице'
+                            },
+                            info: 'Показано {{start}} - {{end}} из {{total}} записей'
+                        }
+                    }
+                }
+            },
+
             // inline and bactch editing(cooming soon)
             // editable: false,
 
@@ -64,7 +65,7 @@ var DatatableDataLocalDemo = function () {
             columns: [
                 {
                     field: "Home",
-                    title: "Хозяева"
+                    title: "Хозяева",
                 }, {
                     field: "Guest",
                     title: "Гости",
@@ -72,15 +73,19 @@ var DatatableDataLocalDemo = function () {
                     field: "MatchDate",
                     title: "Дата матча",
                     type: "date",
-                    format: "DD.MM.YYYY"
+                    format: "DD.MM.YYYY",
+                    sortable: true
+
                 },
                 {
                     field: "Delayed",
-                    title: "Переносимый"
+                    title: "Переносимый",
+                    sortable: true
                 },
                 {
                     field: "Stadium",
-                    title: "Место проведения"
+                    title: "Место проведения",
+                    sortable: true
                 },
                 {
                     field: "League",

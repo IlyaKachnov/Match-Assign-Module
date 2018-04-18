@@ -17,7 +17,6 @@ public class Match {
     @OneToOne(targetEntity = Slot.class, mappedBy = "match")
     private Slot slot;
 
-
     @OneToOne(targetEntity = SlotMessage.class, mappedBy = "match", cascade = CascadeType.ALL)
     private SlotMessage slotMessage;
 
@@ -114,5 +113,9 @@ public class Match {
     }
 
     public Match() {
+    }
+
+    public String getHomeAndGuest(){
+        return homeTeam.getName() + " - " +guestTeam.getName();
     }
 }

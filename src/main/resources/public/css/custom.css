@@ -29,3 +29,8 @@
 .fc-content a, .fc-content .m-badge {
     outline: none;
 }
+.fc-description a {
+    margin-top: 0.25rem !important;
+    display: block !important;
+    outline: none !important;
+}

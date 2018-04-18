@@ -122,9 +122,9 @@ public class SlotsSignificationService {
                     currSlot.setMatch(match);
                     match.setMatchDate(currSlot.getEventDate());
                 }
-                if (message != null) {
-                    message.setConsidered(true);
+                if (message != null && message.getConsidered()) {
                     messageRepository.save(message);
+
                 }
                 slotRepository.save(currSlot);
                 matchRepository.save(match);
@@ -310,14 +310,14 @@ public class SlotsSignificationService {
                 } else if (slot.getMatch().getGuestTeam().getUser() != null &&
                         slot.getMatch().getGuestTeam().getUser().getEmail().equals(userEmail)) {
                     slotsJSON.append(addMatchTeams(slot.getMatch()))
-                            .append(showCreateMessageLink(slot.getMatch()));
+                            .append(showMessageLink(slot.getMatch()));
                 } else {
                     slotsJSON.append(addMatchTeams(slot.getMatch()))
                             .append("\"},");
                 }
-                //TODO чтобы юзер если у него есть команды которые в матче как хоязин и у матча есть сообщения
             } else if (slot.getSlotType().getSignifiable() &&
-                    (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole))) {
+                    (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole))
+                    || !getMatchesWithMessages(currUser).isEmpty()) {
                 slotsJSON.append("\"description\": \" <a class='add-new' href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");
@@ -349,19 +349,22 @@ public class SlotsSignificationService {
         }
         SlotMessage message = slot.getMatch().getSlotMessage();
         return (message != null)
-                ? "<span tabindex='0' role='button' " +
-                "class='m-badge "+ (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
+                ? "<span href='#' tabindex='0' role='button' " +
+                "class='m-badge " + (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
                 "' data-toggle='m-popover' " +
                 "data-trigger='focus' data-content='"
-                + message.getMessage() + "' data-original-title='Сообщение' " +
-                "style='outline: none; margin-left: 2px;'>!</span>"
+                + message.getMessage() + "' data-original-title='" +
+                (message.getConsidered() ? "Запрос рассмотрен" : "Новое сообщение") + "'"
+                + "style='outline: none; margin-left: 2px;'>!</span>"
                 : "";
     }
 
-    private String showCreateMessageLink(Match match) {
-        //TODO: show delete link
+    private String showMessageLink(Match match) {
         if (match.getSlotMessage() != null) {
-            return "\"},";
+            return " <a href='#' class='delete-msg' data-href='/message/" +
+                    match.getSlotMessage().getId()
+                    + "/delete'" + ">Удалить сообщение</a>" +
+                    "\"},";
         }
 
         return " <a class='add-msg' href='#m_modal_4' data-action='/save-message/" +
@@ -370,13 +373,29 @@ public class SlotsSignificationService {
     }
 
     private String addMatchTeams(Match match) {
-        return "\"description\": \"" + match.getHomeTeam().getName()
-                + " - " + match.getGuestTeam().getName();
+        return "\"description\": \"" + match.getHomeAndGuest();
 
     }
 
-//    private boolean hasMatchMessage(User user) {
-//    user.getTeamList().stream().filter(team -> (team.getMatchesAsHome())).findAny();
-//
-//    }
+    public List<Match> getMatchesWithMessages(User user) {
+        List<Match> matchList = new ArrayList<>();
+        List<Team> teamList = user.getTeamList();
+
+        if (teamList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        teamList.forEach(team -> {
+            if (team.getMatchesAsHome().isEmpty()) {
+                return;
+            }
+            team.getMatchesAsHome().forEach(match -> {
+                if (match.getSlotMessage() != null && match.getSlotMessage().getConsidered() && match.getSlot() == null) {
+                    matchList.add(match);
+                }
+            });
+        });
+
+        return matchList;
+    }
 }

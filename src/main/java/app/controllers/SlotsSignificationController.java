@@ -9,6 +9,7 @@ import app.services.SlotMessageServiceImpl;
 import app.services.SlotsSignificationService;
 import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,10 +60,18 @@ public class SlotsSignificationController {
                                  Model model, HttpServletRequest httpServletRequest,
                                  MatchForm matchForm) {
         List<Match> actualMatches = slotsSignificationService.getActualMatches(httpServletRequest, slotId);
+        User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
+        List<Match> matchesWithMessages = slotsSignificationService.getMatchesWithMessages(currUser);
+
+        if (!matchesWithMessages.isEmpty()) {
+            actualMatches = matchesWithMessages;
+        }
+
         model.addAttribute("matches", actualMatches);
         model.addAttribute("id", id);
         model.addAttribute("slotId", slotId);
         model.addAttribute("matchForm", matchForm);
+
         return "slots_signification/signify";
     }
 
@@ -90,8 +99,20 @@ public class SlotsSignificationController {
         message.setMatch(matchRepository.findOne(id));
         slotMessageService.save(message);
 
+
+
         return "";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/message/{id}/delete", method = RequestMethod.POST)
+    public String deleteMessage(@PathVariable("id") Long id) {
+
+        Match match = matchRepository.findOne(slotMessageService.findById(id).getMatch().getId());
+        match.setSlotMessage(null);
+        slotMessageService.delete(id);
+
+        return "";
+    }
 
 }

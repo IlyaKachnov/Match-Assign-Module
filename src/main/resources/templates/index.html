@@ -55,7 +55,7 @@
                                                 <div class="m-widget2__desc">
 															<span class="m-widget2__text" th:inline="text">
 																Разбор слотов для лиги [[${n.league.name}]]
-                                                                начался. Окончание разбора [[${n.endDate}]] в [[${n.endTime}]]
+                                                                начался. Окончание разбора [[${#dates.format(n.endDate, "dd.MM.YYYY")}]] в [[${#dates.format(n.endTime, "HH:mm")}]]
 															</span>
                                                     <br></br>
                                                     <span class="m-widget2__user-name">
@@ -72,7 +72,7 @@
                                                 <div class="m-widget2__desc">
 															<span class="m-widget2__text" th:inline="text">
 																Разбор слотов для лиги [[${s.league.name}]]
-                                                                начнется [[${s.startDate}]] в [[${s.startTime}]]
+                                                                начнется [[${#dates.format(s.startDate, "dd.MM.YYYY")}]] в [[${#dates.format(s.startTime, "HH:mm")}]]
 															</span>
                                                     <br></br>
                                                     <span class="m-widget2__user-name">

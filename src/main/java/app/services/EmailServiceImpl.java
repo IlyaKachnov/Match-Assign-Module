@@ -1,10 +1,10 @@
 package app.services;
 
-import app.models.SlotSignificationTime;
-import app.models.User;
+import app.models.*;
 import app.repositories.SlotSignificationTimeRepository;
 import app.repositories.UserRepository;
 import com.sun.mail.smtp.SMTPSenderFailedException;
+import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     //    @Scheduled(fixedRate = 5000)
+    @Override
     public void sendMessage() {
         StringBuilder significationTimes = new StringBuilder();
         List<SlotSignificationTime> slotSignificationTimes = slotsSignificationService.getFutureSessions();
@@ -73,5 +75,32 @@ public class EmailServiceImpl implements EmailService {
 
         });
 
+    }
+
+    @Override
+    public void sendNotification(String email, SlotMessage slotMessage) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Новое сообщение от НМФЛ");
+        message.setText(buildNotification(slotMessage));
+        message.setFrom("nmfl2018@mail.ru");
+        mailSender.send(message);
+
+    }
+
+    private String buildNotification(SlotMessage slotMessage){
+        Match match = slotMessage.getMatch();
+        String guestTeamName = match.getGuestTeam().getName();
+        StringBuilder stringBuilder = new StringBuilder("Сообщение от менеджера команды ");
+        stringBuilder.append(guestTeamName)
+                .append(" о матче ")
+                .append(match.getHomeAndGuest())
+                .append(" назначенном на ")
+                .append(match.getFormattedDate())
+                .append(": \n")
+                .append(slotMessage.getMessage());
+
+        return stringBuilder.toString();
     }
 }

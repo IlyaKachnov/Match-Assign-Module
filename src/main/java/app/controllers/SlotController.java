@@ -1,7 +1,9 @@
 package app.controllers;
 
+import app.models.Match;
 import app.models.Slot;
 import app.models.Stadium;
+import app.services.MatchServiceImpl;
 import app.services.SlotServiceImpl;
 import app.services.SlotTypeServiceImpl;
 import app.services.StadiumServiceImpl;
@@ -22,12 +24,15 @@ public class SlotController {
     private final SlotServiceImpl slotService;
     private final StadiumServiceImpl stadiumService;
     private final SlotTypeServiceImpl slotTypeService;
+    private final MatchServiceImpl matchService;
 
     @Autowired
-    public SlotController(SlotServiceImpl slotService, StadiumServiceImpl stadiumService, SlotTypeServiceImpl slotTypeService) {
+    public SlotController(SlotServiceImpl slotService, StadiumServiceImpl stadiumService,
+                          SlotTypeServiceImpl slotTypeService, MatchServiceImpl matchService) {
         this.slotService = slotService;
         this.stadiumService = stadiumService;
         this.slotTypeService = slotTypeService;
+        this.matchService = matchService;
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots", method = RequestMethod.GET)
@@ -112,6 +117,8 @@ public class SlotController {
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.POST)
     public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot) {
+        Match match = matchService.findById(slotService.findById(slotId).getMatch().getId());
+        match.setSlot(null);
         slotService.delete(slotId);
 
         return "redirect:/stadiums/" + id + "/slots";
