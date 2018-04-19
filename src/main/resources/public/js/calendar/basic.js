@@ -1,4 +1,21 @@
 var CalendarBasic = function () {
+    var initPopover = function(el) {
+        var skin = el.data('skin') ? 'm-popover--skin-' + el.data('skin') : '';
+        var triggerValue = el.data('trigger') ? el.data('trigger') : 'hover';
+
+        el.popover({
+            trigger: triggerValue,
+            html: true,
+            container: '.fc-scroller',
+            template: '\
+            <div class="m-popover ' + skin + ' popover" role="tooltip">\
+                <div class="arrow"></div>\
+                <h3 class="popover-header"></h3>\
+                <div class="popover-body"></div>\
+            </div>'
+        });
+    };
+
     var initAlert = function () {
         $(document).on('click', '.m_sweetalert', function(e) {
             e.preventDefault();
@@ -52,14 +69,15 @@ var CalendarBasic = function () {
                             .append('<div class="fc-description">' + event.description + '</div>');
                         if (event.message !== "") {
                             element.find('.fc-time').append(event.message);
-                           mApp.initPopover(element.find("[data-toggle=\"m-popover\"]"));
+                           initPopover(element.find("[data-toggle=\"m-popover\"]"));
+
                         }
 
                     } else if (element.find('.fc-list-item-title').lenght !== 0) {
                         element.find('.fc-list-item-title').append('<div class="fc-description">' + event.description + '</div>');
                         if (event.message !== "") {
                             $(event.message).insertAfter(element.find('.fc-list-item-title a').first());
-                            mApp.initPopover(element.find("[data-toggle=\"m-popover\"]"));
+                            initPopover(element.find("[data-toggle=\"m-popover\"]"));
                         }
                     }
                 }
