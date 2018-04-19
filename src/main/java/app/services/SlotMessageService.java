@@ -12,5 +12,7 @@ public interface SlotMessageService {
 
     void save(SlotMessage slotMessage);
 
+    void store(SlotMessage slotMessage);
+
     void delete(Long id);
 }

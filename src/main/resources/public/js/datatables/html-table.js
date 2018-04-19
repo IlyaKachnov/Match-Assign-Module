@@ -2,7 +2,7 @@
 
 var SweetAlertTable = function () {
     var initAlert = function () {
-        var alert = $(document).on('click', '#m_sweetalert', function(e) {
+        var alert = $(document).on('click', '.m_sweetalert', function(e) {
             e.preventDefault();
             var href = $(this).attr("data-href");
             var nRow = $(this).closest('tr');

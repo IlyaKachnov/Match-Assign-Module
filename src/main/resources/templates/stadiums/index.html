@@ -103,8 +103,7 @@
                                     <form class="deleteForm" style="display: none;" method="post"
                                           th:action="@{'/stadiums/'+${stadium.id}+'/delete'}"></form>
                                     <a href="#" th:attr="data-href=@{'/stadiums/'+${stadium.id}+'/delete'}"
-                                       id="m_sweetalert"
-                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                       class="m_sweetalert m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Удалить"><i class="la la-trash"></i></a>
                                 </td>
                             </tr>

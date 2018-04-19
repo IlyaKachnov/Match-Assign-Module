@@ -21,7 +21,7 @@ public class SlotsSignificationService {
     private final SlotRepository slotRepository;
     private final SlotSignificationTimeRepository slotSignificationTimeRepository;
     private final UserRepository userRepository;
-    private final SlotMessageRepository messageRepository;
+    private final SlotMessageServiceImpl messageService;
 
     @Autowired
     public SlotsSignificationService(StadiumRepository stadiumRepository,
@@ -29,13 +29,13 @@ public class SlotsSignificationService {
                                      SlotRepository slotRepository,
                                      SlotSignificationTimeRepository slotSignificationTimeRepository,
                                      UserRepository userRepository,
-                                     SlotMessageRepository messageRepository) {
+                                     SlotMessageServiceImpl messageService) {
         this.stadiumRepository = stadiumRepository;
         this.matchRepository = matchRepository;
         this.slotRepository = slotRepository;
         this.slotSignificationTimeRepository = slotSignificationTimeRepository;
         this.userRepository = userRepository;
-        this.messageRepository = messageRepository;
+        this.messageService = messageService;
     }
 
     public String generateSlotsJSON(Long id, String userEmail) {
@@ -123,7 +123,7 @@ public class SlotsSignificationService {
                     match.setMatchDate(currSlot.getEventDate());
                 }
                 if (message != null && message.getConsidered()) {
-                    messageRepository.save(message);
+                    messageService.save(message);
 
                 }
                 slotRepository.save(currSlot);
@@ -141,7 +141,7 @@ public class SlotsSignificationService {
         if (currUser.getRole().equals(Role.adminRole)) {
             if (message != null) {
                 message.setConsidered(true);
-                messageRepository.save(message);
+                messageService.store(message);
             }
             currMatch.setMatchDate(null);
             currSlot.setMatch(null);
@@ -156,7 +156,7 @@ public class SlotsSignificationService {
                     || currMatch.getHomeTeam().getUser().equals(currUser)) {
                 if (message != null) {
                     message.setConsidered(true);
-                    messageRepository.save(message);
+                    messageService.store(message);
                 }
                 currMatch.setMatchDate(null);
                 currSlot.setMatch(null);
@@ -248,10 +248,7 @@ public class SlotsSignificationService {
     public Set<SlotSignificationTime> getFutureSessions(User user) {
 
         List<Team> teamList = user.getTeamList();
-//        if(teamList.isEmpty())
-//        {
-//            return null;
-//        }
+
         Set<SlotSignificationTime> futureNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
@@ -269,10 +266,7 @@ public class SlotsSignificationService {
     public Set<SlotSignificationTime> getActualSessions(User user) {
 
         List<Team> teamList = user.getTeamList();
-//        if(teamList.isEmpty())
-//        {
-//            return null;
-//        }
+
         Set<SlotSignificationTime> actualNotifications = new HashSet<>();
         teamList.forEach(team -> {
             SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
@@ -304,7 +298,7 @@ public class SlotsSignificationService {
                         || currUser.getRole().equals(Role.adminRole)
                         || slot.getMatch().getHomeTeam().getUser().equals(currUser)) {
                     slotsJSON.append(addMatchTeams(slot.getMatch()))
-                            .append(" <a class='add-new' href='/stadium/").append(id).append("/reject/")
+                            .append(" <a class='m_sweetalert cancel' href='/stadium/").append(id).append("/reject/")
                             .append(slot.getId()).append("'>Отменить слот</a>")
                             .append("\"},");
                 } else if (slot.getMatch().getGuestTeam().getUser() != null &&
@@ -352,7 +346,7 @@ public class SlotsSignificationService {
                 ? "<span href='#' tabindex='0' role='button' " +
                 "class='m-badge " + (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
                 "' data-toggle='m-popover' " +
-                "data-trigger='focus' data-content='"
+                "data-trigger='popover' data-content='"
                 + message.getMessage() + "' data-original-title='" +
                 (message.getConsidered() ? "Запрос рассмотрен" : "Новое сообщение") + "'"
                 + "style='outline: none; margin-left: 2px;'>!</span>"

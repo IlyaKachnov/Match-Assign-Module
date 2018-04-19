@@ -1,5 +1,22 @@
 var CalendarBasic = function () {
+    var initAlert = function () {
+        $(document).on('click', '.m_sweetalert', function(e) {
+            e.preventDefault();
+            var href = $(this).attr("href");
 
+            swal({
+                title: 'Отменить?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Отменить',
+                cancelButtonText: "Отмена",
+            }).then(function(result) {
+                if (result.value) {
+                    window.location.href = href;
+                }
+            });
+        });
+    };
     return {
         //main function to initiate the module
         init: function () {
@@ -9,7 +26,7 @@ var CalendarBasic = function () {
             var TODAY = todayDate.format('YYYY-MM-DD');
             var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
             var eventsList = window.events;
-
+            initAlert();
             $('#m_calendar').fullCalendar({
                 locale: 'ru',
                 header: {
@@ -35,14 +52,14 @@ var CalendarBasic = function () {
                             .append('<div class="fc-description">' + event.description + '</div>');
                         if (event.message !== "") {
                             element.find('.fc-time').append(event.message);
-                            element.find(".m-badge").popover();
+                           mApp.initPopover(element.find("[data-toggle=\"m-popover\"]"));
                         }
 
                     } else if (element.find('.fc-list-item-title').lenght !== 0) {
                         element.find('.fc-list-item-title').append('<div class="fc-description">' + event.description + '</div>');
                         if (event.message !== "") {
                             $(event.message).insertAfter(element.find('.fc-list-item-title a').first());
-                            element.find(".m-badge").popover();
+                            mApp.initPopover(element.find("[data-toggle=\"m-popover\"]"));
                         }
                     }
                 }
@@ -113,19 +130,30 @@ var MessageClass = function () {
                 // var slotBody = $(this).closest(".fc-content");
                 // var listItem = $(".fc-list-item-title a").find('[href="' + deleteHref + '"]').closest(".fc-list-item-title");
                 e.preventDefault();
-                initAjax();
-
-                $.ajax({
-                    type:"POST",
-                    url:deleteHref,
-                    success: function () {
-                        // $(".m-badge", slotBody).remove();
-                        // $(".m-badge", listItem).remove();
-                        setTimeout(function () {
-                            location.reload();
-                        }, 100);
+                swal({
+                    title: 'Удалить?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Удалить',
+                    cancelButtonText: "Отмена",
+                }).then(function(result) {
+                    if (result.value) {
+                        initAjax();
+                        console.log(deleteHref);
+                        $.ajax({
+                            type:"POST",
+                            url:deleteHref,
+                            success: function () {
+                                // $(".m-badge", slotBody).remove();
+                                // $(".m-badge", listItem).remove();
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 100);
+                            }
+                        })
                     }
-                })
+                });
+
             });
 
         }

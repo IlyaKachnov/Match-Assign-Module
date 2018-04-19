@@ -2,10 +2,7 @@ package app.controllers;
 
 import app.models.League;
 import app.models.SlotSignificationTime;
-import app.services.EmailServiceImpl;
-import app.services.LeagueService;
-import app.services.LeagueServiceImpl;
-import app.services.SessionServiceImpl;
+import app.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,13 +20,15 @@ public class SessionController {
     private final SessionServiceImpl sessionService;
     private final LeagueServiceImpl leagueService;
     private final EmailServiceImpl emailService;
+    private final SlotsSignificationService significationService;
 
     @Autowired
-    public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService, EmailServiceImpl emailService) {
+    public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService,
+                             EmailServiceImpl emailService, SlotsSignificationService significationService) {
         this.sessionService = sessionService;
         this.leagueService = leagueService;
         this.emailService = emailService;
-
+        this.significationService = significationService;
     }
 
     @RequestMapping(value = "/sessions", method = RequestMethod.GET)
@@ -122,7 +122,8 @@ public class SessionController {
 
     @RequestMapping("/send-message")
     public String sendMessage() {
-        emailService.sendMessage();
+        List<SlotSignificationTime> slotSignificationTimes = significationService.getFutureSessions();
+        emailService.sendMessage(slotSignificationTimes);
 
         return "redirect:/sessions";
     }

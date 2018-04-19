@@ -32,13 +32,28 @@ public class SlotMessageServiceImpl implements SlotMessageService{
 
     @Override
     public void save(SlotMessage slotMessage) {
+        boolean status = slotMessage.getConsidered();
         slotMessageRepository.save(slotMessage);
-        emailService.sendNotification(slotMessage.getMatch().getHomeTeam().getUser().getEmail(), slotMessage);
+        String email;
 
+        if(status) {
+           email = slotMessage.getMatch().getGuestTeam().getUser().getEmail();
+        }
+
+        else {
+            email = slotMessage.getMatch().getHomeTeam().getUser().getEmail();
+        }
+
+        emailService.sendNotification(email, slotMessage);
     }
 
     @Override
     public void delete(Long id) {
         slotMessageRepository.delete(id);
+    }
+
+    @Override
+    public void store(SlotMessage slotMessage) {
+        slotMessageRepository.save(slotMessage);
     }
 }
