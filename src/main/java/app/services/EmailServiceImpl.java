@@ -74,12 +74,16 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendNotification(String email, SlotMessage slotMessage) {
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Новое сообщение от НМФЛ");
-        message.setText(buildNotification(slotMessage));
-        message.setFrom("nmfl2018@mail.ru");
-        mailSender.send(message);
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("Новое сообщение от НМФЛ");
+            message.setText(buildNotification(slotMessage));
+            message.setFrom("nmfl2018@mail.ru");
+            mailSender.send(message);
+        } catch (MailSendException e) {
+            e.getMessage();
+        }
 
     }
 
@@ -88,7 +92,7 @@ public class EmailServiceImpl implements EmailService {
         String msg = "Сообщение от менеджера команды ";
         boolean status = slotMessage.getConsidered();
 
-        if(status) {
+        if (status) {
             msg += match.getHomeTeam().getName()
                     + ": \n"
                     + " матч "

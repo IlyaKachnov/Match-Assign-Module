@@ -50,6 +50,9 @@ public class LeagueServiceImpl implements LeagueService {
     public String generateJSON() {
         StringBuilder json = new StringBuilder("{");
         List<League> leagues = leagueRepository.findAll();
+        if (leagues.isEmpty()) {
+            return "[]";
+        }
         leagues.forEach(tour -> {
             json.append("\"").append(tour.getName()).append("\"").append(":");
             json.append("{\"title\": \"").append(tour.getName()).append("\"},");

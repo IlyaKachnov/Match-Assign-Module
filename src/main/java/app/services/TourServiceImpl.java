@@ -53,6 +53,9 @@ public class TourServiceImpl implements TourService {
         StringBuilder json = new StringBuilder("{");
         Set<String> toursInfo = getToursInfo();
 
+        if (toursInfo.isEmpty()) {
+            return "[]";
+        }
         toursInfo.forEach(s -> {
             json.append("\"").append(s).append("\"").append(":");
             json.append("{\"title\": \"").append(s).append("\"},");

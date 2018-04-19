@@ -37,6 +37,9 @@ public class MatchServiceImpl implements MatchService {
     public String generateJSON() {
 
         List<Match> matches = matchRepository.findAll();
+        if (matches.isEmpty()) {
+            return "[]";
+        }
         StringBuilder json = new StringBuilder("[");
 
         matches.forEach(match -> {
