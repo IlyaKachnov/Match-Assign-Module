@@ -14,7 +14,7 @@ var DatatableDataLocalDemo = function () {
             data: {
                 type: 'local',
                 source: dataJSONArray,
-                pageSize: 10
+                pageSize: 10,
             },
 
             // layout definition
@@ -78,16 +78,6 @@ var DatatableDataLocalDemo = function () {
 
                 },
                 {
-                    field: "Delayed",
-                    title: "Переносимый",
-                    sortable: true
-                },
-                {
-                    field: "Stadium",
-                    title: "Место проведения",
-                    sortable: true
-                },
-                {
                     field: "League",
                     title: "Лига",
                     // callback function support for column rendering
@@ -103,6 +93,17 @@ var DatatableDataLocalDemo = function () {
                         return '<span>' + tours[row.Tour].title + '</span>';
                     }
                 },
+                {
+                    field: "Stadium",
+                    title: "Стадион",
+                    sortable: true
+                },
+                {
+                    field: "Delayed",
+                    title: "Переносимый",
+                    sortable: true
+                },
+
           ]
         });
 

@@ -103,14 +103,14 @@
                                 <th title="Field #3">
                                     Дата матча
                                 </th>
-                                <th>Стадион</th>
-                                <th>Переносимый матч</th>
                                 <th>
                                     Лига
                                 </th>
                                 <th>
                                     Тур
                                 </th>
+                                <th>Стадион</th>
+                                <th>Переносимый матч</th>
                                 <th>
                                     Действия
                                 </th>
@@ -121,10 +121,11 @@
                                 <td th:text="${match.homeTeam.name}"></td>
                                 <td th:text="${match.guestTeam.name}"></td>
                                 <td th:text="${match.formattedDate}"></td>
-                                <td th:text="${match.delayed ? 'Да' : 'Нет'}"></td>
-                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
                                 <td th:text="${match.tour.league.name}"></td>
                                 <td th:text="${match.tour.fullInfo}"></td>
+                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
+                                <td th:text="${match.delayed ? 'Да' : 'Нет'}"></td>
+
                                 <td>
                                     <a th:href="@{'/matches/'+${match.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
