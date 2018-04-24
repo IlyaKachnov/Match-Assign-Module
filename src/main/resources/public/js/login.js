@@ -17,13 +17,13 @@ var SnippetLogin = function() {
 
     //== Private Functions
 
-    var displaySignUpForm = function() {
-        login.removeClass('m-login--forget-password');
-        login.removeClass('m-login--signin');
-
-        login.addClass('m-login--signup');
-        login.find('.m-login__signup').animateClass('flipInX animated');
-    }
+    // var displaySignUpForm = function() {
+    //     login.removeClass('m-login--forget-password');
+    //     login.removeClass('m-login--signin');
+    //
+    //     login.addClass('m-login--signup');
+    //     login.find('.m-login__signup').animateClass('flipInX animated');
+    // }
 
     var displaySignInForm = function() {
         login.removeClass('m-login--forget-password');
@@ -33,35 +33,35 @@ var SnippetLogin = function() {
         login.find('.m-login__signin').animateClass('flipInX animated');
     }
 
-    var displayForgetPasswordForm = function() {
-        login.removeClass('m-login--signin');
-        login.removeClass('m-login--signup');
+    // var displayForgetPasswordForm = function() {
+    //     login.removeClass('m-login--signin');
+    //     login.removeClass('m-login--signup');
+    //
+    //     login.addClass('m-login--forget-password');
+    //     login.find('.m-login__forget-password').animateClass('flipInX animated');
+    // }
 
-        login.addClass('m-login--forget-password');
-        login.find('.m-login__forget-password').animateClass('flipInX animated');
-    }
-
-    var handleFormSwitch = function() {
-        $('#m_login_forget_password').click(function(e) {
-            e.preventDefault();
-            displayForgetPasswordForm();
-        });
-
-        $('#m_login_forget_password_cancel').click(function(e) {
-            e.preventDefault();
-            displaySignInForm();
-        });
-
-        $('#m_login_signup').click(function(e) {
-            e.preventDefault();
-            displaySignUpForm();
-        });
-
-        $('#m_login_signup_cancel').click(function(e) {
-            e.preventDefault();
-            displaySignInForm();
-        });
-    }
+    // var handleFormSwitch = function() {
+    //     $('#m_login_forget_password').click(function(e) {
+    //         e.preventDefault();
+    //         displayForgetPasswordForm();
+    //     });
+    //
+    //     $('#m_login_forget_password_cancel').click(function(e) {
+    //         e.preventDefault();
+    //         displaySignInForm();
+    //     });
+    //
+    //     $('#m_login_signup').click(function(e) {
+    //         e.preventDefault();
+    //         displaySignUpForm();
+    //     });
+    //
+    //     $('#m_login_signup_cancel').click(function(e) {
+    //         e.preventDefault();
+    //         displaySignInForm();
+    //     });
+    // }
 
     var handleSignInFormSubmit = function() {
         $('#m_login_signin_submit').click(function(e) {
@@ -72,12 +72,19 @@ var SnippetLogin = function() {
             form.validate({
                 rules: {
                     username: {
-                        required: true,
-                        email: true
+                        required: true
                     },
                     password: {
                         required: true
                     }
+                },
+                messages: {
+                    username: {
+                        required: "Поле обязательно для заполнения"
+                    },
+                    password: {
+                        required: "Поле обязательно для заполнения"
+                    },
                 }
             });
 
@@ -88,126 +95,131 @@ var SnippetLogin = function() {
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                url: '/',
-                success: function(response, status, xhr, $form) {
-                	// similate 2s delay
+                url: '/login',
+                type: "POST",
+
+                success: function(response) {
+                    if (response.indexOf("m-login__form") === -1) {
+                        window.location = "/";
+                    }
+                	// simulate 2s delay
                 	setTimeout(function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-	                    showErrorMsg(form, 'danger', 'Incorrect username or password. Please try again.');
+	                    showErrorMsg(form, 'danger', 'Некорректный логин или пароль.');
                     }, 2000);
                 }
             });
         });
     }
 
-    var handleSignUpFormSubmit = function() {
-        $('#m_login_signup_submit').click(function(e) {
-            e.preventDefault();
+    // var handleSignUpFormSubmit = function() {
+    //     $('#m_login_signup_submit').click(function(e) {
+    //         e.preventDefault();
+    //
+    //         var btn = $(this);
+    //         var form = $(this).closest('form');
+    //
+    //         form.validate({
+    //             rules: {
+    //                 fullname: {
+    //                     required: true
+    //                 },
+    //                 email: {
+    //                     required: true,
+    //                     email: true
+    //                 },
+    //                 password: {
+    //                     required: true
+    //                 },
+    //                 rpassword: {
+    //                     required: true
+    //                 },
+    //                 agree: {
+    //                     required: true
+    //                 }
+    //             }
+    //         });
+    //
+    //         if (!form.valid()) {
+    //             return;
+    //         }
+    //
+    //         btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+    //
+    //         form.ajaxSubmit({
+    //             url: '',
+    //             success: function(response, status, xhr, $form) {
+    //             	// similate 2s delay
+    //             	setTimeout(function() {
+	 //                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+	 //                    form.clearForm();
+	 //                    form.validate().resetForm();
+    //
+	 //                    // display signup form
+	 //                    displaySignInForm();
+	 //                    var signInForm = login.find('.m-login__signin form');
+	 //                    signInForm.clearForm();
+	 //                    signInForm.validate().resetForm();
+    //
+	 //                    showErrorMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
+	 //                }, 2000);
+    //             }
+    //         });
+    //     });
+    // }
 
-            var btn = $(this);
-            var form = $(this).closest('form');
-
-            form.validate({
-                rules: {
-                    fullname: {
-                        required: true
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: {
-                        required: true
-                    },
-                    rpassword: {
-                        required: true
-                    },
-                    agree: {
-                        required: true
-                    }
-                }
-            });
-
-            if (!form.valid()) {
-                return;
-            }
-
-            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-
-            form.ajaxSubmit({
-                url: '',
-                success: function(response, status, xhr, $form) {
-                	// similate 2s delay
-                	setTimeout(function() {
-	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-	                    form.clearForm();
-	                    form.validate().resetForm();
-
-	                    // display signup form
-	                    displaySignInForm();
-	                    var signInForm = login.find('.m-login__signin form');
-	                    signInForm.clearForm();
-	                    signInForm.validate().resetForm();
-
-	                    showErrorMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
-	                }, 2000);
-                }
-            });
-        });
-    }
-
-    var handleForgetPasswordFormSubmit = function() {
-        $('#m_login_forget_password_submit').click(function(e) {
-            e.preventDefault();
-
-            var btn = $(this);
-            var form = $(this).closest('form');
-
-            form.validate({
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    }
-                }
-            });
-
-            if (!form.valid()) {
-                return;
-            }
-
-            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-
-            form.ajaxSubmit({
-                url: '',
-                success: function(response, status, xhr, $form) { 
-                	// similate 2s delay
-                	setTimeout(function() {
-                		btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-	                    form.clearForm(); // clear form
-	                    form.validate().resetForm(); // reset validation states
-
-	                    // display signup form
-	                    displaySignInForm();
-	                    var signInForm = login.find('.m-login__signin form');
-	                    signInForm.clearForm();
-	                    signInForm.validate().resetForm();
-
-	                    showErrorMsg(signInForm, 'success', 'Cool! Password recovery instruction has been sent to your email.');
-                	}, 2000);
-                }
-            });
-        });
-    }
+    // var handleForgetPasswordFormSubmit = function() {
+    //     $('#m_login_forget_password_submit').click(function(e) {
+    //         e.preventDefault();
+    //
+    //         var btn = $(this);
+    //         var form = $(this).closest('form');
+    //
+    //         form.validate({
+    //             rules: {
+    //                 email: {
+    //                     required: true,
+    //                     email: true
+    //                 }
+    //             }
+    //         });
+    //
+    //         if (!form.valid()) {
+    //             return;
+    //         }
+    //
+    //         btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+    //
+    //         form.ajaxSubmit({
+    //             url: '',
+    //             success: function(response, status, xhr, $form) {
+    //             	// similate 2s delay
+    //             	setTimeout(function() {
+    //             		btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
+	 //                    form.clearForm(); // clear form
+	 //                    form.validate().resetForm(); // reset validation states
+    //
+	 //                    // display signup form
+	 //                    displaySignInForm();
+	 //                    var signInForm = login.find('.m-login__signin form');
+	 //                    signInForm.clearForm();
+	 //                    signInForm.validate().resetForm();
+    //
+	 //                    showErrorMsg(signInForm, 'success', 'Cool! Password recovery instruction has been sent to your email.');
+    //             	}, 2000);
+    //             }
+    //         });
+    //     });
+    // }
 
     //== Public Functions
     return {
         // public functions
         init: function() {
-            handleFormSwitch();
+            // handleFormSwitch();
             handleSignInFormSubmit();
-            handleSignUpFormSubmit();
-            handleForgetPasswordFormSubmit();
+            // handleSignUpFormSubmit();
+            // handleForgetPasswordFormSubmit();
         }
     };
 }();
