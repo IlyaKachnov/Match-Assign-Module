@@ -66,11 +66,11 @@ public class UserController {
 
         userService.save(userModel);
 
-        if (user.getRole().equals(Role.managerRole)) {
-            for (Team team : user.getTeamList()) {
+        if (user.getRole().equals(Role.managerRole) && user.getTeamList() != null) {
+            user.getTeamList().forEach(team -> {
                 team.setUser(userModel);
                 teamService.save(team);
-            }
+            });
         }
 
         return "redirect:/users";

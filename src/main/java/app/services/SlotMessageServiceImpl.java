@@ -1,8 +1,7 @@
 package app.services;
 
-import app.models.SlotMessage;
+import app.models.MatchMessage;
 import app.repositories.SlotMessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -21,30 +20,30 @@ public class SlotMessageServiceImpl implements SlotMessageService{
     }
 
     @Override
-    public SlotMessage findById(Long id) {
+    public MatchMessage findById(Long id) {
         return slotMessageRepository.findOne(id);
     }
 
     @Override
-    public List<SlotMessage> findAll() {
+    public List<MatchMessage> findAll() {
         return slotMessageRepository.findAll();
     }
 
     @Override
-    public void save(SlotMessage slotMessage) {
-        boolean status = slotMessage.getConsidered();
-        slotMessageRepository.save(slotMessage);
+    public void save(MatchMessage matchMessage) {
+        boolean status = matchMessage.getConsidered();
+        slotMessageRepository.save(matchMessage);
         String email;
 
         if(status) {
-           email = slotMessage.getMatch().getGuestTeam().getUser().getEmail();
+           email = matchMessage.getMatch().getGuestTeam().getUser().getEmail();
         }
 
         else {
-            email = slotMessage.getMatch().getHomeTeam().getUser().getEmail();
+            email = matchMessage.getMatch().getHomeTeam().getUser().getEmail();
         }
 
-        emailService.sendNotification(email, slotMessage);
+        emailService.sendNotification(email, matchMessage);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class SlotMessageServiceImpl implements SlotMessageService{
     }
 
     @Override
-    public void store(SlotMessage slotMessage) {
-        slotMessageRepository.save(slotMessage);
+    public void store(MatchMessage matchMessage) {
+        slotMessageRepository.save(matchMessage);
     }
 }

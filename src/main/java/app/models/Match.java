@@ -1,5 +1,6 @@
 package app.models;
 
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -17,14 +18,15 @@ public class Match {
     @OneToOne(targetEntity = Slot.class, mappedBy = "match")
     private Slot slot;
 
-    @OneToOne(targetEntity = SlotMessage.class, mappedBy = "match", cascade = CascadeType.ALL)
-    private SlotMessage slotMessage;
+    @OneToOne(targetEntity = MatchMessage.class, mappedBy = "match", cascade = CascadeType.ALL)
+    private MatchMessage matchMessage;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date matchDate;
 
-    @Column(nullable = false, columnDefinition = "TINYINT NOT NULL", length = 1)
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isDelayed;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -104,12 +106,12 @@ public class Match {
         isDelayed = delayed;
     }
 
-    public SlotMessage getSlotMessage() {
-        return slotMessage;
+    public MatchMessage getMatchMessage() {
+        return matchMessage;
     }
 
-    public void setSlotMessage(SlotMessage slotMessage) {
-        this.slotMessage = slotMessage;
+    public void setMatchMessage(MatchMessage matchMessage) {
+        this.matchMessage = matchMessage;
     }
 
     public Match() {

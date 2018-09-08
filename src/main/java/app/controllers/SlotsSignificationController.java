@@ -3,21 +3,17 @@ package app.controllers;
 import app.models.*;
 import app.repositories.MatchRepository;
 import app.repositories.SlotRepository;
-import app.repositories.StadiumRepository;
 import app.repositories.UserRepository;
 import app.services.SlotMessageServiceImpl;
 import app.services.SlotsSignificationService;
 import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class SlotsSignificationController {
@@ -93,14 +89,11 @@ public class SlotsSignificationController {
     @ResponseBody
     @RequestMapping(value = "/save-message/{id}", method = RequestMethod.POST)
     public String saveMessage(@PathVariable("id") Long id, @RequestParam String text) {
-        SlotMessage message = new SlotMessage();
+        MatchMessage message = new MatchMessage();
         message.setMessage(text);
         message.setConsidered(false);
         message.setMatch(matchRepository.findOne(id));
         slotMessageService.save(message);
-
-
-
         return "";
     }
 
@@ -109,7 +102,7 @@ public class SlotsSignificationController {
     public String deleteMessage(@PathVariable("id") Long id) {
 
         Match match = matchRepository.findOne(slotMessageService.findById(id).getMatch().getId());
-        match.setSlotMessage(null);
+        match.setMatchMessage(null);
         slotMessageService.delete(id);
 
         return "";

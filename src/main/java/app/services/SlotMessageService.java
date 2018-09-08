@@ -1,18 +1,18 @@
 package app.services;
 
-import app.models.SlotMessage;
+import app.models.MatchMessage;
 
 import java.util.List;
 
 public interface SlotMessageService {
 
-    SlotMessage findById(Long id);
+    MatchMessage findById(Long id);
 
-    List<SlotMessage> findAll();
+    List<MatchMessage> findAll();
 
-    void save(SlotMessage slotMessage);
+    void save(MatchMessage matchMessage);
 
-    void store(SlotMessage slotMessage);
+    void store(MatchMessage matchMessage);
 
     void delete(Long id);
 }

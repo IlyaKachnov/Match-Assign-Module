@@ -1,5 +1,6 @@
 package app.models;
 
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class SlotType {
     @DateTimeFormat(pattern = "HH:mm")
     private Date duration;
 
-    @Column(nullable = false, columnDefinition = "TINYINT NOT NULL", length = 1)
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isSignifiable;
 
     @OneToMany(targetEntity = Slot.class, mappedBy = "slotType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -1,7 +1,7 @@
 package app.repositories;
 
-import app.models.SlotMessage;
+import app.models.MatchMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SlotMessageRepository extends JpaRepository<SlotMessage, Long> {
+public interface SlotMessageRepository extends JpaRepository<MatchMessage, Long> {
 }

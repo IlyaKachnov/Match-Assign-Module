@@ -3,12 +3,14 @@ package app.models;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
-@Table(name = "slot_messages")
-public class SlotMessage {
+@Table(name = "match_messages")
+public class MatchMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "message", nullable = false)
@@ -16,11 +18,13 @@ public class SlotMessage {
     private String message;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name = "match_id")
     private Match match;
 
 
-    @Column(nullable = false, columnDefinition = "TINYINT NOT NULL", length = 1)
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isConsidered;
 
     public Long getId() {
@@ -55,6 +59,22 @@ public class SlotMessage {
         isConsidered = considered;
     }
 
-    public SlotMessage() {
+    public MatchMessage() {
     }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        MatchMessage that = (MatchMessage) o;
+//        return Objects.equals(message, that.message) &&
+//                Objects.equals(match, that.match) &&
+//                Objects.equals(isConsidered, that.isConsidered);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//
+//        return Objects.hash(message, match, isConsidered);
+//    }
 }

@@ -105,7 +105,7 @@ public class SlotsSignificationService {
     public synchronized void signifySlot(Long matchId, Long slotId, String userEmail) {
         User currUser = userRepository.findByEmail(userEmail);
         Match match = matchRepository.findOne(matchId);
-        SlotMessage message = match.getSlotMessage();
+        MatchMessage message = match.getMatchMessage();
         if (match != null && match.getSlot() != null) {
             return;
         }
@@ -114,8 +114,9 @@ public class SlotsSignificationService {
                     .stream().filter(slotSignificationTime -> slotSignificationTime.getLeague().equals(match.getHomeTeam().getLeague()))
                     .findAny();
             if (currUser.getRole().equals(Role.adminRole) ||
-                    (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()))
-                    || match.getHomeTeam().getUser().equals(currUser)) {
+                    (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()) &&
+                            match.getHomeTeam().getUser().equals(currUser))
+                    ) {
 
                 Slot currSlot = slotRepository.findOne(slotId);
                 if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
@@ -135,7 +136,7 @@ public class SlotsSignificationService {
     public void rejectSlot(Long slotId, String userEmail) {
         Slot currSlot = slotRepository.findOne(slotId);
         Match currMatch = currSlot.getMatch();
-        SlotMessage message = currMatch.getSlotMessage();
+        MatchMessage message = currMatch.getMatchMessage();
 
         User currUser = userRepository.findByEmail(userEmail);
         if (currUser.getRole().equals(Role.adminRole)) {
@@ -341,7 +342,7 @@ public class SlotsSignificationService {
         if (slot.getMatch() == null) {
             return "";
         }
-        SlotMessage message = slot.getMatch().getSlotMessage();
+        MatchMessage message = slot.getMatch().getMatchMessage();
         return (message != null)
                 ? "<span href='#' tabindex='0' role='button' " +
                 "class='m-badge " + (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
@@ -354,9 +355,9 @@ public class SlotsSignificationService {
     }
 
     private String showMessageLink(Match match) {
-        if (match.getSlotMessage() != null) {
+        if (match.getMatchMessage() != null) {
             return " <a href='#' class='delete-msg' data-href='/message/" +
-                    match.getSlotMessage().getId()
+                    match.getMatchMessage().getMatch().getId()
                     + "/delete'" + ">Удалить сообщение</a>" +
                     "\"},";
         }
@@ -384,7 +385,7 @@ public class SlotsSignificationService {
                 return;
             }
             team.getMatchesAsHome().forEach(match -> {
-                if (match.getSlotMessage() != null && match.getSlotMessage().getConsidered() && match.getSlot() == null) {
+                if (match.getMatchMessage() != null && match.getMatchMessage().getConsidered() && match.getSlot() == null) {
                     matchList.add(match);
                 }
             });

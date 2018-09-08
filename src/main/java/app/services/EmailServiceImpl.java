@@ -6,9 +6,9 @@ import app.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
-    //    @Scheduled(fixedRate = 5000)
+    @Async
     @Override
     public void sendMessage(List<SlotSignificationTime> slotSignificationTimes) {
         StringBuilder significationTimes = new StringBuilder();
@@ -63,42 +63,42 @@ public class EmailServiceImpl implements EmailService {
                 message.setFrom("nmfl2018@mail.ru");
                 mailSender.send(message);
                 System.out.println("message sent");
-            } catch (MailSendException e) {
-                e.getMessage();
+            } catch (Exception e) {
+                logger.error("Error while sending message", e);
             }
 
         });
 
     }
 
+    @Async
     @Override
-    public void sendNotification(String email, SlotMessage slotMessage) {
-
+    public void sendNotification(String email, MatchMessage matchMessage) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(email);
             message.setSubject("Новое сообщение от НМФЛ");
-            message.setText(buildNotification(slotMessage));
+            message.setText(buildNotification(matchMessage));
             message.setFrom("nmfl2018@mail.ru");
             mailSender.send(message);
-        } catch (MailSendException e) {
-            e.getMessage();
+        } catch (Exception e) {
+            logger.error("Error while sending message", e);
         }
 
     }
 
-    private String buildNotification(SlotMessage slotMessage) {
-        Match match = slotMessage.getMatch();
+    private String buildNotification(MatchMessage matchMessage) {
+        Match match = matchMessage.getMatch();
         String msg = "Сообщение от менеджера команды ";
-        boolean status = slotMessage.getConsidered();
+        boolean status = matchMessage.getConsidered();
 
         if (status) {
             msg += match.getHomeTeam().getName()
                     + ": \n"
                     + " матч "
-                    + slotMessage.getMatch().getHomeAndGuest()
+                    + matchMessage.getMatch().getHomeAndGuest()
                     + " был перенесен на "
-                    + slotMessage.getMatch().getFormattedDate();
+                    + matchMessage.getMatch().getFormattedDate();
 
             return msg;
         }
@@ -108,7 +108,7 @@ public class EmailServiceImpl implements EmailService {
                 + " назначенном на "
                 + match.getFormattedDate()
                 + ": \n"
-                + slotMessage.getMessage();
+                + matchMessage.getMessage();
 
         return msg;
     }
