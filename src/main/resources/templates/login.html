@@ -14,6 +14,8 @@
     <link href="../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link href="../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
+    <link href="../public/css/custom.css" th:href="@{/css/custom.css}" rel="stylesheet"
+          type="text/css"/>
     <!--begin::Web font -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
     <script>
@@ -29,7 +31,7 @@
 </head>
 <!-- end::Head -->
 <!-- end::Body -->
-<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+<body class="login m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2"
@@ -38,15 +40,10 @@
             <div class="m-login__container">
                 <div class="m-login__logo">
                     <a href="#">
-                        <!--<img src="../../../assets/app/media/img//logos/logo-1.png"/>-->
+                        <img src="../public/img/logo-big.jpg" th:src="@{/img/logo-big.jpg}"/>
                     </a>
                 </div>
                 <div class="m-login__signin">
-                    <div class="m-login__head">
-                        <h3 class="m-login__title">
-                            НМФЛ
-                        </h3>
-                    </div>
                     <form class="m-login__form m-form" th:action="@{/login}" method="post">
                         <div class="form-group m-form__group">
                             <input class="form-control m-input" type="text" id="username" placeholder="Email"
@@ -72,7 +69,7 @@
                         <!--</div>-->
                         <div class="m-login__form-action">
                             <button id="m_login_signin_submit"
-                                    class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">
+                                    class="btn m-btn m-btn--pill m-btn--custom m-login__btn m-login__btn--primary login-btn">
                                 Войти
                             </button>
                         </div>
