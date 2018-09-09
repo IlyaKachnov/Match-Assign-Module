@@ -1,24 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="utf-8"/>
-    <title>Мой профиль - НМФЛ</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
-    <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
-          type="text/css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
-    <script>
-        WebFont.load({
-            google: {"families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"]},
-            active: function () {
-                sessionStorage.fonts = true;
-            }
-        });
-    </script>
-</head>
+<head th:replace="fragments/head::head"></head>
 
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 <div class="m-grid m-grid--hor m-grid--root m-page">
@@ -116,7 +99,7 @@
                                                         Имя
                                                     </label>
                                                     <div class="col-7">
-                                                        <input id="firstname" class="form-control m-input"
+                                                        <input id="firstname" class="form-control m-input--square"
                                                                name="firstname" th:field="*{firstname}" type="text"/>
                                                     </div>
                                                 </div>
@@ -125,7 +108,7 @@
                                                         Фамилия
                                                     </label>
                                                     <div class="col-7">
-                                                        <input id="lastname" class="form-control m-input"
+                                                        <input id="lastname" class="form-control m-input--square"
                                                                name="lastname" th:field="*{lastname}" type="text"/>
                                                     </div>
                                                 </div>
@@ -136,9 +119,9 @@
                                                         <div class="col-2"></div>
                                                         <div class="col-7">
                                                             <input type="submit" value="Обновить"
-                                                                   class="btn btn-success m-btn m-btn--air m-btn--custom"/>
+                                                                   class="btn btn-info m-btn--square"/>
                                                             <button type="reset"
-                                                                    class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                                    class="btn btn-secondary m-btn--square">
                                                                 Отмена
                                                             </button>
                                                         </div>
@@ -157,7 +140,7 @@
                                                             <div class="col-md-4">
                                                                 <div class="m-input-icon m-input-icon--left">
                                                                     <input type="text"
-                                                                           class="form-control m-input m-input--solid"
+                                                                           class="form-control m-input--square m-input"
                                                                            placeholder="Найти..." id="generalSearch"/>
                                                                     <span class="m-input-icon__icon m-input-icon__icon--left">
 															<span>
@@ -218,7 +201,7 @@
                                                         Старый пароль *
                                                     </label>
                                                     <div class="col-lg-4 col-md-9 col-sm-12">
-                                                        <input type="password" class="form-control m-input"
+                                                        <input type="password" class="form-control m-input--square"
                                                                name="old_password" id="old_password"/>
                                                     </div>
                                                 </div>
@@ -227,7 +210,7 @@
                                                         Новый пароль *
                                                     </label>
                                                     <div class="col-lg-4 col-md-9 col-sm-12">
-                                                        <input type="password" class="form-control m-input"
+                                                        <input type="password" class="form-control m-input--square"
                                                                name="new_password" id="new_password"/>
                                                     </div>
                                                 </div>
@@ -236,7 +219,7 @@
                                                         Подвтерждение пароля *
                                                     </label>
                                                     <div class="col-lg-4 col-md-9 col-sm-12">
-                                                        <input type="password" class="form-control m-input"
+                                                        <input type="password" class="form-control m-input--square"
                                                                name="confirm_password" id="confirm_password"/>
                                                     </div>
                                                 </div>
@@ -246,9 +229,9 @@
                                                     <div class="row">
                                                         <div class="col-lg-9 ml-lg-auto">
                                                             <input type="submit" value="Обновить пароль"
-                                                                   class="btn btn-success"/>
+                                                                   class="btn m-btn--square btn-info"/>
                                                             <button type="reset"
-                                                                    class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                                    class="btn btn-secondary m-btn--square">
                                                                 Отмена
                                                             </button>
                                                         </div>

@@ -1,25 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <title>НМФЛ - Слоты</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <link href="../../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet"/>
-    <link href="../../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
-          type="text/css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
-    <script>
-        WebFont.load({
-            google: {"families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"]},
-            active: function () {
-                sessionStorage.fonts = true;
-            }
-        });
-    </script>
-</head>
+<head th:replace="fragments/head::head"></head>
 
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 <div class="m-grid m-grid--hor m-grid--root m-page">
@@ -52,7 +34,7 @@
                                     <div class="form-group m-form__group row align-items-center">
                                         <div class="col-md-4">
                                             <div class="m-input-icon m-input-icon--left">
-                                                <input type="text" class="form-control m-input m-input--solid"
+                                                <input type="text" class="form-control m-input--square m-input"
                                                        placeholder="Найти..." id="generalSearch"/>
                                                 <span class="m-input-icon__icon m-input-icon__icon--left">
 															<span>
@@ -65,7 +47,7 @@
                                 </div>
                                 <div class="col-xl-4 order-1 order-xl-2 m--align-right">
                                     <a th:href="@{'/slot-types/create'}"
-                                       class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                                       class="btn btn-info m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
 												<span>
 													<i class="la la-plus-circle"></i>
 													<span>
