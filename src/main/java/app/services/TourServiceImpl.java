@@ -13,8 +13,14 @@ import java.util.stream.Collectors;
 @Service
 @Primary
 public class TourServiceImpl implements TourService {
+
+
+    private final TourRepository tourRepository;
+
     @Autowired
-    TourRepository tourRepository;
+    public TourServiceImpl(TourRepository tourRepository) {
+        this.tourRepository = tourRepository;
+    }
 
     @Override
     public Tour findById(Long id) {
@@ -44,6 +50,7 @@ public class TourServiceImpl implements TourService {
     @Override
     public Set<String> getToursInfo() {
         return tourRepository.findAll().stream()
+                .filter(t-> !(t.getMatches().isEmpty()))
                 .map(Tour::getFullInfo)
                 .collect(Collectors.toSet());
     }

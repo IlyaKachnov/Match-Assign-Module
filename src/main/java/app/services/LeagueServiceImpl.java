@@ -38,7 +38,9 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public List<League> findWithoutSession() {
-        return leagueRepository.findAll().stream().filter(l -> l.getSlotSignificationTime() == null).collect(Collectors.toList());
+        return leagueRepository.findAll().stream()
+                .filter(l -> l.getSlotSignificationTime() == null)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,15 +49,21 @@ public class LeagueServiceImpl implements LeagueService {
     }
 
     @Override
+    public List<League> findWithMatches() {
+        return leagueRepository.findWithMatches();
+    }
+
+    @Override
     public String generateJSON() {
         StringBuilder json = new StringBuilder("{");
-        List<League> leagues = leagueRepository.findAll();
+//        List<League> leagues = leagueRepository.findAll();
+        List<League> leagues = leagueRepository.findWithMatches();
         if (leagues.isEmpty()) {
             return "[]";
         }
-        leagues.forEach(tour -> {
-            json.append("\"").append(tour.getName()).append("\"").append(":");
-            json.append("{\"title\": \"").append(tour.getName()).append("\"},");
+        leagues.forEach(l -> {
+            json.append("\"").append(l.getName()).append("\"").append(":");
+            json.append("{\"title\": \"").append(l.getName()).append("\"},");
         });
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("}");

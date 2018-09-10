@@ -57,3 +57,14 @@
 .fc-unthemed .fc-toolbar .fc-button.fc-state-active, .fc-unthemed .fc-toolbar .fc-button:active, .fc-unthemed .fc-toolbar .fc-button:focus{
     background: #36a3f7;
 }
+.bootstrap-select.btn-group>.dropdown-toggle.btn-default, .bootstrap-select.btn-group>.dropdown-toggle.btn-secondary {
+    border-radius: 0 !important;
+}
+.fc-content {
+    padding-top: .05rem !important;
+}
+.fc-unthemed .fc-description {
+     font-size: .75rem;
+     margin-top: .1rem;
+     font-weight: 300;
+ }

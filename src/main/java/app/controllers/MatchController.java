@@ -102,7 +102,7 @@ public class MatchController {
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("tours", tourService.generateJSON());
         model.addAttribute("leagues", leagueService.generateJSON());
-        model.addAttribute("leagueList", leagueService.findAll());
+        model.addAttribute("leagueList", leagueService.findWithMatches());
         model.addAttribute("tourList", tourService.getToursInfo());
 
         return "matches/all-matches";

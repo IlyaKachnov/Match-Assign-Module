@@ -21,4 +21,6 @@ public interface LeagueService {
 
     String getTeamsJSON(Long id);
 
+    List<League> findWithMatches();
+
 }
