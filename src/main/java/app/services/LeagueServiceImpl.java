@@ -13,17 +13,22 @@ import java.util.stream.Collectors;
 @Service
 @Primary
 public class LeagueServiceImpl implements LeagueService {
+
+    private LeagueRepository leagueRepository;
+
     @Autowired
-    LeagueRepository leagueRepository;
+    public LeagueServiceImpl(LeagueRepository leagueRepository) {
+        this.leagueRepository = leagueRepository;
+    }
 
     @Override
     public List<League> findAll() {
-        return this.leagueRepository.findAll();
+        return leagueRepository.findAll();
     }
 
     @Override
     public void save(League league) {
-        this.leagueRepository.save(league);
+        leagueRepository.save(league);
     }
 
     @Override
@@ -33,7 +38,7 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public void delete(Long id) {
-        this.leagueRepository.delete(id);
+        leagueRepository.delete(id);
     }
 
     @Override
@@ -53,6 +58,7 @@ public class LeagueServiceImpl implements LeagueService {
         return leagueRepository.findWithMatches();
     }
 
+    //TODO:DTO classes
     @Override
     public String generateJSON() {
         StringBuilder json = new StringBuilder("{");
@@ -73,7 +79,11 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public String getTeamsJSON(Long id) {
-        List<Team> teamList = leagueRepository.findOne(id).getTeams();
+        League league = leagueRepository.findOne(id);
+        if(league == null) {
+            return "[]";
+        }
+        List<Team> teamList = league.getTeams();
         StringBuilder json = new StringBuilder("[");
         teamList.forEach(team -> {
             json.append("{\"id\": \"").append(team.getId()).append("\",");

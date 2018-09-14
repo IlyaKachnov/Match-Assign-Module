@@ -64,13 +64,13 @@ var DatatableDataLocalDemo = function () {
             // columns definition
             columns: [
                 {
-                    field: "Home",
+                    field: "home",
                     title: "Хозяева",
                 }, {
-                    field: "Guest",
+                    field: "guest",
                     title: "Гости",
                 }, {
-                    field: "MatchDate",
+                    field: "matchDate",
                     title: "Дата матча",
                     type: "date",
                     format: "DD.MM.YYYY",
@@ -78,28 +78,28 @@ var DatatableDataLocalDemo = function () {
 
                 },
                 {
-                    field: "League",
+                    field: "league",
                     title: "Лига",
                     // callback function support for column rendering
                     template: function (row) {
-                        return '<span>' + leagues[row.League].title + '</span>';
+                        return '<span>' + leagues[row.league].title + '</span>';
                     }
                 },
                 {
-                    field: "Tour",
+                    field: "tour",
                     title: "Тур",
                     // callback function support for column rendering
                     template: function (row) {
-                        return '<span>' + tours[row.Tour].title + '</span>';
+                        return '<span>' + tours[row.tour].title + '</span>';
                     }
                 },
                 {
-                    field: "Stadium",
+                    field: "stadium",
                     title: "Стадион",
                     sortable: true
                 },
                 {
-                    field: "Delayed",
+                    field: "delayed",
                     title: "Переносимый",
                     sortable: true
                 },
@@ -110,12 +110,12 @@ var DatatableDataLocalDemo = function () {
         var query = datatable.getDataSourceQuery();
 
         $('#m_form_league').on('change', function () {
-            datatable.search($(this).val(), 'League');
-        }).val(typeof query.League !== 'undefined' ? query.League : '');
+            datatable.search($(this).val(), 'league');
+        }).val(typeof query.league !== 'undefined' ? query.league : '');
 
         $('#m_form_tour').on('change', function () {
-            datatable.search($(this).val(), 'Tour');
-        }).val(typeof query.Tour !== 'undefined' ? query.Tour : '');
+            datatable.search($(this).val(), 'tour');
+        }).val(typeof query.tour !== 'undefined' ? query.tour : '');
 
         $('#m_form_league, #m_form_tour').selectpicker();
 
