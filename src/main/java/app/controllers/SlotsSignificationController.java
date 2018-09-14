@@ -4,7 +4,7 @@ import app.models.*;
 import app.repositories.MatchRepository;
 import app.repositories.SlotRepository;
 import app.repositories.UserRepository;
-import app.services.SlotMessageServiceImpl;
+import app.services.MatchMessageServiceImpl;
 import app.services.SlotsSignificationService;
 import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SlotsSignificationController {
@@ -23,7 +24,7 @@ public class SlotsSignificationController {
     private final UserRepository userRepository;
     private final SlotRepository slotRepository;
     private final StadiumServiceImpl stadiumService;
-    private final SlotMessageServiceImpl slotMessageService;
+    private final MatchMessageServiceImpl matchMessageService;
 
     @Autowired
     public SlotsSignificationController(SlotsSignificationService slotsSignificationService,
@@ -31,13 +32,13 @@ public class SlotsSignificationController {
                                         UserRepository userRepository,
                                         SlotRepository slotRepository,
                                         StadiumServiceImpl stadiumService,
-                                        SlotMessageServiceImpl slotMessageService) {
+                                        MatchMessageServiceImpl matchMessageService) {
         this.slotsSignificationService = slotsSignificationService;
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
         this.slotRepository = slotRepository;
         this.stadiumService = stadiumService;
-        this.slotMessageService = slotMessageService;
+        this.matchMessageService = matchMessageService;
     }
 
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
@@ -92,8 +93,11 @@ public class SlotsSignificationController {
         MatchMessage message = new MatchMessage();
         message.setMessage(text);
         message.setConsidered(false);
-        message.setMatch(matchRepository.findOne(id));
-        slotMessageService.save(message);
+        Optional<Match> match = matchRepository.findById(id);
+        if (match.isPresent()) {
+            message.setMatch(match.get());
+            matchMessageService.save(message);
+        }
         return "";
     }
 
@@ -101,9 +105,12 @@ public class SlotsSignificationController {
     @RequestMapping(value = "/message/{id}/delete", method = RequestMethod.POST)
     public String deleteMessage(@PathVariable("id") Long id) {
 
-        Match match = matchRepository.findOne(slotMessageService.findById(id).getMatch().getId());
-        match.setMatchMessage(null);
-        slotMessageService.delete(id);
+        MatchMessage matchMessage = matchMessageService.findById(id);
+        if (matchMessage != null) {
+            Optional<Match> match = matchRepository.findById(matchMessage.getMatch().getId());
+            match.ifPresent(match1 -> match1.setMatchMessage(null));
+            matchMessageService.delete(id);
+        }
 
         return "";
     }

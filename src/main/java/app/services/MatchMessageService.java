@@ -4,7 +4,7 @@ import app.models.MatchMessage;
 
 import java.util.List;
 
-public interface SlotMessageService {
+public interface MatchMessageService {
 
     MatchMessage findById(Long id);
 

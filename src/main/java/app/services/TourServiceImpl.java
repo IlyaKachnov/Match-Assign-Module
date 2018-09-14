@@ -1,7 +1,9 @@
 package app.services;
 
+import app.dto.TourFilterDTO;
 import app.models.Tour;
 import app.repositories.TourRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -15,16 +17,19 @@ import java.util.stream.Collectors;
 public class TourServiceImpl implements TourService {
 
 
-    private final TourRepository tourRepository;
+    private TourRepository tourRepository;
+    private Gson gson;
 
     @Autowired
-    public TourServiceImpl(TourRepository tourRepository) {
+    public TourServiceImpl(TourRepository tourRepository, Gson gson) {
+
         this.tourRepository = tourRepository;
+        this.gson = gson;
     }
 
     @Override
     public Tour findById(Long id) {
-        return tourRepository.findOne(id);
+        return tourRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -39,7 +44,12 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void delete(Long id) {
-        tourRepository.delete(id);
+        tourRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Tour> findWithMatches() {
+        return tourRepository.findWithMatches();
     }
 
     @Override
@@ -48,28 +58,13 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public Set<String> getToursInfo() {
-        return tourRepository.findAll().stream()
-                .filter(t-> !(t.getMatches().isEmpty()))
-                .map(Tour::getFullInfo)
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public String generateJSON() {
-        StringBuilder json = new StringBuilder("{");
-        Set<String> toursInfo = getToursInfo();
-
-        if (toursInfo.isEmpty()) {
+    public String generateTourFilterJSON() {
+        List<Tour> tours = tourRepository.findWithMatches();
+        if (tours == null && tours.isEmpty()) {
             return "[]";
         }
-        toursInfo.forEach(s -> {
-            json.append("\"").append(s).append("\"").append(":");
-            json.append("{\"title\": \"").append(s).append("\"},");
-        });
-        json.deleteCharAt(json.lastIndexOf(","));
-        json.append("}");
 
-        return json.toString();
+        Set<TourFilterDTO> tourFilterDTOS = TourFilterDTO.createTourList(tours);
+        return gson.toJson(tourFilterDTOS);
     }
 }

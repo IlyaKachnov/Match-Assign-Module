@@ -1,8 +1,8 @@
 package app.controllers;
 
-import app.models.League;
 import app.models.Match;
 import app.models.Slot;
+import app.models.Stadium;
 import app.models.Team;
 import app.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MatchController {
@@ -21,15 +21,18 @@ public class MatchController {
     private final SlotServiceImpl slotService;
     private final LeagueServiceImpl leagueService;
     private final TourServiceImpl tourService;
+    private final StadiumServiceImpl stadiumService;
 
     @Autowired
     public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
-                           SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService) {
+                           SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService,
+                           StadiumServiceImpl stadiumService) {
         this.matchService = matchService;
         this.teamService = teamService;
         this.slotService = slotService;
         this.leagueService = leagueService;
         this.tourService = tourService;
+        this.stadiumService = stadiumService;
     }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
@@ -99,11 +102,11 @@ public class MatchController {
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
     public String showMatchList(Model model) {
         model.addAttribute("matches", matchService.generateJSON());
-        model.addAttribute("teams", teamService.findAll());
-        model.addAttribute("tours", tourService.generateJSON());
-        model.addAttribute("leagues", leagueService.generateJSON());
+//        model.addAttribute("teams", teamService.findAll());
+        model.addAttribute("tours", tourService.generateTourFilterJSON());
+        model.addAttribute("leagues", leagueService.generateLeagueFilterJSON());
         model.addAttribute("leagueList", leagueService.findWithMatches());
-        model.addAttribute("tourList", tourService.getToursInfo());
+        model.addAttribute("tourList", tourService.findWithMatches());
 
         return "matches/all-matches";
     }
@@ -113,5 +116,23 @@ public class MatchController {
     public String onChangeTeams(@PathVariable("id") Long id) {
 
         return leagueService.getTeamsJSON(id);
+    }
+
+    @GetMapping(value = "matches/{id}/fast-signify")
+    public String showFastSignificationForm(@PathVariable("id") Long id, Model model){
+        Match match = matchService.findById(id);
+        List<Stadium> stadiums = stadiumService.findAllWithSlots();
+        if(match == null) {
+            //TODO : ?
+            throw new NullPointerException("Match not found");
+        }
+        if(stadiums == null && stadiums.isEmpty()){
+            throw new NullPointerException("Stadium not found");
+        }
+        model.addAttribute("match", match);
+        model.addAttribute("stadiums", stadiums);
+
+        return "matches/fast-signify";
+
     }
 }

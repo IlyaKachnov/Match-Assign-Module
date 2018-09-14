@@ -1,13 +1,16 @@
 package app.services;
 
+import app.dto.LeagueFilterDTO;
 import app.models.League;
 import app.models.Team;
 import app.repositories.LeagueRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,10 +18,12 @@ import java.util.stream.Collectors;
 public class LeagueServiceImpl implements LeagueService {
 
     private LeagueRepository leagueRepository;
+    private Gson gson;
 
     @Autowired
-    public LeagueServiceImpl(LeagueRepository leagueRepository) {
+    public LeagueServiceImpl(LeagueRepository leagueRepository, Gson gson) {
         this.leagueRepository = leagueRepository;
+        this.gson = gson;
     }
 
     @Override
@@ -33,12 +38,13 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public League findById(Long id) {
-        return this.leagueRepository.findOne(id);
+        return leagueRepository.findById(id).orElse(null);
     }
 
     @Override
     public void delete(Long id) {
-        leagueRepository.delete(id);
+        leagueRepository.deleteById(id);
+
     }
 
     @Override
@@ -58,32 +64,26 @@ public class LeagueServiceImpl implements LeagueService {
         return leagueRepository.findWithMatches();
     }
 
-    //TODO:DTO classes
     @Override
-    public String generateJSON() {
-        StringBuilder json = new StringBuilder("{");
-//        List<League> leagues = leagueRepository.findAll();
+    public String generateLeagueFilterJSON() {
         List<League> leagues = leagueRepository.findWithMatches();
-        if (leagues.isEmpty()) {
+        if (leagues == null && leagues.isEmpty()) {
             return "[]";
         }
-        leagues.forEach(l -> {
-            json.append("\"").append(l.getName()).append("\"").append(":");
-            json.append("{\"title\": \"").append(l.getName()).append("\"},");
-        });
-        json.deleteCharAt(json.lastIndexOf(","));
-        json.append("}");
 
-        return json.toString();
+        Set<LeagueFilterDTO> leagueFilterDTOS = LeagueFilterDTO.createLeagueList(leagues);
+        return gson.toJson(leagueFilterDTOS);
     }
 
     @Override
     public String getTeamsJSON(Long id) {
-        League league = leagueRepository.findOne(id);
+
+        League league = leagueRepository.findById(id).orElse(null);
         if(league == null) {
             return "[]";
         }
         List<Team> teamList = league.getTeams();
+
         StringBuilder json = new StringBuilder("[");
         teamList.forEach(team -> {
             json.append("{\"id\": \"").append(team.getId()).append("\",");

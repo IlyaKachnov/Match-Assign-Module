@@ -1,6 +1,7 @@
 package app.dto;
 
 import app.models.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class MatchCalendarDTO {
     }
 
     public static List<MatchCalendarDTO> createMatchCalendarList(List<Match> matches) {
+
         return matches.stream().map(match -> new MatchCalendarDTO(match)).collect(Collectors.toList());
     }
 

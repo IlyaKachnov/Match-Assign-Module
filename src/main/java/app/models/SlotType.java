@@ -11,7 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "slot_types", uniqueConstraints = {@UniqueConstraint(columnNames = {"typeName", "duration"})})
+@Table(name = "slot_types", schema = "public",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"typeName", "duration"})})
 public class SlotType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
