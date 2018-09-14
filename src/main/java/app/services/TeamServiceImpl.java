@@ -28,16 +28,18 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team findById(Long id) {
-        return this.teamRepository.findOne(id);
+        return this.teamRepository.findById(id).orElse(null);
     }
 
     @Override
     public void delete(Long id) {
-        this.teamRepository.delete(id);
+        this.teamRepository.deleteById(id);
     }
 
     public List<Team> findWithoutUser() {
-        return this.teamRepository.findAll().stream().filter(t -> t.getUser() == null).collect(Collectors.toList());
+        return this.teamRepository.findAll().stream()
+                .filter(t -> t.getUser() == null)
+                .collect(Collectors.toList());
     }
 
     @Override

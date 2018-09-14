@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "slots")
+@Table(name = "slots", schema = "public")
 public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

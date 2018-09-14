@@ -21,7 +21,9 @@ public class SlotsSignificationService {
     private final SlotRepository slotRepository;
     private final SlotSignificationTimeRepository slotSignificationTimeRepository;
     private final UserRepository userRepository;
-    private final SlotMessageServiceImpl messageService;
+    private final MatchMessageService messageService;
+    private final StadiumService stadiumService;
+    private final MatchService matchService;
 
     @Autowired
     public SlotsSignificationService(StadiumRepository stadiumRepository,
@@ -29,27 +31,28 @@ public class SlotsSignificationService {
                                      SlotRepository slotRepository,
                                      SlotSignificationTimeRepository slotSignificationTimeRepository,
                                      UserRepository userRepository,
-                                     SlotMessageServiceImpl messageService) {
+                                     MatchMessageService messageService,
+                                     StadiumService stadiumService,
+                                     MatchService matchService) {
         this.stadiumRepository = stadiumRepository;
         this.matchRepository = matchRepository;
         this.slotRepository = slotRepository;
         this.slotSignificationTimeRepository = slotSignificationTimeRepository;
         this.userRepository = userRepository;
         this.messageService = messageService;
+        this.stadiumService = stadiumService;
+        this.matchService = matchService;
     }
 
     public String generateSlotsJSON(Long id, String userEmail) {
         List<Slot> slots;
-        try {
-            slots = stadiumRepository.findOne(id).getSlots();
-            if (slots.isEmpty()) {
-                return null;
-            }
-        } catch (NullPointerException exc) {
-            logger.info("slots not found");
+        Stadium stadium = stadiumService.findById(id);
+        if (stadium == null) {
+            return null;
+        } else if (stadium.getSlots().isEmpty()) {
             return null;
         }
-
+        slots = stadium.getSlots();
         List<SlotSignificationTime> slotSignificationTimes = slotSignificationTimeRepository.findAll();
         User currUser = userRepository.findByEmail(userEmail);
         Set<League> userLeagues = new HashSet<>();
@@ -70,7 +73,11 @@ public class SlotsSignificationService {
                                         Long slotId) {
         User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
         List<Team> userTeams = currUser.getTeamList();
-        Slot currSlot = slotRepository.findOne(slotId);
+        Optional<Slot> currSlotOptional = slotRepository.findById(slotId);
+        if (!currSlotOptional.isPresent()) {
+            return null;
+        }
+        Slot currSlot = currSlotOptional.get();
 
         if (currUser.getRole().equals(Role.adminRole)) {
             List<Match> allMatchesByDate = matchRepository.findAll().stream()
@@ -104,7 +111,7 @@ public class SlotsSignificationService {
 
     public synchronized void signifySlot(Long matchId, Long slotId, String userEmail) {
         User currUser = userRepository.findByEmail(userEmail);
-        Match match = matchRepository.findOne(matchId);
+        Match match = matchService.findById(matchId);
         MatchMessage message = match.getMatchMessage();
         if (match != null && match.getSlot() != null) {
             return;
@@ -118,7 +125,11 @@ public class SlotsSignificationService {
                             match.getHomeTeam().getUser().equals(currUser))
                     ) {
 
-                Slot currSlot = slotRepository.findOne(slotId);
+                Optional<Slot> currSlotOptional = slotRepository.findById(slotId);
+                if (!currSlotOptional.isPresent()) {
+                    return;
+                }
+                Slot currSlot = currSlotOptional.get();
                 if (currSlot.getMatch() == null && currSlot.getSlotType().getSignifiable()) {
                     currSlot.setMatch(match);
                     match.setMatchDate(currSlot.getEventDate());
@@ -134,7 +145,11 @@ public class SlotsSignificationService {
     }
 
     public void rejectSlot(Long slotId, String userEmail) {
-        Slot currSlot = slotRepository.findOne(slotId);
+        Optional<Slot> currSlotOptional = slotRepository.findById(slotId);
+        if (!currSlotOptional.isPresent()) {
+            return;
+        }
+        Slot currSlot = currSlotOptional.get();
         Match currMatch = currSlot.getMatch();
         MatchMessage message = currMatch.getMatchMessage();
 

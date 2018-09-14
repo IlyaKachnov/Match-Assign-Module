@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "matches")
+@Table(name = "matches", schema = "public")
 public class Match {
 
     @Id

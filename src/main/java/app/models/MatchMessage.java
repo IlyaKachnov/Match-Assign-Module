@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "match_messages")
+@Table(name = "match_messages", schema = "public")
 public class MatchMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

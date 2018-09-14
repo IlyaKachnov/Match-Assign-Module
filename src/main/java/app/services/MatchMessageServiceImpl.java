@@ -9,19 +9,19 @@ import java.util.List;
 
 @Service
 @Primary
-public class SlotMessageServiceImpl implements SlotMessageService{
+public class MatchMessageServiceImpl implements MatchMessageService {
 
     private final SlotMessageRepository slotMessageRepository;
     private final EmailServiceImpl emailService;
 
-    public SlotMessageServiceImpl(SlotMessageRepository slotMessageRepository, EmailServiceImpl emailService) {
+    public MatchMessageServiceImpl(SlotMessageRepository slotMessageRepository, EmailServiceImpl emailService) {
         this.slotMessageRepository = slotMessageRepository;
         this.emailService = emailService;
     }
 
     @Override
     public MatchMessage findById(Long id) {
-        return slotMessageRepository.findOne(id);
+        return slotMessageRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SlotMessageServiceImpl implements SlotMessageService{
 
     @Override
     public void delete(Long id) {
-        slotMessageRepository.delete(id);
+        slotMessageRepository.deleteById(id);
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Primary
@@ -23,7 +24,7 @@ public class SlotTypeServiceImpl implements SlotTypeService {
 
     @Override
     public SlotType findById(Long id) {
-        return slotTypeRepository.findOne(id);
+        return slotTypeRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class SlotTypeServiceImpl implements SlotTypeService {
 
     @Override
     public void delete(Long id) {
-        slotTypeRepository.delete(id);
+        slotTypeRepository.deleteById(id);
     }
 
     @Override

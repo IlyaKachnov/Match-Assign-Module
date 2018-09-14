@@ -21,7 +21,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match findById(Long id) {
-        return matchRepository.findOne(id);
+        return matchRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void delete(Long id) {
-        matchRepository.delete(id);
+        matchRepository.deleteById(id);
     }
 
     public String generateJSON() {

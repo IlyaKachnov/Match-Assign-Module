@@ -28,12 +28,12 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public League findById(Long id) {
-        return this.leagueRepository.findOne(id);
+        return this.leagueRepository.findById(id).orElse(null);
     }
 
     @Override
     public void delete(Long id) {
-        this.leagueRepository.delete(id);
+        this.leagueRepository.deleteById(id);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class LeagueServiceImpl implements LeagueService {
 
     @Override
     public String getTeamsJSON(Long id) {
-        List<Team> teamList = leagueRepository.findOne(id).getTeams();
+        List<Team> teamList = findById(id).getTeams();
         StringBuilder json = new StringBuilder("[");
         teamList.forEach(team -> {
             json.append("{\"id\": \"").append(team.getId()).append("\",");
