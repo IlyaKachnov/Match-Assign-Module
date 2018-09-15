@@ -11,19 +11,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 public class MatchController {
 
-    private final MatchServiceImpl matchService;
+    private final MatchService matchService;
     private final TeamServiceImpl teamService;
     private final SlotServiceImpl slotService;
     private final LeagueServiceImpl leagueService;
     private final TourServiceImpl tourService;
 
     @Autowired
-    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
+    public MatchController(MatchService matchService, TeamServiceImpl teamService,
                            SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService) {
         this.matchService = matchService;
         this.teamService = teamService;
@@ -97,8 +98,8 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
-    public String showMatchList(Model model) {
-        model.addAttribute("matches", matchService.generateJSON());
+    public String showMatchList(Model model, HttpServletRequest httpServletRequest) {
+        model.addAttribute("matches", matchService.generateJSON(httpServletRequest.getUserPrincipal().getName()));
         model.addAttribute("teams", teamService.findAll());
         model.addAttribute("tours", tourService.generateJSON());
         model.addAttribute("leagues", leagueService.generateJSON());

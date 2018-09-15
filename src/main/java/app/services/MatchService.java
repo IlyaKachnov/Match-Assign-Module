@@ -13,4 +13,5 @@ public interface MatchService {
 
     void delete(Long id);
 
+    String generateJSON(String userEmail);
 }
