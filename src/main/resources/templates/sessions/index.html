@@ -108,14 +108,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="session:${sessions}">
-                                <td th:text="${session.league.name}"></td>
-                                <td th:text="${#dates.format(session.startDate, 'dd.MM.yyyy')}"></td>
-                                <td th:text="${#dates.format(session.endDate, 'dd.MM.yyyy')}"></td>
-                                <td th:text="${#dates.format(session.startTime, 'HH:mm')}"></td>
-                                <td th:text="${#dates.format(session.endTime,'HH:mm')}"></td>
+                            <tr th:each="cur_session:${sessions}">
+                                <td th:text="${cur_session.league.name}"></td>
+                                <td th:text="${#dates.format(cur_session.startDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${#dates.format(cur_session.endDate, 'dd.MM.yyyy')}"></td>
+                                <td th:text="${#dates.format(cur_session.startTime, 'HH:mm')}"></td>
+                                <td th:text="${#dates.format(cur_session.endTime,'HH:mm')}"></td>
                                 <td>
-                                    <a th:href="@{'/sessions/'+${session.id}+'/edit'}"
+                                    <a th:href="@{'/sessions/'+${cur_session.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Редактировать"><i class="la la-edit"></i></a>
                                     <!--<a href="#" th:attr="data-href=@{'/sessions/'+${session.id}+'/delete'}" id="m_sweetalert" class="m-portlet__nav-link btn m-btn m-btn&#45;&#45;hover-danger m-btn&#45;&#45;icon m-btn&#45;&#45;icon-only m-btn&#45;&#45;pill" title="Удалить"><i class="la la-trash"></i></a>-->

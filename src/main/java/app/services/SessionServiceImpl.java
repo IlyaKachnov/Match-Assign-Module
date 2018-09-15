@@ -18,7 +18,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SlotSignificationTime findById(Long id) {
-        return this.repository.findOne(id);
+        return this.repository.findById(id).orElse(null);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void delete(Long id) {
-        this.repository.delete(id);
+        this.repository.deleteById(id);
     }
 
     public SlotSignificationTime getWithLeague(SlotSignificationTime significationTime) {

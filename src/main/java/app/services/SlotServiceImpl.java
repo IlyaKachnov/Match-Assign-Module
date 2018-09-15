@@ -17,7 +17,7 @@ public class SlotServiceImpl implements SlotService {
 
     @Override
     public Slot findById(Long id) {
-        return this.slotRepository.findOne(id);
+        return this.slotRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class SlotServiceImpl implements SlotService {
 
     @Override
     public void delete(Long id) {
-        this.slotRepository.delete(id);
+        this.slotRepository.deleteById(id);
     }
 }
