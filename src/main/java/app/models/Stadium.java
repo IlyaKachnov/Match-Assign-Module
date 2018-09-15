@@ -43,8 +43,4 @@ public class Stadium {
 
     public Stadium() {
     }
-
-    public Stadium(String name) {
-        this.name = name;
-    }
 }

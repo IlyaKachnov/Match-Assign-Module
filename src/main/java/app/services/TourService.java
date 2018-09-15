@@ -16,7 +16,7 @@ public interface TourService {
 
     Tour findByName(String name);
 
-    String generateJSON();
+    String generateTourFilterJSON();
 
-    Set<String> getToursInfo();
+    List<Tour> findWithMatches();
 }

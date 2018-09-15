@@ -15,4 +15,7 @@ public interface StadiumService {
     void delete(Long id);
 
     Stadium findByName(String name);
+
+    List<Stadium> findAllWithSlots();
+
 }

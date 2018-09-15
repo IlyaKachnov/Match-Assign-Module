@@ -1,7 +1,9 @@
 package app.services;
 
+import app.dto.TourFilterDTO;
 import app.models.Tour;
 import app.repositories.TourRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,14 @@ import java.util.stream.Collectors;
 public class TourServiceImpl implements TourService {
 
 
-    private final TourRepository tourRepository;
+    private TourRepository tourRepository;
+    private Gson gson;
 
     @Autowired
-    public TourServiceImpl(TourRepository tourRepository) {
+    public TourServiceImpl(TourRepository tourRepository, Gson gson) {
+
         this.tourRepository = tourRepository;
+        this.gson = gson;
     }
 
     @Override
@@ -43,30 +48,28 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
+    public List<Tour> findWithMatches() {
+        return tourRepository.findWithMatches();
+    }
+
+    @Override
     public Tour findByName(String name) {
         return tourRepository.findByName(name);
     }
 
     @Override
-    public Set<String> getToursInfo() {
-        return tourRepository.findAll().stream()
-                .filter(t-> !(t.getMatches().isEmpty()))
-                .map(Tour::getFullInfo)
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public String generateJSON() {
+    public String generateTourFilterJSON() {
+        List<Tour> tours = tourRepository.findWithMatches();
         StringBuilder json = new StringBuilder("{");
-        Set<String> toursInfo = getToursInfo();
-
-        if (toursInfo.isEmpty()) {
-            return "[]";
+        if (tours == null && tours.isEmpty()) {
+            return "{}";
         }
-        toursInfo.forEach(s -> {
-            json.append("\"").append(s).append("\"").append(":");
-            json.append("{\"title\": \"").append(s).append("\"},");
+
+        tours.forEach(s -> {
+            json.append("\"").append(s.getFullInfo()).append("\"").append(":");
+            json.append("{\"title\": \"").append(s.getFullInfo()).append("\"},");
         });
+
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("}");
 

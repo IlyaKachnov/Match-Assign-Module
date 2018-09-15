@@ -18,17 +18,17 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Team> findAll() {
-        return this.teamRepository.findAll();
+        return teamRepository.findAll();
     }
 
     @Override
     public void save(Team team) {
-        this.teamRepository.save(team);
+        teamRepository.save(team);
     }
 
     @Override
     public Team findById(Long id) {
-        return this.teamRepository.findById(id).orElse(null);
+        return teamRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     public List<Team> findWithoutUser() {
-        return this.teamRepository.findAll().stream()
+        return teamRepository.findAll().stream()
                 .filter(t -> t.getUser() == null)
                 .collect(Collectors.toList());
     }

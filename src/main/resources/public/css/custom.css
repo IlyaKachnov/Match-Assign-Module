@@ -68,3 +68,6 @@
      margin-top: .1rem;
      font-weight: 300;
  }
+.select2-container--default .select2-results__option .select2-results__group {
+    font-weight: 600;
+}

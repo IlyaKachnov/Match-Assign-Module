@@ -17,7 +17,7 @@ public interface LeagueService {
 
     League findByName(String name);
 
-    String generateJSON();
+    String generateLeagueFilterJSON();
 
     String getTeamsJSON(Long id);
 

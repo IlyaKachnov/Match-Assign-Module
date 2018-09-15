@@ -70,8 +70,8 @@
                                                     <select class="form-control m-bootstrap-select" style="border-radius: 0 !important;" id="m_form_tour">
                                                         <option value="">Все</option>
                                                         <option value="" th:each="e:${tourList}"
-                                                                th:value="${e}"
-                                                                th:text="${e}">
+                                                                th:value="${e.fullInfo}"
+                                                                th:text="${e.fullInfo}">
                                                         </option>
                                                     </select>
                                                 </div>

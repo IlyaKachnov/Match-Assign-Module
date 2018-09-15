@@ -1,5 +1,8 @@
 package app.services;
 
+
+import app.dto.MatchCalendarDTO;
+import com.google.gson.Gson;
 import app.models.*;
 import app.repositories.MatchRepository;
 import app.repositories.UserRepository;
@@ -12,11 +15,18 @@ import java.util.List;
 @Service
 @Primary
 public class MatchServiceImpl implements MatchService {
-    @Autowired
+
+
     private MatchRepository matchRepository;
+    private Gson gson;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public MatchServiceImpl(MatchRepository matchRepository, Gson gson, UserRepository userRepository;) {
+        this.matchRepository = matchRepository;
+        this.gson = gson;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<Match> findAll() {

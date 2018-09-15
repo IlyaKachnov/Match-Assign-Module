@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Primary
 public class StadiumServiceImpl implements StadiumService {
 
-    @Autowired
     private StadiumRepository stadiumRepository;
+
+    @Autowired
+    public StadiumServiceImpl(StadiumRepository stadiumRepository) {
+        this.stadiumRepository = stadiumRepository;
+    }
 
     @Override
     public Stadium findById(Long id) {
@@ -42,15 +44,21 @@ public class StadiumServiceImpl implements StadiumService {
         return stadiumRepository.findByName(name);
     }
 
+    @Override
     public List<Stadium> findAllWithSlots() {
-        List<Stadium> stadiumList = this.stadiumRepository.findAll();
-        List<Stadium> stadiumsWithSlots = new ArrayList<>();
-        stadiumList.forEach(stadium -> {
-            if (!stadium.getSlots().isEmpty()) {
-                stadiumsWithSlots.add(stadium);
-            }
-        });
-
-        return stadiumsWithSlots;
+        return stadiumRepository.findAllWithSlots();
     }
+
+
+//    public List<Stadium> findAllWithSlots() {
+//        List<Stadium> stadiumList = stadiumRepository.findAll();
+//        List<Stadium> stadiumsWithSlots = new ArrayList<>();
+//        stadiumList.forEach(stadium -> {
+//            if (!stadium.getSlots().isEmpty()) {
+//                stadiumsWithSlots.add(stadium);
+//            }
+//        });
+//
+//        return stadiumsWithSlots;
+//    }
 }
