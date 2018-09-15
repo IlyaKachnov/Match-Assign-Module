@@ -60,11 +60,19 @@ public class TourServiceImpl implements TourService {
     @Override
     public String generateTourFilterJSON() {
         List<Tour> tours = tourRepository.findWithMatches();
+        StringBuilder json = new StringBuilder("{");
         if (tours == null && tours.isEmpty()) {
-            return "[]";
+            return "{}";
         }
 
-        Set<TourFilterDTO> tourFilterDTOS = TourFilterDTO.createTourList(tours);
-        return gson.toJson(tourFilterDTOS);
+        tours.forEach(s -> {
+            json.append("\"").append(s.getFullInfo()).append("\"").append(":");
+            json.append("{\"title\": \"").append(s.getFullInfo()).append("\"},");
+        });
+
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("}");
+
+        return json.toString();
     }
 }

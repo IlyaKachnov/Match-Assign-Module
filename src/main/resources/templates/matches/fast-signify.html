@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head::head"></head>
+
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <div th:replace="fragments/left_aside :: left_aside"></div>
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <div class="m-content">
+                <!--begin::Portlet-->
+                <div class="m-portlet">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    Назначить матч
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--begin::Form-->
+                    <form class="m-form m-form--fit m-form--label-align-right" id="m_form_1" method="post"
+                          th:action="@{'/matches/'+${match.id}+'/signify'}" th:object="${match}">
+                        <div class="m-portlet__body">
+                            <div class="m-form__content">
+                                <div class="m-alert m-alert--icon alert alert-danger m--hide" role="alert"
+                                     id="m_form_1_msg">
+                                    <div class="m-alert__icon">
+                                        <i class="la la-warning"></i>
+                                    </div>
+                                    <div class="m-alert__text">
+                                        Не все поля заполнены или введенные данные содержат ошибки!
+                                    </div>
+                                    <div class="m-alert__close">
+                                        <button type="button" class="close" data-close="alert"
+                                                aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-3 col-sm-12">
+                                    Слот *
+                                </label>
+                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                    <select class="form-control m-select2" id="m_select2_2" name="slot"
+                                            th:field="*{slot}" placeholder="Выберите слот">
+                                        <option value=""></option>
+                                        <optgroup th:each="stadium:${stadiums}"
+                                                  th:label="${stadium.name}" th:attr="data-id=${stadium.id}">
+                                            <option th:each="slot:${stadium.slots}" th:if="${slot.match == null}" th:text="${slot.fullInfo}"
+                                                    th:value="${slot.id}">
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__foot m-portlet__foot--fit">
+                            <div class="m-form__actions m-form__actions">
+                                <div class="row">
+                                    <div class="col-lg-9 ml-lg-auto">
+                                        <input type="submit" value="Занять слот" class="btn btn-info m-btn--square"/>
+                                        <a class="btn btn-secondary m-btn--square" th:href="@{'/matches/'}">Отмена</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Portlet-->
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
+</div>
+
+<!--<footer th:replace="layout :: site-footer" />-->
+<script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
+<script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
+<!--begin::Page Resources -->
+<script src="/../../public/js/forms/fast-signify-form.js" th:src="@{/js/forms/fast-signify-form.js}"
+        type="text/javascript"></script>
+<!--end::Page Resources -->
+</body>
+</html>

@@ -67,12 +67,19 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     public String generateLeagueFilterJSON() {
         List<League> leagues = leagueRepository.findWithMatches();
+        StringBuilder json = new StringBuilder("{");
         if (leagues == null && leagues.isEmpty()) {
-            return "[]";
+            return "{}";
         }
 
-        Set<LeagueFilterDTO> leagueFilterDTOS = LeagueFilterDTO.createLeagueList(leagues);
-        return gson.toJson(leagueFilterDTOS);
+        leagues.forEach(l -> {
+            json.append("\"").append(l.getName()).append("\"").append(":");
+            json.append("{\"title\": \"").append(l.getName()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("}");
+
+        return json.toString();
     }
 
     @Override

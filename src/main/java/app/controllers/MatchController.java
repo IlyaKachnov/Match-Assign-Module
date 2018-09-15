@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MatchController {
@@ -22,17 +22,19 @@ public class MatchController {
     private final LeagueServiceImpl leagueService;
     private final TourServiceImpl tourService;
     private final StadiumServiceImpl stadiumService;
+    private final SlotsSignificationService slotsSignificationService;
 
     @Autowired
     public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
                            SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService,
-                           StadiumServiceImpl stadiumService) {
+                           StadiumServiceImpl stadiumService, SlotsSignificationService slotsSignificationService) {
         this.matchService = matchService;
         this.teamService = teamService;
         this.slotService = slotService;
         this.leagueService = leagueService;
         this.tourService = tourService;
         this.stadiumService = stadiumService;
+        this.slotsSignificationService = slotsSignificationService;
     }
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
@@ -118,21 +120,33 @@ public class MatchController {
         return leagueService.getTeamsJSON(id);
     }
 
-    @GetMapping(value = "matches/{id}/fast-signify")
+    @GetMapping(value = "matches/{id}/signify")
     public String showFastSignificationForm(@PathVariable("id") Long id, Model model){
         Match match = matchService.findById(id);
         List<Stadium> stadiums = stadiumService.findAllWithSlots();
         if(match == null) {
-            //TODO : ?
-            throw new NullPointerException("Match not found");
-        }
-        if(stadiums == null && stadiums.isEmpty()){
-            throw new NullPointerException("Stadium not found");
+            return "error/404";
         }
         model.addAttribute("match", match);
         model.addAttribute("stadiums", stadiums);
 
         return "matches/fast-signify";
 
+    }
+
+    @PostMapping(value = "matches/{matchId}/signify")
+    public String signifySlot(@PathVariable Long matchId, @ModelAttribute Match match,
+                              HttpServletRequest httpServletRequest){
+        String userEmail = httpServletRequest.getUserPrincipal().getName();
+        slotsSignificationService.signifySlot(matchId, match.getSlot().getId(), userEmail);
+        return "redirect:/matches";
+    }
+
+    @GetMapping(value = "matches/{matchId}/reject")
+    public String rejectSlot(@PathVariable Long matchId, HttpServletRequest httpServletRequest) {
+        String userEmail = httpServletRequest.getUserPrincipal().getName();
+        Match match = matchService.findById(matchId);
+        slotsSignificationService.rejectSlot(match.getSlot().getId(), userEmail);
+        return "redirect:/matches";
     }
 }

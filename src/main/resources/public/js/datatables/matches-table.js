@@ -90,7 +90,7 @@ var DatatableDataLocalDemo = function () {
                     title: "Тур",
                     // callback function support for column rendering
                     template: function (row) {
-                        return '<span>' + tours[0].title + '</span>';
+                        return '<span>' + tours[row.tour].title + '</span>';
                     }
                 },
                 {

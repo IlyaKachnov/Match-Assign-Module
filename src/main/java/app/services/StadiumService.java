@@ -17,4 +17,5 @@ public interface StadiumService {
     Stadium findByName(String name);
 
     List<Stadium> findAllWithSlots();
+
 }

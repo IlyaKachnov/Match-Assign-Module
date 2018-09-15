@@ -3,6 +3,7 @@ package app.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -70,14 +71,6 @@ public class Slot {
     public void setId(Long id) {
         this.id = id;
     }
-//
-//    public String getEventName() {
-//        return eventName;
-//    }
-//
-//    public void setEventName(String eventName) {
-//        this.eventName = eventName;
-//    }
 
     public Date getStartTime() {
         return startTime;
@@ -101,6 +94,13 @@ public class Slot {
 
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public String getFullInfo() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return timeFormat.format(startTime) + "-" + timeFormat.format(endTime)
+                + ", " + dateFormat.format(eventDate);
     }
 
     public Slot() {
