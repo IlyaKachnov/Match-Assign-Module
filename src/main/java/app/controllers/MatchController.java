@@ -104,7 +104,6 @@ public class MatchController {
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
     public String showMatchList(Model model) {
         model.addAttribute("matches", matchService.generateJSON());
-//        model.addAttribute("teams", teamService.findAll());
         model.addAttribute("tours", tourService.generateTourFilterJSON());
         model.addAttribute("leagues", leagueService.generateLeagueFilterJSON());
         model.addAttribute("leagueList", leagueService.findWithMatches());

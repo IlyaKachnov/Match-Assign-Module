@@ -4,15 +4,29 @@ var SweetAlertTable = function () {
     var initAlert = function () {
         var alert = $(document).on('click', '.m_sweetalert', function(e) {
             e.preventDefault();
-            var href = $(this).attr("data-href");
-            var nRow = $(this).closest('tr');
+            var thisEl = $(this);
+            var href = thisEl.attr("data-href");
+            var nRow = thisEl.closest('tr');
             var token = $("meta[name='_csrf']").attr("content");
+            var dataAction = thisEl.attr("data-action");
+            var title = "Удалить запись?";
+            var type = "POST";
+            var confirmButtonText = "Удалить";
+            var successHeader = 'Удалено!';
+            var successText =  'Запись была успешно удалена';
+            if(dataAction == 1) {
+                title = "Отменить слот?";
+                type = "GET";
+                confirmButtonText = "Да";
+                successHeader = "Слот отменен!";
+                successText = "Слот был успешно отменен";
+            }
 
             swal({
-                title: 'Удалить запись?',
+                title: title,
                 type: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Удалить',
+                confirmButtonText: confirmButtonText,
                 cancelButtonText: "Отмена",
             }).then(function(result) {
                 if (result.value) {
@@ -22,15 +36,22 @@ var SweetAlertTable = function () {
                         },
                     });
                     $.ajax({
-                        type: "POST",
+                        type: type,
                         url: href,
                         success: function () {
-                            nRow.find('td').remove();
                             swal(
-                                'Удалено!',
-                                'Запись была успешно удалена',
+                                successHeader,
+                                successText,
                                 'success'
                             )
+                            if(dataAction == 1) {
+                                // thisEl.find("i").removeClass("la-calendar-times-o")
+                                //     .addClass("la-calendar-plus-o");
+                                location.reload();
+                            }
+                            else {
+                                nRow.find('td').remove();
+                            }
                         }
                     });
                 }

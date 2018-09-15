@@ -111,10 +111,10 @@
                                 <td>
                                     <a th:if="${match.slot == null}" th:href="@{'/matches/'+${match.id}+'/signify'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
-                                       title="Занять слот"><i class="la la-calendar-plus-o"></i></a>
-                                    <a th:if="${match.slot != null}" th:href="@{'/matches/'+${match.id}+'/reject'}"
-                                       class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
-                                       title="Отменить слот"><i class="la la-calendar-times-o"></i></a>
+                                       title="Занять слот"><i class="la la-plus-circle"></i></a>
+                                    <a th:if="${match.slot != null}" data-action="1"  href="#" th:attr="data-href=@{'/matches/'+${match.id}+'/reject'}"
+                                       class="m_sweetalert m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
+                                       title="Отменить слот"><i class="la la-times-circle"></i></a>
                                     <a th:href="@{'/matches/'+${match.id}+'/edit'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Редактировать"><i class="la la-edit"></i></a>
