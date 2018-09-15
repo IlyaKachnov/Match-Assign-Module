@@ -10,13 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 public class MatchController {
 
-    private final MatchServiceImpl matchService;
+    private final MatchService matchService;
     private final TeamServiceImpl teamService;
     private final SlotServiceImpl slotService;
     private final LeagueServiceImpl leagueService;
@@ -25,7 +27,7 @@ public class MatchController {
     private final SlotsSignificationService slotsSignificationService;
 
     @Autowired
-    public MatchController(MatchServiceImpl matchService, TeamServiceImpl teamService,
+    public MatchController(MatchService matchService, TeamServiceImpl teamService,
                            SlotServiceImpl slotService, LeagueServiceImpl leagueService, TourServiceImpl tourService,
                            StadiumServiceImpl stadiumService, SlotsSignificationService slotsSignificationService) {
         this.matchService = matchService;
@@ -102,10 +104,10 @@ public class MatchController {
     }
 
     @RequestMapping(value = "/all-matches", method = RequestMethod.GET)
-    public String showMatchList(Model model) {
-        model.addAttribute("matches", matchService.generateJSON());
-        model.addAttribute("tours", tourService.generateTourFilterJSON());
-        model.addAttribute("leagues", leagueService.generateLeagueFilterJSON());
+    public String showMatchList(Model model, HttpServletRequest httpServletRequest) {
+        model.addAttribute("matches", matchService.generateJSON(httpServletRequest.getUserPrincipal().getName()));
+        model.addAttribute("tours", tourService.generateJSON());
+        model.addAttribute("leagues", leagueService.generateJSON());
         model.addAttribute("leagueList", leagueService.findWithMatches());
         model.addAttribute("tourList", tourService.findWithMatches());
 
