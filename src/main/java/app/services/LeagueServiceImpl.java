@@ -67,10 +67,10 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     public String generateLeagueFilterJSON() {
         List<League> leagues = leagueRepository.findWithMatches();
-        StringBuilder json = new StringBuilder("{");
-        if (leagues == null && leagues.isEmpty()) {
+        if ((leagues == null) && (leagues.isEmpty())) {
             return "{}";
         }
+        StringBuilder json = new StringBuilder("{");
 
         leagues.forEach(l -> {
             json.append("\"").append(l.getName()).append("\"").append(":");

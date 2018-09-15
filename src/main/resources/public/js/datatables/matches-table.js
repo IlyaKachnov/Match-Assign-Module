@@ -104,7 +104,7 @@ var DatatableDataLocalDemo = function () {
                     sortable: true
                 },
                 {
-                    field: "Message",
+                    field: "message",
                     title: "Сообщение",
                     sortable: false
                 },

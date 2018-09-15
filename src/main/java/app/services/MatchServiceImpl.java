@@ -22,7 +22,7 @@ public class MatchServiceImpl implements MatchService {
     private UserRepository userRepository;
 
     @Autowired
-    public MatchServiceImpl(MatchRepository matchRepository, Gson gson, UserRepository userRepository;) {
+    public MatchServiceImpl(MatchRepository matchRepository, Gson gson, UserRepository userRepository) {
         this.matchRepository = matchRepository;
         this.gson = gson;
         this.userRepository = userRepository;
@@ -65,14 +65,14 @@ public class MatchServiceImpl implements MatchService {
             String isDelayed = match.getDelayed() ? "Да" : "Нет";
             String stadium = (match.getSlot() != null) ? match.getSlot().getStadium().getName() : "Не назначен";
 
-            json.append("{\"Home\": \"").append(match.getHomeTeam().getName()).append("\",");
-            json.append("\"Guest\": \"").append(match.getGuestTeam().getName()).append("\",");
-            json.append("\"MatchDate\": \"").append(match.getFormattedDate()).append("\",");
-            json.append("\"Delayed\": \"").append(isDelayed).append("\",");
-            json.append("\"Stadium\": \"").append(stadium).append("\",");
-            json.append("\"League\": \"").append(match.getTour().getLeague().getName()).append("\",");
-            json.append("\"Message\": \"").append(getMessage(match, userTeams, isAdmin)).append("\",");
-            json.append("\"Tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
+            json.append("{\"home\": \"").append(match.getHomeTeam().getName()).append("\",");
+            json.append("\"guest\": \"").append(match.getGuestTeam().getName()).append("\",");
+            json.append("\"matchDate\": \"").append(match.getFormattedDate()).append("\",");
+            json.append("\"delayed\": \"").append(isDelayed).append("\",");
+            json.append("\"stadium\": \"").append(stadium).append("\",");
+            json.append("\"league\": \"").append(match.getTour().getLeague().getName()).append("\",");
+            json.append("\"message\": \"").append(getMessage(match, userTeams, isAdmin)).append("\",");
+            json.append("\"tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
         });
         json.deleteCharAt(json.lastIndexOf(","));
         json.append("]");
