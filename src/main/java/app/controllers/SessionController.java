@@ -18,18 +18,18 @@ public class SessionController {
 
     private final SessionServiceImpl sessionService;
     private final LeagueServiceImpl leagueService;
-    private final EmailServiceImpl emailService;
+
     private final SlotsSignificationService significationService;
     private SessionEmailService sessionEmailService;
     private UserServiceImpl userService;
 
     @Autowired
     public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService,
-                             EmailServiceImpl emailService, SlotsSignificationService significationService,
+                             SlotsSignificationService significationService,
                              SessionEmailService sessionEmailService, UserServiceImpl userService) {
         this.sessionService = sessionService;
         this.leagueService = leagueService;
-        this.emailService = emailService;
+
         this.significationService = significationService;
         this.sessionEmailService = sessionEmailService;
         this.userService = userService;

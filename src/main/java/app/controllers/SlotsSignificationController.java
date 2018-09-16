@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.email.MessageEmail;
 import app.email.services.MessageEmailService;
 import app.models.*;
 import app.repositories.MatchRepository;
@@ -105,6 +106,10 @@ public class SlotsSignificationController {
                 email = message.getMatch().getHomeTeam().getUser().getEmail();
             }
 
+            MessageEmail messageEmail = new MessageEmail();
+            messageEmail.setMatchMessage(message);
+
+            messageEmailService.setMessageEmail(messageEmail);
             messageEmailService.send(email);
         }
 
