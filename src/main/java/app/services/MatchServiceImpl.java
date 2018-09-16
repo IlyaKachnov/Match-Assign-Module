@@ -1,7 +1,5 @@
 package app.services;
 
-
-import app.dto.MatchCalendarDTO;
 import com.google.gson.Gson;
 import app.models.*;
 import app.repositories.MatchRepository;
@@ -95,7 +93,8 @@ public class MatchServiceImpl implements MatchService {
 
         String message = "<button type='button' class='m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
                 "data-toggle='m-popover' data-trigger='focus' title='' data-html='true' data-content='"
-                + matchMessage.getMessage() + "' data-original-title='" +
+                + matchMessage.getMessage().replace("\n", " ").replace("\r", "") +
+                "' data-original-title='" +
                 (matchMessage.getConsidered() ? "Запрос рассмотрен" : "Новое сообщение") + "'" +
                 "><i class='la la-envelope'></i></button>";
 
@@ -109,7 +108,7 @@ public class MatchServiceImpl implements MatchService {
 
         String message = " <a class='add-msg m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
                 "href='#m_modal_4' data-action='/save-message/" +
-                match.getId() + "'" + " data-toggle='modal' data-target='#m_modal_4'><i class='la la-envelope'></i></a>";
+                match.getId() + "'" + " data-toggle='modal' data-target='#m_modal_4'><i class='la la-plus-circle'></i></a>";
 
         return message;
     }

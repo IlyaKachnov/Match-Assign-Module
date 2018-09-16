@@ -1,6 +1,7 @@
 package app.services;
 
 import app.models.MatchMessage;
+import app.models.User;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface MatchMessageService {
     void store(MatchMessage matchMessage);
 
     void delete(Long id);
+
+    List<MatchMessage> getMessagesForHomeTeam(User user);
 }

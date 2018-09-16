@@ -362,8 +362,9 @@ public class SlotsSignificationService {
                 ? "<span href='#' tabindex='0' role='button' " +
                 "class='m-badge " + (message.getConsidered() ? "m-badge--warning" : "m-badge--danger") +
                 "' data-toggle='m-popover' " +
-                "data-trigger='popover' data-content='"
-                + message.getMessage() + "' data-original-title='" +
+                "data-trigger='popover' data-content='" +
+                message.getMessage().replace("\n", " ").replace("\r", "") +
+                "' data-original-title='" +
                 (message.getConsidered() ? "Запрос рассмотрен" : "Новое сообщение") + "'"
                 + "style='outline: none; margin-left: 2px;'>!</span>"
                 : "";

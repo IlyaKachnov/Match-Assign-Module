@@ -1,10 +1,13 @@
 package app.controllers;
 
+import app.models.MatchMessage;
 import app.models.Role;
-import app.models.SlotSignificationTime;
 import app.models.User;
+import app.services.MatchMessageService;
 import app.services.SlotsSignificationService;
-import app.services.UserServiceImpl;
+import app.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,18 +15,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
 
-    private final UserServiceImpl userService;
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private final UserService userService;
     private final SlotsSignificationService slotsSignificationService;
+    private final MatchMessageService matchMessageService;
 
     @Autowired
-    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService) {
+    public HomeController(UserService userService, SlotsSignificationService slotsSignificationService,
+                          MatchMessageService matchMessageService) {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
+        this.matchMessageService = matchMessageService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -32,6 +41,9 @@ public class HomeController {
         User user = userService.findByEmail(principal.getName());
 
         if (user.getRole().equals(Role.managerRole)) {
+            List<MatchMessage> matchMessages = matchMessageService.getMessagesForHomeTeam(user);
+            model.addAttribute("messages", matchMessages.stream().filter(matchMessage ->
+                    matchMessage.getMatch().getMatchDate().after(new Date())).collect(Collectors.toList()));
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
             model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));

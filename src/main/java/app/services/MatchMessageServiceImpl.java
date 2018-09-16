@@ -1,7 +1,8 @@
 package app.services;
 
 import app.models.MatchMessage;
-import app.repositories.SlotMessageRepository;
+import app.models.User;
+import app.repositories.MatchMessageRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -11,28 +12,28 @@ import java.util.List;
 @Primary
 public class MatchMessageServiceImpl implements MatchMessageService {
 
-    private final SlotMessageRepository slotMessageRepository;
+    private final MatchMessageRepository matchMessageRepository;
     private final EmailServiceImpl emailService;
 
-    public MatchMessageServiceImpl(SlotMessageRepository slotMessageRepository, EmailServiceImpl emailService) {
-        this.slotMessageRepository = slotMessageRepository;
+    public MatchMessageServiceImpl(MatchMessageRepository matchMessageRepository, EmailServiceImpl emailService) {
+        this.matchMessageRepository = matchMessageRepository;
         this.emailService = emailService;
     }
 
     @Override
     public MatchMessage findById(Long id) {
-        return slotMessageRepository.findById(id).orElse(null);
+        return matchMessageRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<MatchMessage> findAll() {
-        return slotMessageRepository.findAll();
+        return matchMessageRepository.findAll();
     }
 
     @Override
     public void save(MatchMessage matchMessage) {
         boolean status = matchMessage.getConsidered();
-        slotMessageRepository.save(matchMessage);
+        matchMessageRepository.save(matchMessage);
         String email;
 
         if(status) {
@@ -48,11 +49,16 @@ public class MatchMessageServiceImpl implements MatchMessageService {
 
     @Override
     public void delete(Long id) {
-        slotMessageRepository.deleteById(id);
+        matchMessageRepository.deleteById(id);
+    }
+
+    @Override
+    public List<MatchMessage> getMessagesForHomeTeam(User user) {
+        return matchMessageRepository.getMessagesForHomeTeam(user);
     }
 
     @Override
     public void store(MatchMessage matchMessage) {
-        slotMessageRepository.save(matchMessage);
+        matchMessageRepository.save(matchMessage);
     }
 }

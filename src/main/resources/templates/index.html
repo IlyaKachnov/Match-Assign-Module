@@ -16,7 +16,7 @@
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
                 <div class="row">
-                    <div th:class="${#authorization.expression('hasAuthority(''Менеджер'')')} ? 'col-xl-6' : 'col-xl-12'">
+                    <div th:class="${#authorization.expression('hasAuthority(''Менеджер'')')} ? 'col-xl-4' : 'col-xl-12'">
                         <!--begin:: Widgets/Tasks -->
                         <div class="m-portlet m-portlet--full-height ">
                             <div class="m-portlet__head">
@@ -81,7 +81,7 @@
                         </div>
                         <!--end:: Widgets/Tasks -->
                     </div>
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
+                    <div class="col-xl-4" sec:authorize="hasAuthority('Менеджер')">
                         <!--begin:: Widgets/Support Tickets -->
                         <div class="m-portlet m-portlet--full-height ">
                             <div class="m-portlet__head">
@@ -119,6 +119,53 @@
                         </div>
                         <!--end:: Widgets/Support Tickets -->
                     </div>
+
+                    <div class="col-xl-4" sec:authorize="hasAuthority('Менеджер')">
+                        <!--begin:: Widgets/Tasks -->
+                        <div class="m-portlet m-portlet--full-height ">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text">
+                                            Актуальные сообщения
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="m_widget3_tab1_content">
+                                        <div class="m-widget2">
+                                            <div th:each="message:${messages}"
+                                                 class="m-widget2__item m-widget2__item--danger">
+                                                <div class="m-widget2__checkbox">
+                                                </div>
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text" th:inline="text">
+                                                                <p>Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>:</p>
+                                                                <p>[[${message.message}]]</p>
+															</span>
+                                                </div>
+                                            </div>
+
+                                            <div th:if="${messages.isEmpty()}">
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text"
+                                                                  style="width: 100% !important; text-align: center !important; display: block">
+															Актуальных сообщений не найдено
+															</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end:: Widgets/Tasks -->
+                    </div>
+
+
+
                 </div>
             </div>
         </div>

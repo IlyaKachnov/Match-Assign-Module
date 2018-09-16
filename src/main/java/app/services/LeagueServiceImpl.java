@@ -1,6 +1,5 @@
 package app.services;
 
-import app.dto.LeagueFilterDTO;
 import app.models.League;
 import app.models.Team;
 import app.repositories.LeagueRepository;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +88,9 @@ public class LeagueServiceImpl implements LeagueService {
             return "[]";
         }
         List<Team> teamList = league.getTeams();
+        if (teamList.isEmpty()) {
+            return "[]";
+        }
 
         StringBuilder json = new StringBuilder("[");
         teamList.forEach(team -> {
