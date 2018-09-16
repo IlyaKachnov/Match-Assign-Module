@@ -13,11 +13,10 @@ import java.util.List;
 public class MatchMessageServiceImpl implements MatchMessageService {
 
     private final MatchMessageRepository matchMessageRepository;
-    private final EmailServiceImpl emailService;
 
-    public MatchMessageServiceImpl(MatchMessageRepository matchMessageRepository, EmailServiceImpl emailService) {
+    public MatchMessageServiceImpl(MatchMessageRepository matchMessageRepository) {
         this.matchMessageRepository = matchMessageRepository;
-        this.emailService = emailService;
+
     }
 
     @Override
@@ -32,19 +31,7 @@ public class MatchMessageServiceImpl implements MatchMessageService {
 
     @Override
     public void save(MatchMessage matchMessage) {
-        boolean status = matchMessage.getConsidered();
         matchMessageRepository.save(matchMessage);
-        String email;
-
-        if(status) {
-           email = matchMessage.getMatch().getGuestTeam().getUser().getEmail();
-        }
-
-        else {
-            email = matchMessage.getMatch().getHomeTeam().getUser().getEmail();
-        }
-
-        emailService.sendNotification(email, matchMessage);
     }
 
     @Override

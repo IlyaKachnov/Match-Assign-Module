@@ -36,20 +36,4 @@ public class SessionServiceImpl implements SessionService {
         this.repository.deleteById(id);
     }
 
-    public SlotSignificationTime getWithLeague(SlotSignificationTime significationTime) {
-        Optional<SlotSignificationTime> optional = repository.findAll().stream().filter(sT -> sT.getLeague()
-                .equals(significationTime.getLeague()) && !sT.getLeague()
-                .equals(significationTime.getLeague()))
-                .findAny();
-
-        optional.get().setStartDate(significationTime.getStartDate());
-        optional.get().setEndDate(significationTime.getEndDate());
-        optional.get().setStartTime(significationTime.getStartTime());
-        optional.get().setEndTime(significationTime.getEndTime());
-
-        return optional.get();
-
-    }
-
-
 }

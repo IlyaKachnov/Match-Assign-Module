@@ -1,5 +1,7 @@
 package app.controllers;
 
+import app.email.RegistrationEmail;
+import app.email.services.RegistrationEmailService;
 import app.models.Role;
 import app.models.Team;
 import app.services.TeamServiceImpl;
@@ -22,11 +24,18 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    @Autowired
-    UserServiceImpl userService;
 
-    @Resource
-    TeamServiceImpl teamService;
+    private UserServiceImpl userService;
+    private TeamServiceImpl teamService;
+    private RegistrationEmailService registrationEmailService;
+
+    @Autowired
+    public UserController(UserServiceImpl userService, TeamServiceImpl teamService,
+                          RegistrationEmailService registrationEmailService) {
+        this.userService = userService;
+        this.teamService = teamService;
+        this.registrationEmailService = registrationEmailService;
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String index(Model model) {
@@ -72,6 +81,12 @@ public class UserController {
                 teamService.save(team);
             });
         }
+
+        RegistrationEmail registrationEmail = new RegistrationEmail();
+        registrationEmail.setUserName(userModel.getEmail());
+        registrationEmail.setPassword(user.getPassword());
+        registrationEmailService.setRegistrationEmail(registrationEmail);
+        registrationEmailService.send(userModel.getEmail());
 
         return "redirect:/users";
     }

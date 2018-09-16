@@ -33,6 +33,16 @@ public class HomeController {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
         this.matchMessageService = matchMessageService;
+
+//=======
+//    private SlotSignificationTimeRepository slotSignificationTimeRepository;
+//    @Autowired
+//    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService,
+//                          SlotSignificationTimeRepository slotSignificationTimeRepository) {
+//        this.userService = userService;
+//        this.slotsSignificationService = slotsSignificationService;
+//        this.slotSignificationTimeRepository = slotSignificationTimeRepository;
+//>>>>>>> Stashed changes
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -47,6 +57,7 @@ public class HomeController {
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
             model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
+//            model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
 
             return "index";
         }

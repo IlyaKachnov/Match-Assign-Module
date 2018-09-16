@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.models.League;
+import app.email.services.SessionEmailService;
 import app.models.SlotSignificationTime;
 import app.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -21,14 +20,19 @@ public class SessionController {
     private final LeagueServiceImpl leagueService;
     private final EmailServiceImpl emailService;
     private final SlotsSignificationService significationService;
+    private SessionEmailService sessionEmailService;
+    private UserServiceImpl userService;
 
     @Autowired
     public SessionController(SessionServiceImpl sessionService, LeagueServiceImpl leagueService,
-                             EmailServiceImpl emailService, SlotsSignificationService significationService) {
+                             EmailServiceImpl emailService, SlotsSignificationService significationService,
+                             SessionEmailService sessionEmailService, UserServiceImpl userService) {
         this.sessionService = sessionService;
         this.leagueService = leagueService;
         this.emailService = emailService;
         this.significationService = significationService;
+        this.sessionEmailService = sessionEmailService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/sessions", method = RequestMethod.GET)
@@ -122,8 +126,9 @@ public class SessionController {
 
     @RequestMapping("/send-message")
     public String sendMessage() {
-        List<SlotSignificationTime> slotSignificationTimes = significationService.getFutureSessions();
-        emailService.sendMessage(slotSignificationTimes);
+        sessionEmailService.setSlotSignificationTimes(significationService.getFutureSessions());
+        sessionEmailService.setUsers(userService.findAll());
+        sessionEmailService.sendMessageToEachUser();
 
         return "redirect:/sessions";
     }

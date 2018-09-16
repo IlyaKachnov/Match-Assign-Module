@@ -1,8 +1,8 @@
 package app.controllers;
 
+import app.email.services.MessageEmailService;
 import app.models.*;
 import app.repositories.MatchRepository;
-import app.repositories.SlotRepository;
 import app.repositories.UserRepository;
 import app.services.MatchMessageServiceImpl;
 import app.services.SlotsSignificationService;
@@ -22,23 +22,22 @@ public class SlotsSignificationController {
     private final SlotsSignificationService slotsSignificationService;
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
-    private final SlotRepository slotRepository;
     private final StadiumServiceImpl stadiumService;
     private final MatchMessageServiceImpl matchMessageService;
+    private final MessageEmailService messageEmailService;
 
     @Autowired
     public SlotsSignificationController(SlotsSignificationService slotsSignificationService,
                                         MatchRepository matchRepository,
                                         UserRepository userRepository,
-                                        SlotRepository slotRepository,
                                         StadiumServiceImpl stadiumService,
-                                        MatchMessageServiceImpl matchMessageService) {
+                                        MatchMessageServiceImpl matchMessageService, MessageEmailService messageEmailService) {
         this.slotsSignificationService = slotsSignificationService;
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
-        this.slotRepository = slotRepository;
         this.stadiumService = stadiumService;
         this.matchMessageService = matchMessageService;
+        this.messageEmailService = messageEmailService;
     }
 
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
@@ -91,13 +90,24 @@ public class SlotsSignificationController {
     @RequestMapping(value = "/save-message/{id}", method = RequestMethod.POST)
     public String saveMessage(@PathVariable("id") Long id, @RequestParam String text) {
         MatchMessage message = new MatchMessage();
+        String email;
         message.setMessage(text);
         message.setConsidered(false);
         Optional<Match> match = matchRepository.findById(id);
         if (match.isPresent()) {
             message.setMatch(match.get());
             matchMessageService.save(message);
+            if(message.getConsidered()) {
+                email = message.getMatch().getGuestTeam().getUser().getEmail();
+            }
+
+            else {
+                email = message.getMatch().getHomeTeam().getUser().getEmail();
+            }
+
+            messageEmailService.send(email);
         }
+
         return "";
     }
 
