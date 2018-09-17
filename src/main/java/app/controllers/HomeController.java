@@ -6,6 +6,7 @@ import app.models.User;
 import app.services.MatchMessageService;
 import app.services.SlotsSignificationService;
 import app.services.UserService;
+import app.services.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +24,16 @@ import java.util.stream.Collectors;
 public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final SlotsSignificationService slotsSignificationService;
     private final MatchMessageService matchMessageService;
 
     @Autowired
-    public HomeController(UserService userService, SlotsSignificationService slotsSignificationService,
+    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService,
                           MatchMessageService matchMessageService) {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
         this.matchMessageService = matchMessageService;
-
-//=======
-//    private SlotSignificationTimeRepository slotSignificationTimeRepository;
-//    @Autowired
-//    public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService,
-//                          SlotSignificationTimeRepository slotSignificationTimeRepository) {
-//        this.userService = userService;
-//        this.slotsSignificationService = slotsSignificationService;
-//        this.slotSignificationTimeRepository = slotSignificationTimeRepository;
-//>>>>>>> Stashed changes
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -52,12 +43,16 @@ public class HomeController {
 
         if (user.getRole().equals(Role.managerRole)) {
             List<MatchMessage> matchMessages = matchMessageService.getMessagesForHomeTeam(user);
-            model.addAttribute("messages", matchMessages.stream().filter(matchMessage ->
-                    matchMessage.getMatch().getMatchDate().after(new Date())).collect(Collectors.toList()));
+            if (matchMessages != null && !matchMessages.isEmpty()) {
+                List<MatchMessage> messages = matchMessages.stream().filter(matchMessage -> (matchMessage != null) &&
+                        matchMessage.getMatch().getMatchDate().after(new Date())).collect(Collectors.toList());
+                if(messages != null && !messages.isEmpty()) {
+                    model.addAttribute("messages", messages);
+                }
+            }
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
             model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
-//            model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
 
             return "index";
         }

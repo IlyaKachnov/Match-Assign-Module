@@ -123,7 +123,7 @@ public class SlotsSignificationService {
             if (currUser.getRole().equals(Role.adminRole) ||
                     (slotSignificationTimeOptional.isPresent() && checkDateTime(slotSignificationTimeOptional.get()) &&
                             match.getHomeTeam().getUser().equals(currUser))
-                    ) {
+            ) {
 
                 Optional<Slot> currSlotOptional = slotRepository.findById(slotId);
                 if (!currSlotOptional.isPresent()) {
@@ -224,78 +224,79 @@ public class SlotsSignificationService {
                 currDateTime.isBefore(endDateTime);
     }
 
-    private boolean checkFutureSession(SlotSignificationTime slotSignificationTime) {
-        LocalDateTime currDateTime = LocalDateTime.now();
-        LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
-                .atZone(ZoneId.systemDefault()).toLocalTime();
-        LocalDate startDate = Instant.ofEpochMilli(slotSignificationTime.getStartDate().getTime())
-                .atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+//    private boolean checkFutureSession(SlotSignificationTime slotSignificationTime) {
+//        LocalDateTime currDateTime = LocalDateTime.now();
+//        LocalTime startTime = Instant.ofEpochMilli(slotSignificationTime.getStartTime().getTime())
+//                .atZone(ZoneId.systemDefault()).toLocalTime();
+//        LocalDate startDate = Instant.ofEpochMilli(slotSignificationTime.getStartDate().getTime())
+//                .atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+//
+//        return currDateTime.isBefore(startDateTime);
+//    }
 
-        return currDateTime.isBefore(startDateTime);
-    }
+//    public List<SlotSignificationTime> getFutureSessions() {
+////
+////        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
+////        List<SlotSignificationTime> futureSessions = new ArrayList<>();
+////        allSessions.forEach(session -> {
+////            if (checkFutureSession(session)) {
+////                futureSessions.add(session);
+////            }
+////        });
+////
+////        return futureSessions;
+////    }
 
     public List<SlotSignificationTime> getFutureSessions() {
 
-        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
-        List<SlotSignificationTime> futureSessions = new ArrayList<>();
-        allSessions.forEach(session -> {
-            if (checkFutureSession(session)) {
-                futureSessions.add(session);
-            }
-        });
+        return slotSignificationTimeRepository.getFutureSessions();
+    }
 
-        return futureSessions;
+
+    public List<SlotSignificationTime> getFutureSessions(User user) {
+        return slotSignificationTimeRepository.getFutureSessions(user.getId());
     }
 
     public List<SlotSignificationTime> getActualSessions() {
-
-        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
-        List<SlotSignificationTime> actualSessions = new ArrayList<>();
-        allSessions.forEach(session -> {
-            if (checkDateTime(session)) {
-                actualSessions.add(session);
-            }
-        });
-
-        return actualSessions;
+        return slotSignificationTimeRepository.getActualSessions();
     }
 
-    public Set<SlotSignificationTime> getFutureSessions(User user) {
-
-        List<Team> teamList = user.getTeamList();
-
-        Set<SlotSignificationTime> futureNotifications = new HashSet<>();
-        teamList.forEach(team -> {
-            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null) {
-                return;
-            }
-            if (checkFutureSession(slotSignificationTime)) {
-                futureNotifications.add(slotSignificationTime);
-            }
-        });
-
-        return futureNotifications;
+    public List<SlotSignificationTime> getActualSessions(User user) {
+        return slotSignificationTimeRepository.getActualSessions(user.getId());
     }
 
-    public Set<SlotSignificationTime> getActualSessions(User user) {
 
-        List<Team> teamList = user.getTeamList();
-
-        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
-        teamList.forEach(team -> {
-            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
-            if (slotSignificationTime == null) {
-                return;
-            }
-            if (checkDateTime(slotSignificationTime)) {
-                actualNotifications.add(slotSignificationTime);
-            }
-        });
-
-        return actualNotifications;
-    }
+//    public List<SlotSignificationTime> getActualSessions() {
+//
+//        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
+//        List<SlotSignificationTime> actualSessions = new ArrayList<>();
+//        allSessions.forEach(session -> {
+//            if (checkDateTime(session)) {
+//                actualSessions.add(session);
+//            }
+//        });
+//
+//        return actualSessions;
+//    }
+//
+//    public Set<SlotSignificationTime> getActualSessions(User user) {
+//
+//        List<Team> teamList = user.getTeamList();
+//
+//        Set<SlotSignificationTime> actualNotifications = new HashSet<>();
+//        teamList.forEach(team -> {
+//            SlotSignificationTime slotSignificationTime = team.getLeague().getSlotSignificationTime();
+//            if (slotSignificationTime == null) {
+//                return;
+//            }
+//            if (checkDateTime(slotSignificationTime)) {
+//                actualNotifications.add(slotSignificationTime);
+//            }
+//        });
+//
+//        return actualNotifications;
+//    }
 
     private String generateJSON(List<League> leagues, List<Slot> slots, String userEmail, Long id) {
         User currUser = userRepository.findByEmail(userEmail);
