@@ -44,11 +44,9 @@ public class HomeController {
         if (user.getRole().equals(Role.managerRole)) {
             List<MatchMessage> matchMessages = matchMessageService.getMessagesForHomeTeam(user);
             if (matchMessages != null && !matchMessages.isEmpty()) {
-                List<MatchMessage> messages = matchMessages.stream().filter(matchMessage -> (matchMessage != null) &&
+                List<MatchMessage> messages = matchMessages.stream().filter(matchMessage ->
                         matchMessage.getMatch().getMatchDate().after(new Date())).collect(Collectors.toList());
-                if(messages != null && !messages.isEmpty()) {
-                    model.addAttribute("messages", messages);
-                }
+                model.addAttribute("messages", messages);
             }
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
