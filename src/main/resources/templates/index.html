@@ -136,6 +136,14 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="m_widget3_tab1_content">
                                         <div class="m-widget2">
+                                            <div th:if="${messages.isEmpty()}">
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text"
+                                                                  style="width: 100% !important; text-align: center !important; display: block">
+															Актуальных сообщений не найдено
+															</span>
+                                                </div>
+                                            </div>
                                             <div th:each="message:${messages}"
                                                  class="m-widget2__item m-widget2__item--danger">
                                                 <div class="m-widget2__checkbox">
@@ -144,15 +152,6 @@
 															<span class="m-widget2__text" th:inline="text">
                                                                 <p>Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>:</p>
                                                                 <p>[[${message.message}]]</p>
-															</span>
-                                                </div>
-                                            </div>
-
-                                            <div th:if="${messages.isEmpty()}">
-                                                <div class="m-widget2__desc">
-															<span class="m-widget2__text"
-                                                                  style="width: 100% !important; text-align: center !important; display: block">
-															Актуальных сообщений не найдено
 															</span>
                                                 </div>
                                             </div>
