@@ -20,7 +20,7 @@
                         <div class="m-portlet__head-caption">
                             <div class="m-portlet__head-title">
                                 <h3 class="m-portlet__head-text">
-                                    Добавить слот
+                                    Добавить слоты
                                 </h3>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Тип события *
+                                    Тип событий *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <select class="form-control m-select2" id="slotType" th:field="*{slotType}"
@@ -58,7 +58,7 @@
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Дата события *
+                                    Дата событий *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
@@ -74,12 +74,28 @@
                             </div>
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
-                                    Время начала события *
+                                    Время начала событий *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group date'>
                                         <input type='text' class="form-control m-input--square" id='startTime'
                                                placeholder="Select time" name="startTime" th:field="*{startTime}"/>
+                                        <div class="input-group-append">
+													<span class="input-group-text">
+														<i class="la la-clock-o"></i>
+													</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-3 col-sm-12">
+                                    Время окончания событий *
+                                </label>
+                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                    <div class='input-group date'>
+                                        <input type='text' class="form-control m-input--square" id='endTime'
+                                               placeholder="Select time" name="endTime" th:field="*{endTime}"/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
 														<i class="la la-clock-o"></i>

@@ -56,28 +56,8 @@ public class SlotController {
     @RequestMapping(value = "/stadiums/{id}/slots/save", method = RequestMethod.POST)
     public String saveEmptySlot(@PathVariable Long id, @ModelAttribute Slot slot) {
         Stadium stadium = stadiumService.findById(id);
-        Slot newSlot = new Slot();
-        newSlot.setStartTime(slot.getStartTime());
-        newSlot.setEventDate(slot.getEventDate());
-        newSlot.setStadium(stadium);
-        newSlot.setSlotType(slot.getSlotType());
 
-        Calendar duration = Calendar.getInstance();
-        Calendar time = Calendar.getInstance();
-
-        duration.setTime(slot.getSlotType().getDuration());
-        time.setTime(slot.getStartTime());
-
-        int hour = duration.get(Calendar.HOUR);
-        int minutes = duration.get(Calendar.MINUTE);
-
-        time.add(Calendar.MINUTE, minutes);
-        time.add(Calendar.HOUR, hour);
-
-        newSlot.setEndTime(time.getTime());
-
-        slotService.save(newSlot);
-
+        slotService.createAndSaveSlots(slot, stadium);
         return "redirect:/stadiums/" + id + "/slots";
     }
 
