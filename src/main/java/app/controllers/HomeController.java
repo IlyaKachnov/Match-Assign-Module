@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,8 +44,12 @@ public class HomeController {
 
         if (user.getRole().equals(Role.managerRole)) {
             List<MatchMessage> matchMessages = matchMessageService.getMessagesForHomeTeam(user);
-                List<MatchMessage> messages = matchMessages.stream().filter(matchMessage ->
-                        matchMessage.getMatch().getMatchDate().after(new Date())).collect(Collectors.toList());
+            List<MatchMessage> messages = new ArrayList<>();
+            if (matchMessages != null && !matchMessages.isEmpty()) {
+                messages = matchMessages.stream().filter(matchMessage ->
+                        matchMessage.getMatch().getMatchDate() != null && matchMessage.getMatch().getMatchDate().after(new Date()))
+                        .collect(Collectors.toList());
+            }
             model.addAttribute("messages", messages);
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
