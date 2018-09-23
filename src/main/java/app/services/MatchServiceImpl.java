@@ -91,7 +91,7 @@ public class MatchServiceImpl implements MatchService {
     private String getMatchMessage(Match match) {
         MatchMessage matchMessage = match.getMatchMessage();
 
-        String message = "<button type='button' class='m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
+        String message = "<button type='button' class='m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill' " +
                 "data-toggle='m-popover' data-trigger='focus' title='' data-html='true' data-content='"
                 + matchMessage.getMessage().replace("\n", " ").replace("\r", "") +
                 "' data-original-title='" +
@@ -102,7 +102,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     private String getMessageForm(Match match) {
-        String message = " <a class='add-msg m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
+        String message = " <a class='add-msg m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill' " +
                 "href='#m_modal_4' data-action='/save-message/" +
                 match.getId() + "'" + " data-toggle='modal' data-target='#m_modal_4'><i class='la la-plus-circle'></i></a>";
 
