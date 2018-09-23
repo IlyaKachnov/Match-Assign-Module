@@ -6,7 +6,6 @@ import app.models.Role;
 import app.models.User;
 import app.services.MatchMessageService;
 import app.services.SlotsSignificationService;
-import app.services.UserService;
 import app.services.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

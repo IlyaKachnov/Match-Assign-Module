@@ -88,9 +88,12 @@ public class SlotsSignificationController {
 
     @ResponseBody
     @RequestMapping(value = "/save-message/{id}", method = RequestMethod.POST)
-    public String saveMessage(@PathVariable("id") Long id, @RequestParam String text) {
+    public String saveMessage(@PathVariable("id") Long id, @RequestParam String text,
+                              HttpServletRequest httpServletRequest) {
         MatchMessage message = new MatchMessage();
         String email;
+        String username = httpServletRequest.getUserPrincipal().getName();
+        User user = userRepository.findByEmail(username);
         message.setMessage(text);
         message.setConsidered(false);
         Optional<Match> match = matchRepository.findById(id);
@@ -98,17 +101,25 @@ public class SlotsSignificationController {
         if (match.isPresent()) {
             message.setMatch(match.get());
             matchMessageService.save(message);
-            if(message.getConsidered()) {
-                email = message.getMatch().getGuestTeam().getUser().getEmail();
-            }
 
-            else {
-                email = message.getMatch().getHomeTeam().getUser().getEmail();
-            }
             messageEmailService.setMessage(message);
             messageEmailService.setMatch(match.get());
             messageEmailService.setHomeAndGuest(homeAndGuest);
-            messageEmailService.send(email);
+
+            if(user.getRole().equals(Role.adminRole)) {
+                messageEmailService.send(match.get().getHomeTeam().getUser().getEmail());
+                messageEmailService.send(match.get().getGuestTeam().getUser().getEmail());
+            }
+            else if (user.getRole().equals(Role.managerRole)) {
+                if (message.getConsidered() || match.get().getHomeTeam().getUser().getEmail().equals(username)) {
+                    email = message.getMatch().getGuestTeam().getUser().getEmail();
+                } else {
+                    email = message.getMatch().getHomeTeam().getUser().getEmail();
+                }
+                messageEmailService.send(email);
+            }
+
+
         }
 
         return "";

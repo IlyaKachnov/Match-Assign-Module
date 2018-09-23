@@ -43,9 +43,7 @@ public class SessionEmailService extends AbstractEmailService {
             return null;
         }
         slotSignificationTimes.forEach(sst -> {
-            String element = sst.getLeague().getName() + " начало: "
-                    + sst.getStartDate() + " " + sst.getStartTime()
-                    + "окончание: " + sst.getEndDate() + " " + sst.getEndTime();
+            String element = sst.getLeague().getName() + sst.getFormattedInterval();
             elements.add(element);
         });
 

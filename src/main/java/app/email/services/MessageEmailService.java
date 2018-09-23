@@ -37,9 +37,12 @@ public class MessageEmailService extends AbstractEmailService {
         StringBuilder header = new StringBuilder("Новое сообщение о матче ");
 //        System.out.println(message.getMatch().getGuestTeam().getName());
         header.append(homeAndGuest);
-        header.append(" ");
-        header.append("назначенном на ");
-        header.append(match.getFormattedDate());
+
+        if (match.getMatchDate() != null) {
+            header.append(" ");
+            header.append("назначенном на ");
+            header.append(match.getFormattedDate());
+        }
         header.append(".");
 
         StringBuilder text = new StringBuilder();

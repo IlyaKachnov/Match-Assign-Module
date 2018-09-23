@@ -3,6 +3,7 @@ package app.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -79,5 +80,13 @@ public class SlotSignificationTime {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getFormattedInterval() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+        return " - начало: " + dateFormat.format(this.startDate) + " " + timeFormat.format(this.startTime)
+                + " окончание: " + dateFormat.format(this.endDate)  + " " + timeFormat.format(this.endTime);
     }
 }
