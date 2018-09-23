@@ -50,7 +50,8 @@ public class HomeController {
             List<MatchMessage> messages = new ArrayList<>();
             if (matchMessages != null && !matchMessages.isEmpty()) {
                 messages = matchMessages.stream().filter(matchMessage ->
-                        matchMessage.getMatch().getMatchDate() != null && matchMessage.getMatch().getMatchDate().after(new Date()))
+                        matchMessage.getMatch().getMatchDate() == null ||
+                                matchMessage.getMatch().getMatchDate().after(new Date()))
                         .collect(Collectors.toList());
             }
             model.addAttribute("messages", messages);
