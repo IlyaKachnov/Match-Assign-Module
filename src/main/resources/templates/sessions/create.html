@@ -14,6 +14,30 @@
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
+                <div th:if="${dateError}" class="m-alert m-alert--icon alert alert-danger" role="alert">
+                    <div class="m-alert__icon">
+                        <i class="la la-warning"></i>
+                    </div>
+                    <div class="m-alert__text">
+                        <strong>Дата окончания должна быть больше даты начала!</strong>
+                    </div>
+                    <div class="m-alert__close">
+                        <button type="button" class="close" data-close="alert" aria-label="Hide">
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${timeError}" class="m-alert m-alert--icon alert alert-danger" role="alert">
+                    <div class="m-alert__icon">
+                        <i class="la la-warning"></i>
+                    </div>
+                    <div class="m-alert__text">
+                        <strong>Время окончания должно быть больше времени начала!</strong>
+                    </div>
+                    <div class="m-alert__close">
+                        <button type="button" class="close" data-close="alert" aria-label="Hide">
+                        </button>
+                    </div>
+                </div>
                 <!--begin::Portlet-->
                 <div class="m-portlet">
                     <div class="m-portlet__head">

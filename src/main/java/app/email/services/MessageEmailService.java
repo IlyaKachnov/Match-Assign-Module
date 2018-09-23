@@ -14,7 +14,7 @@ public class MessageEmailService extends AbstractEmailService {
     private String homeAndGuest;
 
     public MessageEmailService() {
-        super("Новое сообщение от менеджера команды");
+        super("Новое сообщение о матче");
     }
 
     public void setMessage(MatchMessage message) {
@@ -33,9 +33,7 @@ public class MessageEmailService extends AbstractEmailService {
     protected String generateMessage() {
         boolean status = message.getConsidered();
         Context context = new Context();
-//        String homeAndGuest = match.getHomeTeam() + " - " + match.getGuestTeam();
         StringBuilder header = new StringBuilder("Новое сообщение о матче ");
-//        System.out.println(message.getMatch().getGuestTeam().getName());
         header.append(homeAndGuest);
 
         if (match.getMatchDate() != null) {

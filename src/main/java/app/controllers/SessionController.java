@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -52,10 +53,26 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/sessions/save", method = RequestMethod.POST)
-    public String saveSession(@ModelAttribute SlotSignificationTime slotSignificationTime) {
+    public String saveSession(@ModelAttribute SlotSignificationTime slotSignificationTime, RedirectAttributes redirectAttributes) {
+
+        if (slotSignificationTime.getEndDate().before(slotSignificationTime.getStartDate())) {
+            redirectAttributes.addFlashAttribute("sessionModel", slotSignificationTime);
+            redirectAttributes.addFlashAttribute("dateError", true);
+            return "redirect:/sessions/create";
+        }
+
+        if (slotSignificationTime.getEndDate().equals(slotSignificationTime.getStartDate()) &&
+                (slotSignificationTime.getEndDate().before(slotSignificationTime.getStartTime())
+                || slotSignificationTime.getEndDate().equals(slotSignificationTime.getStartTime()))
+        ) {
+            redirectAttributes.addFlashAttribute("sessionModel", slotSignificationTime);
+            redirectAttributes.addFlashAttribute("timeError", true);
+            return "redirect:/sessions/create";
+        }
 
         Optional<SlotSignificationTime> optional = sessionService.findAll().stream().filter(sT -> sT.getLeague()
                 .equals(slotSignificationTime.getLeague())).findAny();
+
 
         if (optional.isPresent()) {
 
@@ -85,7 +102,23 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/sessions/{id}/update", method = RequestMethod.POST)
-    public String updateSession(@PathVariable Long id, @ModelAttribute SlotSignificationTime sessionForm) {
+    public String updateSession(@PathVariable Long id, @ModelAttribute SlotSignificationTime sessionForm,
+                                RedirectAttributes redirectAttributes) {
+
+        if (sessionForm.getEndDate().before(sessionForm.getStartDate())) {
+            redirectAttributes.addFlashAttribute("sessionModel", sessionForm);
+            redirectAttributes.addFlashAttribute("dateError", true);
+            return "redirect:/sessions/"+ id +"/edit";
+        }
+
+        if (sessionForm.getEndDate().equals(sessionForm.getStartDate()) &&
+                (sessionForm.getEndTime().before(sessionForm.getStartTime())
+                        || sessionForm.getEndTime().equals(sessionForm.getStartTime()))
+        ) {
+            redirectAttributes.addFlashAttribute("sessionModel", sessionForm);
+            redirectAttributes.addFlashAttribute("timeError", true);
+            return "redirect:/sessions/"+ id +"/edit";
+        }
 
         SlotSignificationTime significationTime = sessionService.findById(id);
 

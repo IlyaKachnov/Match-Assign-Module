@@ -34,7 +34,6 @@ public abstract class AbstractEmailService {
     public void send(String userName) {
 
         String messageText = generateMessage();
-        System.out.println(messageText);
         if (messageText == null) {
             logger.info("Nothing to send");
             return;

@@ -50,6 +50,11 @@ public class TourController {
 //
 //            return "redirect:/tours/create";
 //        }
+        if (tourForm.getEndDate().before(tourForm.getStartDate())) {
+            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+            redirectAttributes.addFlashAttribute("error", true);
+            return "redirect:/tours/create";
+        }
 
 
         tourService.save(tourForm);
@@ -79,6 +84,13 @@ public class TourController {
 //
 //            return "redirect:/tours/" + id + "/edit";
 //        }
+
+        if (tourForm.getEndDate().before(tourForm.getStartDate())) {
+            redirectAttributes.addFlashAttribute("tourForm", tourForm);
+            redirectAttributes.addFlashAttribute("error", true);
+            return "redirect:/tours/" + id + "/edit";
+
+        }
 
         tour.setName(tourForm.getName());
         tour.setStartDate(tourForm.getStartDate());
