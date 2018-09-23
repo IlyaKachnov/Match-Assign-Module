@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.email.MessageEmail;
 import app.email.services.MessageEmailService;
 import app.models.*;
 import app.repositories.MatchRepository;
@@ -95,6 +94,7 @@ public class SlotsSignificationController {
         message.setMessage(text);
         message.setConsidered(false);
         Optional<Match> match = matchRepository.findById(id);
+        String homeAndGuest = match.get().getHomeAndGuest();
         if (match.isPresent()) {
             message.setMatch(match.get());
             matchMessageService.save(message);
@@ -105,11 +105,9 @@ public class SlotsSignificationController {
             else {
                 email = message.getMatch().getHomeTeam().getUser().getEmail();
             }
-
-            MessageEmail messageEmail = new MessageEmail();
-            messageEmail.setMatchMessage(message);
-
-            messageEmailService.setMessageEmail(messageEmail);
+            messageEmailService.setMessage(message);
+            messageEmailService.setMatch(match.get());
+            messageEmailService.setHomeAndGuest(homeAndGuest);
             messageEmailService.send(email);
         }
 

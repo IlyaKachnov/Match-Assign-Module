@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 public abstract class AbstractEmailService {
 
@@ -19,24 +23,31 @@ public abstract class AbstractEmailService {
     @Autowired
     protected JavaMailSender mailSender;
 
+    @Autowired
+    protected TemplateEngine templateEngine;
+
     public AbstractEmailService(String subject) {
         this.subject = subject;
     }
 
     @Async
     public void send(String userName) {
+
         String messageText = generateMessage();
+        System.out.println(messageText);
         if (messageText == null) {
             logger.info("Nothing to send");
             return;
         }
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(userName);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(messageText, true);
+            messageHelper.setFrom(from, "НМФЛ");
+        };
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(userName);
-            message.setSubject(subject);
-            message.setText(messageText);
-            message.setFrom(from);
-            mailSender.send(message);
+            mailSender.send(messagePreparator);
             System.out.println("message sent");
         } catch (Exception e) {
             logger.error("Error while sending message", e);

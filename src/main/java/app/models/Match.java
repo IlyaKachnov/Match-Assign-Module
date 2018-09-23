@@ -118,6 +118,6 @@ public class Match {
     }
 
     public String getHomeAndGuest(){
-        return homeTeam.getName() + " - " +guestTeam.getName();
+        return this.homeTeam.getName() + " - " + this.guestTeam.getName();
     }
 }

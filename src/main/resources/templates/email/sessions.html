@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head></head>
+<body>
+<h3>Оповещение о предстоящих сессиях разбора слотов</h3>
+<div>
+    <ul th:each="e:${elements}">
+        <li th:text="${e}"></li>
+    </ul>
+    <p>С уважением команда НМФЛ.</p>
+</div>
+</body>
+</html>

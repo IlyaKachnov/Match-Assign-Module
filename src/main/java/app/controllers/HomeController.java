@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.email.services.ChangePasswordService;
 import app.models.MatchMessage;
 import app.models.Role;
 import app.models.User;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -27,13 +29,15 @@ public class HomeController {
     private final UserServiceImpl userService;
     private final SlotsSignificationService slotsSignificationService;
     private final MatchMessageService matchMessageService;
+    private final ChangePasswordService changePasswordService;
 
     @Autowired
     public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService,
-                          MatchMessageService matchMessageService) {
+                          MatchMessageService matchMessageService, ChangePasswordService changePasswordService) {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
         this.matchMessageService = matchMessageService;
+        this.changePasswordService = changePasswordService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -78,12 +82,17 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/change-password/{id}", method = RequestMethod.POST)
-    public String changePassword(@PathVariable Long id, @RequestParam("new_password") String newPassword) {
+    public String changePassword(@PathVariable Long id, @RequestParam("new_password") String newPassword,
+                                 HttpServletRequest httpServletRequest) {
         User user = userService.findById(id);
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
         user.setPassword(bCrypt.encode(newPassword));
 
         userService.save(user);
+
+        changePasswordService.setPassword(newPassword);
+        changePasswordService.send(httpServletRequest.getUserPrincipal().getName());
+
 
         return "redirect:/profile/" + id;
     }

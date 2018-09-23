@@ -4,7 +4,9 @@ import app.models.SlotSignificationTime;
 import app.models.User;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,7 +16,7 @@ public class SessionEmailService extends AbstractEmailService {
     private List<SlotSignificationTime> slotSignificationTimes;
 
     public SessionEmailService() {
-        super("NMFL");
+        super("Оповещение о сессиях разбора");
     }
 
     public List<User> getUsers() {
@@ -35,19 +37,21 @@ public class SessionEmailService extends AbstractEmailService {
 
     @Override
     protected String generateMessage() {
-        StringBuilder message = new StringBuilder();
+        List<String> elements = new ArrayList<>();
+        Context context = new Context();
         if (slotSignificationTimes.isEmpty()) {
             return null;
         }
-        slotSignificationTimes.forEach(slotSignificationTime -> {
-            message.append(slotSignificationTime.getLeague().getName())
-                    .append(" - с ").append(slotSignificationTime.getStartDate())
-                    .append(" ").append(slotSignificationTime.getStartTime())
-                    .append(" по ").append(slotSignificationTime.getEndDate())
-                    .append(" ").append(slotSignificationTime.getEndTime()).append("\n");
+        slotSignificationTimes.forEach(sst -> {
+            String element = sst.getLeague().getName() + " начало: "
+                    + sst.getStartDate() + " " + sst.getStartTime()
+                    + "окончание: " + sst.getEndDate() + " " + sst.getEndTime();
+            elements.add(element);
         });
 
-        return message.toString();
+        context.setVariable("elements", elements);
+
+        return templateEngine.process("email/sessions", context);
     }
 
     @Async

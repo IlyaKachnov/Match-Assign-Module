@@ -1,53 +1,61 @@
 package app.email.services;
 
-import app.email.MessageEmail;
 import app.models.Match;
 import app.models.MatchMessage;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+
 
 @Service
 public class MessageEmailService extends AbstractEmailService {
 
-    private MessageEmail messageEmail;
+    private MatchMessage message;
+    private Match match;
+    private String homeAndGuest;
 
     public MessageEmailService() {
-        super("NMFL");
+        super("Новое сообщение от менеджера команды");
     }
 
-    public MessageEmail getMessageEmail() {
-        return messageEmail;
+    public void setMessage(MatchMessage message) {
+        this.message = message;
     }
 
-    public void setMessageEmail(MessageEmail messageEmail) {
-        this.messageEmail = messageEmail;
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public void setHomeAndGuest(String homeAndGuest) {
+        this.homeAndGuest = homeAndGuest;
     }
 
     @Override
     protected String generateMessage() {
-        MatchMessage matchMessage = messageEmail.getMatchMessage();
-        Match match = matchMessage.getMatch();
-        String msg = "Сообщение от менеджера команды ";
-        boolean status = matchMessage.getConsidered();
+        boolean status = message.getConsidered();
+        Context context = new Context();
+//        String homeAndGuest = match.getHomeTeam() + " - " + match.getGuestTeam();
+        StringBuilder header = new StringBuilder("Новое сообщение о матче ");
+//        System.out.println(message.getMatch().getGuestTeam().getName());
+        header.append(homeAndGuest);
+        header.append(" ");
+        header.append("назначенном на ");
+        header.append(match.getFormattedDate());
+        header.append(".");
 
+        StringBuilder text = new StringBuilder();
+        context.setVariable("header", header.toString());
         if (status) {
-            msg += match.getHomeTeam().getName()
-                    + ": \n"
-                    + " матч "
-                    + matchMessage.getMatch().getHomeAndGuest()
-                    + " был перенесен на "
-                    + matchMessage.getMatch().getFormattedDate();
-
-            return msg;
+            text.append("Матч был перенесен на дату: ");
+            text.append(match.getFormattedDate());
         }
-        msg += match.getGuestTeam().getName()
-                + " о матче "
-                + match.getHomeAndGuest()
-                + " назначенном на "
-                + match.getFormattedDate()
-                + ": \n"
-                + matchMessage.getMessage();
 
-        return msg;
+        else {
+            text.append("Сообщение:");
+            text.append(message.getMessage());
+
+        }
+        context.setVariable("text", text.toString());
+        return templateEngine.process("email/message", context);
     }
 
 }

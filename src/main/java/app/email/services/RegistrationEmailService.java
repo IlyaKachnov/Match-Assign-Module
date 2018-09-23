@@ -2,15 +2,15 @@ package app.email.services;
 
 import app.email.RegistrationEmail;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 @Service
 public class RegistrationEmailService extends AbstractEmailService {
 
-    private final String messageTemplate = "Добрый день!\nРаспределение слотов состоится в следующие дни:\n%s\nС уважением, команда НМФЛ.";
     private RegistrationEmail registrationEmail;
 
     public RegistrationEmailService() {
-        super("NMFL");
+        super("Вы были зарегистрированы в системе НМФЛ");
     }
 
     public RegistrationEmail getRegistrationEmail() {
@@ -23,9 +23,15 @@ public class RegistrationEmailService extends AbstractEmailService {
 
     @Override
     protected String generateMessage() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Ваш логин: ").append(registrationEmail.getUserName())
-                .append("Ваш пароль: ").append(registrationEmail.getPassword());
-        return stringBuilder.toString();
+        String username = "Ваш логин: " + registrationEmail.getUserName();
+        String password = "Ваш пароль: " + registrationEmail.getPassword();
+        String header = "Вы были зарегистрированы в системе НМФЛ";
+        Context context = new Context();
+        context.setVariable("header", header);
+        context.setVariable("username", username);
+        context.setVariable("password", password);
+
+        return templateEngine.process("email/registration", context);
+
     }
 }
