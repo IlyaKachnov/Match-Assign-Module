@@ -373,10 +373,11 @@ public class SlotsSignificationService {
 
     private String showMessageLink(Match match) {
         if (match.getMatchMessage() != null) {
-            return " <a href='#' class='delete-msg' data-href='/message/" +
-                    match.getMatchMessage().getMatch().getId()
-                    + "/delete'" + ">Удалить сообщение</a>" +
-                    "\"},";
+            return "\"},";
+//            return " <a href='#' class='delete-msg' data-href='/message/" +
+//                    match.getMatchMessage().getMatch().getId()
+//                    + "/delete'" + ">Удалить сообщение</a>" +
+//                    "\"},";
         }
 
         return " <a class='add-msg' href='#m_modal_4' data-action='/save-message/" +

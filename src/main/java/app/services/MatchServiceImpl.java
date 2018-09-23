@@ -80,15 +80,15 @@ public class MatchServiceImpl implements MatchService {
     }
 
     private String getMessage(Match match, List<Team> userTeams, boolean isAdmin) {
-        if ((userTeams.contains(match.getHomeTeam()) || isAdmin) && match.getMatchMessage() != null) {
-            return getMessageForHomeTeam(match);
-        } else if (userTeams.contains(match.getGuestTeam())) {
-            return getMessageForGuestTeam(match);
+        if (match.getMatchMessage() != null) {
+            return getMatchMessage(match);
+        } else if (userTeams.contains(match.getGuestTeam()) || userTeams.contains(match.getHomeTeam()) || isAdmin) {
+            return getMessageForm(match);
         }
-        return " - - -";
+        return "";
     }
 
-    private String getMessageForHomeTeam(Match match) {
+    private String getMatchMessage(Match match) {
         MatchMessage matchMessage = match.getMatchMessage();
 
         String message = "<button type='button' class='m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
@@ -101,11 +101,7 @@ public class MatchServiceImpl implements MatchService {
         return message;
     }
 
-    private String getMessageForGuestTeam(Match match) {
-        if (match.getMatchMessage() != null) {
-            return getMessageForHomeTeam(match);
-        }
-
+    private String getMessageForm(Match match) {
         String message = " <a class='add-msg m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill' " +
                 "href='#m_modal_4' data-action='/save-message/" +
                 match.getId() + "'" + " data-toggle='modal' data-target='#m_modal_4'><i class='la la-plus-circle'></i></a>";
