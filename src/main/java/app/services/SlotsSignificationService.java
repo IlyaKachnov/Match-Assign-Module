@@ -308,12 +308,14 @@ public class SlotsSignificationService {
                     .append(" ").append(slot.getStartTime()).append("\",");
             slotsJSON.append("\"end\": \"").append(slot.getEventDate())
                     .append(" ").append(slot.getEndTime()).append("\",");
+            Date currDate = new Date();
             if (slot.getMatch() != null) {
                 if ((slot.getMatch().getHomeTeam().getUser() != null &&
                         slot.getMatch().getHomeTeam().getUser().getEmail().equals(userEmail) &&
-                        leagues.contains(slot.getMatch().getHomeTeam().getLeague()))
+                        leagues.contains(slot.getMatch().getHomeTeam().getLeague()) &&
+                        (slot.getMatch().getTour().getEndDate().after(currDate) || slot.getMatch().getDelayed()))
                         || currUser.getRole().equals(Role.adminRole)
-                        || slot.getMatch().getHomeTeam().getUser().equals(currUser)) {
+                        ) {
                     slotsJSON.append(addMatchTeams(slot.getMatch()))
                             .append(" <a class='m_sweetalert cancel' href='/stadium/").append(id).append("/reject/")
                             .append(slot.getId()).append("'>Отменить слот</a>")
@@ -327,8 +329,7 @@ public class SlotsSignificationService {
                             .append("\"},");
                 }
             } else if (slot.getSlotType().getSignifiable() &&
-                    (!leagues.isEmpty() || currUser.getRole().equals(Role.adminRole))
-                    || !getMatchesWithMessages(currUser).isEmpty()) {
+                    ((!leagues.isEmpty() && slot.getEventDate().after(currDate)) || currUser.getRole().equals(Role.adminRole))) {
                 slotsJSON.append("\"description\": \" <a class='add-new' href='/stadium/")
                         .append(id).append("/signify/").append(slot.getId())
                         .append("'>Занять слот</a>\"},");

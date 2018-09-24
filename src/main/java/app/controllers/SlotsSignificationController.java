@@ -56,12 +56,6 @@ public class SlotsSignificationController {
                                  Model model, HttpServletRequest httpServletRequest,
                                  MatchForm matchForm) {
         List<Match> actualMatches = slotsSignificationService.getActualMatches(httpServletRequest, slotId);
-        User currUser = userRepository.findByEmail(httpServletRequest.getUserPrincipal().getName());
-        List<Match> matchesWithMessages = slotsSignificationService.getMatchesWithMessages(currUser);
-
-        if (!matchesWithMessages.isEmpty()) {
-            actualMatches = matchesWithMessages;
-        }
 
         model.addAttribute("matches", actualMatches);
         model.addAttribute("id", id);
