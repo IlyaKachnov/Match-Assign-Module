@@ -47,7 +47,6 @@ public abstract class AbstractEmailService {
         };
         try {
             mailSender.send(messagePreparator);
-            System.out.println("message sent");
         } catch (Exception e) {
             logger.error("Error while sending message", e);
         }

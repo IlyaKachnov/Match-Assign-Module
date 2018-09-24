@@ -17,5 +17,5 @@ public interface MatchMessageService {
 
     void delete(Long id);
 
-    List<MatchMessage> getMessagesForHomeTeam(User user);
+    List<MatchMessage> getMessagesForUser(User user);
 }

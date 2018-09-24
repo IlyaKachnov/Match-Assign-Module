@@ -1,10 +1,8 @@
 package app.controllers;
 
 import app.email.services.ChangePasswordService;
-import app.models.MatchMessage;
 import app.models.Role;
 import app.models.User;
-import app.services.MatchMessageService;
 import app.services.SlotsSignificationService;
 import app.services.UserServiceImpl;
 import org.slf4j.Logger;
@@ -17,10 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -28,15 +22,13 @@ public class HomeController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final UserServiceImpl userService;
     private final SlotsSignificationService slotsSignificationService;
-    private final MatchMessageService matchMessageService;
     private final ChangePasswordService changePasswordService;
 
     @Autowired
     public HomeController(UserServiceImpl userService, SlotsSignificationService slotsSignificationService,
-                          MatchMessageService matchMessageService, ChangePasswordService changePasswordService) {
+                          ChangePasswordService changePasswordService) {
         this.userService = userService;
         this.slotsSignificationService = slotsSignificationService;
-        this.matchMessageService = matchMessageService;
         this.changePasswordService = changePasswordService;
     }
 
@@ -46,15 +38,6 @@ public class HomeController {
         User user = userService.findByEmail(principal.getName());
 
         if (user.getRole().equals(Role.managerRole)) {
-            List<MatchMessage> matchMessages = matchMessageService.getMessagesForHomeTeam(user);
-            List<MatchMessage> messages = new ArrayList<>();
-            if (matchMessages != null && !matchMessages.isEmpty()) {
-                messages = matchMessages.stream().filter(matchMessage ->
-                        matchMessage.getMatch().getMatchDate() == null ||
-                                matchMessage.getMatch().getMatchDate().after(new Date()))
-                        .collect(Collectors.toList());
-            }
-            model.addAttribute("messages", messages);
             model.addAttribute("teamList", user.getTeamList());
             model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
             model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));

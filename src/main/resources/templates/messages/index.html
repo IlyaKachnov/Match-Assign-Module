@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:replace="fragments/head::head"></head>
+
+<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    <header th:replace="fragments/header :: header"></header>
+
+    <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+        <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <div th:replace="fragments/left_aside :: left_aside"></div>
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <div class="m-content">
+                <div class="row">
+                    <div class="col-xl-12" sec:authorize="hasAuthority('Менеджер')">
+                        <!--begin:: Widgets/Tasks -->
+                        <div class="m-portlet m-portlet--full-height ">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text">
+                                            Актуальные сообщения
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="m_widget3_tab1_content">
+                                        <div class="m-widget2">
+                                            <div th:if="${messages.isEmpty()}">
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text"
+                                                                  style="width: 100% !important; text-align: center !important; display: block">
+															Актуальных сообщений не найдено
+															</span>
+                                                </div>
+                                            </div>
+                                            <div th:each="message:${messages}"
+                                                 class="m-widget2__item m-widget2__item--danger">
+                                                <div class="m-widget2__checkbox">
+                                                </div>
+                                                <div class="m-widget2__desc">
+															<span class="m-widget2__text" th:inline="text">
+                                                                <p>Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>:</p>
+                                                                <p>[[${message.message}]]</p>
+															</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end:: Widgets/Tasks -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
+</div>
+
+<!--<footer th:replace="layout :: site-footer" />-->
+<script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
+<script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
+</body>
+</html>

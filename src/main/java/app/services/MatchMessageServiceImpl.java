@@ -40,7 +40,7 @@ public class MatchMessageServiceImpl implements MatchMessageService {
     }
 
     @Override
-    public List<MatchMessage> getMessagesForHomeTeam(User user) {
+    public List<MatchMessage> getMessagesForUser(User user) {
         return matchMessageRepository.getMessagesForUser(user);
     }
 
