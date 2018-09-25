@@ -26,6 +26,9 @@ public class User {
     @Column(length = 60)
     private String password;
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
     @OneToMany(targetEntity = Team.class, mappedBy = "user", fetch = FetchType.LAZY)
     private List<Team> teams;
 
@@ -86,13 +89,12 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String firstname, String lastname, String email, String role, String password) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.role = role;
-        this.password = password;
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 
     public User() {

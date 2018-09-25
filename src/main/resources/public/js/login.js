@@ -33,35 +33,35 @@ var SnippetLogin = function() {
         login.find('.m-login__signin').animateClass('flipInX animated');
     }
 
-    // var displayForgetPasswordForm = function() {
-    //     login.removeClass('m-login--signin');
-    //     login.removeClass('m-login--signup');
-    //
-    //     login.addClass('m-login--forget-password');
-    //     login.find('.m-login__forget-password').animateClass('flipInX animated');
-    // }
+    var displayForgetPasswordForm = function() {
+        login.removeClass('m-login--signin');
+        login.removeClass('m-login--signup');
 
-    // var handleFormSwitch = function() {
-    //     $('#m_login_forget_password').click(function(e) {
-    //         e.preventDefault();
-    //         displayForgetPasswordForm();
-    //     });
-    //
-    //     $('#m_login_forget_password_cancel').click(function(e) {
-    //         e.preventDefault();
-    //         displaySignInForm();
-    //     });
-    //
-    //     $('#m_login_signup').click(function(e) {
-    //         e.preventDefault();
-    //         displaySignUpForm();
-    //     });
-    //
-    //     $('#m_login_signup_cancel').click(function(e) {
-    //         e.preventDefault();
-    //         displaySignInForm();
-    //     });
-    // }
+        login.addClass('m-login--forget-password');
+        login.find('.m-login__forget-password').animateClass('flipInX animated');
+    }
+
+    var handleFormSwitch = function() {
+        $('#m_login_forget_password').click(function(e) {
+            e.preventDefault();
+            displayForgetPasswordForm();
+        });
+
+        $('#m_login_forget_password_cancel').click(function(e) {
+            e.preventDefault();
+            displaySignInForm();
+        });
+
+        // $('#m_login_signup').click(function(e) {
+        //     e.preventDefault();
+        //     displaySignUpForm();
+        // });
+        //
+        // $('#m_login_signup_cancel').click(function(e) {
+        //     e.preventDefault();
+        //     displaySignInForm();
+        // });
+    }
 
     var handleSignInFormSubmit = function() {
         $('#m_login_signin_submit').click(function(e) {
@@ -168,58 +168,107 @@ var SnippetLogin = function() {
     //     });
     // }
 
-    // var handleForgetPasswordFormSubmit = function() {
-    //     $('#m_login_forget_password_submit').click(function(e) {
-    //         e.preventDefault();
-    //
-    //         var btn = $(this);
-    //         var form = $(this).closest('form');
-    //
-    //         form.validate({
-    //             rules: {
-    //                 email: {
-    //                     required: true,
-    //                     email: true
-    //                 }
-    //             }
-    //         });
-    //
-    //         if (!form.valid()) {
-    //             return;
-    //         }
-    //
-    //         btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-    //
-    //         form.ajaxSubmit({
-    //             url: '',
-    //             success: function(response, status, xhr, $form) {
-    //             	// similate 2s delay
-    //             	setTimeout(function() {
-    //             		btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
-	 //                    form.clearForm(); // clear form
-	 //                    form.validate().resetForm(); // reset validation states
-    //
-	 //                    // display signup form
-	 //                    displaySignInForm();
-	 //                    var signInForm = login.find('.m-login__signin form');
-	 //                    signInForm.clearForm();
-	 //                    signInForm.validate().resetForm();
-    //
-	 //                    showErrorMsg(signInForm, 'success', 'Cool! Password recovery instruction has been sent to your email.');
-    //             	}, 2000);
-    //             }
-    //         });
-    //     });
-    // }
+    var handleForgetPasswordFormSubmit = function() {
+        $('#m_login_forget_password_submit').click(function(e) {
+            e.preventDefault();
+            var token = $("meta[name='_csrf']").attr("content");
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+            form.ajaxSubmit({
+                url: '/forgot',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                	// similate 2s delay
+                	setTimeout(function() {
+                		btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
+	                    form.clearForm(); // clear form
+	                    form.validate().resetForm(); // reset validation states
+
+	                    // display signup form
+	                    displaySignInForm();
+	                    var signInForm = login.find('.m-login__signin form');
+	                    signInForm.clearForm();
+	                    signInForm.validate().resetForm();
+
+	                    showErrorMsg(signInForm, 'success', 'Инструкции для восстановления пароля ' +
+                            'были отправлены на указанный почтовый ящик');
+                	}, 2000);
+                },
+                error: function (response, status) {
+                    if (status === 404) {
+                        showErrorMsg(form, 'danger', 'Пользователь с указанным почтовым ящиком не найден');
+                    }
+
+                }
+            });
+        });
+    }
+
+    var handleResetPasswordFormSubmit = function() {
+        $('#m_login_reset_password_submit').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    password: {
+                        required: true,
+                        min: 6
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+            form.ajaxSubmit({
+                url: '/reset',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    // similate 2s delay
+                    setTimeout(function() {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
+                        form.clearForm(); // clear form
+                        form.validate().resetForm(); // reset validation states
+
+                        showErrorMsg(form, 'success', 'Ваш пароль был успешно изменен');
+                    }, 2000);
+                    window.location("/login")
+                },
+                error: function (response, status) {
+
+                }
+            });
+        });
+    }
 
     //== Public Functions
     return {
         // public functions
         init: function() {
-            // handleFormSwitch();
+            handleFormSwitch();
             handleSignInFormSubmit();
             // handleSignUpFormSubmit();
-            // handleForgetPasswordFormSubmit();
+            handleForgetPasswordFormSubmit();
+            handleResetPasswordFormSubmit();
         }
     };
 }();

@@ -21,16 +21,11 @@ import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
-
-    private final UserRepository userRepository;
-    private final SlotsSignificationService slotsSignificationService;
-    private final TeamRepository teamRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, SlotsSignificationService slotsSignificationService, TeamRepository teamRepository) {
-        this.slotsSignificationService = slotsSignificationService;
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.teamRepository = teamRepository;
     }
 
     @Override
@@ -58,5 +53,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-
+    @Override
+    public User findByResetToken(String resetToken) {
+        return userRepository.findByResetToken(resetToken);
+    }
 }

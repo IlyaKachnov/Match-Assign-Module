@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new GsonBuilder().create();
     }
 
-     @Bean
+    @Bean
     public TemplateEngine templateEngine() {
         return new TemplateEngine();
     }
@@ -46,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/registration").permitAll()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/registration", "/forgot", "/reset").permitAll()
                 .antMatchers("/leagues/**", "/stadiums/**", "/matches/**", "/users/**", "/sessions/**", "/tours/**", "/slot-types/**").hasAuthority(Role.adminRole)
                 .anyRequest().authenticated()
                 .and()
