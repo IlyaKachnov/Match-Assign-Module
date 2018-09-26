@@ -215,9 +215,11 @@ var SnippetLogin = function() {
                             'были отправлены на указанный почтовый ящик');
                 	}, 2000);
                 },
-                error: function (response, status) {
-                    if (status === 404) {
+                error: function (response) {
+                    if (response.status === 404) {
                         showErrorMsg(form, 'danger', 'Пользователь с указанным почтовым ящиком не найден');
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
+                        form.clearForm(); // clear form
                     }
 
                 }
@@ -235,13 +237,13 @@ var SnippetLogin = function() {
                 rules: {
                     password: {
                         required: true,
-                        min: 6
+                        minlength: 6
                     }
                 },
                 messages: {
                     password: {
                         required: "Поле обязательно для заполнения",
-                        min: "Длина пароля должна быть не менее 6 символов"
+                        minlength: "Длина пароля должна быть не менее 6 символов"
                     },
                 }
             });

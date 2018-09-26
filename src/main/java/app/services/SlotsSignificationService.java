@@ -258,16 +258,20 @@ public class SlotsSignificationService {
         return slotSignificationTimeRepository.getFutureSessions(user.getId());
     }
 
-    public List<SlotSignificationTime> getActualSessions() {
-        return slotSignificationTimeRepository.getActualSessions();
-    }
-
     public List<SlotSignificationTime> getActualSessions(User user) {
-        return slotSignificationTimeRepository.getActualSessions(user.getId());
+
+        List<SlotSignificationTime> times = slotSignificationTimeRepository.getUserSessions(user.getId());
+        return times.stream().filter(time -> checkDateTime(time)).collect(Collectors.toList());
+    }
+
+    public List<SlotSignificationTime> getActualSessions() {
+        List<SlotSignificationTime> times = slotSignificationTimeRepository.findAll();
+
+        return times.stream().filter(time -> checkDateTime(time)).collect(Collectors.toList());
     }
 
 
-//    public List<SlotSignificationTime> getActualSessions() {
+//    public List<SlotSignificationTime> getUserSessions() {
 //
 //        List<SlotSignificationTime> allSessions = slotSignificationTimeRepository.findAll();
 //        List<SlotSignificationTime> actualSessions = new ArrayList<>();
@@ -280,7 +284,7 @@ public class SlotsSignificationService {
 //        return actualSessions;
 //    }
 //
-//    public Set<SlotSignificationTime> getActualSessions(User user) {
+//    public Set<SlotSignificationTime> getUserSessions(User user) {
 //
 //        List<Team> teamList = user.getTeamList();
 //
