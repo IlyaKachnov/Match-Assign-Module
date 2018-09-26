@@ -37,7 +37,7 @@
 <!-- begin:: Page -->
 <div class="m-grid m-grid--hor m-grid--root m-page">
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2"
-         id="m_login">
+         id="m_login" th:style="'background-image: url('+@{/img/bg-3.jpg}+');'">
         <div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
             <div class="m-login__container">
                 <div class="m-login__logo">
@@ -46,6 +46,11 @@
                     </a>
                 </div>
                 <div class="m-login__signin">
+                    <!--<div class="m-login__head">-->
+                        <!--<h3 class="m-login__title">-->
+                            <!--НМФЛ-->
+                        <!--</h3>-->
+                    <!--</div>-->
                     <form class="m-login__form m-form" th:action="@{/login}" method="post">
                         <div class="form-group m-form__group">
                             <input class="form-control m-input--square" type="text" id="username" placeholder="Email"
@@ -56,13 +61,13 @@
                                    placeholder="Пароль" name="password"/>
                         </div>
                         <div class="row m-login__form-sub">
-                        <div class="col m--align-left m-login__form-left">
-                        <label class="m-checkbox  m-checkbox--focus">
-                        <input type="checkbox" name="remember"/>
-                        Запомнить меня
-                        <span></span>
-                        </label>
-                        </div>
+                        <!--<div class="col m&#45;&#45;align-left m-login__form-left">-->
+                        <!--<label class="m-checkbox  m-checkbox&#45;&#45;focus">-->
+                        <!--<input type="checkbox" name="remember"/>-->
+                        <!--Запомнить меня-->
+                        <!--<span></span>-->
+                        <!--</label>-->
+                        <!--</div>-->
                         <div class="col m--align-right m-login__form-right">
                         <a href="javascript:;" id="m_login_forget_password" class="m-link">
                         Забыл пароль?
@@ -127,7 +132,7 @@
                 <div class="m-login__forget-password">
                     <div class="m-login__head">
                         <h3 class="m-login__title">
-                            Забыли пароль
+                            Восстановление пароля
                         </h3>
                         <div class="m-login__desc">
                             Введите свой email для восстановления пароля:

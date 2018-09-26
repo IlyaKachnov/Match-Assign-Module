@@ -181,6 +181,12 @@ var SnippetLogin = function() {
                         required: true,
                         email: true
                     }
+                },
+                messages: {
+                    email: {
+                        required: "Поле обязательно для заполнения",
+                        email: "Некорректный формат email"
+                    }
                 }
             });
 
@@ -231,6 +237,12 @@ var SnippetLogin = function() {
                         required: true,
                         min: 6
                     }
+                },
+                messages: {
+                    password: {
+                        required: "Поле обязательно для заполнения",
+                        min: "Длина пароля должна быть не менее 6 символов"
+                    },
                 }
             });
 
@@ -248,10 +260,10 @@ var SnippetLogin = function() {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove
                         form.clearForm(); // clear form
                         form.validate().resetForm(); // reset validation states
-
                         showErrorMsg(form, 'success', 'Ваш пароль был успешно изменен');
-                    }, 2000);
-                    window.location("/login")
+                        location.href="/login";
+                    }, 4000);
+
                 },
                 error: function (response, status) {
 

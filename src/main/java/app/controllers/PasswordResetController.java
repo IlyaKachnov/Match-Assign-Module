@@ -38,7 +38,9 @@ public class PasswordResetController {
         if(user == null) {
             return  new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        String rootUrl = request.getScheme() + "://" + request.getServerName();
+        //TODO: without port
+        String rootUrl = request.getScheme() + "://" + request.getServerName() + ":8080";
+
         String token = UUID.randomUUID().toString();
         String resetUrl = rootUrl + "/reset?token=" + token;
         user.setResetToken(token);
