@@ -1,7 +1,6 @@
 package app.services;
 
 import app.models.Team;
-import app.models.User;
 import app.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -45,5 +44,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team findByName(String name) {
         return teamRepository.findByName(name);
+    }
+
+    @Override
+    public List<Team> findAllOrderByName() {
+        return teamRepository.findAllByOrderByNameAsc();
     }
 }

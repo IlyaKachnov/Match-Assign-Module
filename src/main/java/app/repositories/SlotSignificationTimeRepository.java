@@ -19,7 +19,7 @@ public interface SlotSignificationTimeRepository extends JpaRepository<SlotSigni
             " where (sst.startDate > current_date) or (sst.startDate = current_date and sst.startTime > CURRENT_TIME) ")
     List<SlotSignificationTime> getFutureSessions();
 
-    @Query("select  sst from SlotSignificationTime sst inner join sst.league l inner join l.teams t " +
+    @Query("select distinct sst from SlotSignificationTime sst inner join sst.league l inner join l.teams t " +
             " where t.user.id = :userId ")
     List<SlotSignificationTime> getUserSessions(@Param("userId") Long userId);
 

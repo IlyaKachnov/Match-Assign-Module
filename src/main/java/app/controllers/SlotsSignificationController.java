@@ -1,10 +1,12 @@
 package app.controllers;
 
 import app.email.services.MessageEmailService;
+import app.email.services.SlotSignificationEmailService;
 import app.models.*;
 import app.repositories.MatchRepository;
 import app.repositories.UserRepository;
 import app.services.MatchMessageServiceImpl;
+import app.services.SlotServiceImpl;
 import app.services.SlotsSignificationService;
 import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +27,26 @@ public class SlotsSignificationController {
     private final StadiumServiceImpl stadiumService;
     private final MatchMessageServiceImpl matchMessageService;
     private final MessageEmailService messageEmailService;
+    private final SlotSignificationEmailService slotSignificationEmailService;
+    private final SlotServiceImpl slotService;
 
     @Autowired
     public SlotsSignificationController(SlotsSignificationService slotsSignificationService,
                                         MatchRepository matchRepository,
                                         UserRepository userRepository,
                                         StadiumServiceImpl stadiumService,
-                                        MatchMessageServiceImpl matchMessageService, MessageEmailService messageEmailService) {
+                                        MatchMessageServiceImpl matchMessageService,
+                                        MessageEmailService messageEmailService,
+                                        SlotSignificationEmailService slotSignificationEmailService,
+                                        SlotServiceImpl slotService) {
         this.slotsSignificationService = slotsSignificationService;
         this.matchRepository = matchRepository;
         this.userRepository = userRepository;
         this.stadiumService = stadiumService;
         this.matchMessageService = matchMessageService;
         this.messageEmailService = messageEmailService;
+        this.slotSignificationEmailService = slotSignificationEmailService;
+        this.slotService = slotService;
     }
 
     @RequestMapping(value = "stadium/{id}", method = RequestMethod.GET)
@@ -69,14 +78,43 @@ public class SlotsSignificationController {
     public String signifySlot(@PathVariable Long id, @PathVariable Long slotId,
                               @ModelAttribute MatchForm matchForm, HttpServletRequest httpServletRequest) {
         if (matchForm.getId() != null) {
-            slotsSignificationService.signifySlot(matchForm.getId(), slotId, httpServletRequest.getUserPrincipal().getName());
+            Match match = matchRepository.getOne(matchForm.getId());
+            String guestEmail = match.getGuestTeam().getUser().getEmail();
+            Slot slot = slotService.findById(slotId);
+            Stadium stadium = stadiumService.findById(id);
+            String stadiumName = stadium.getName();
+            String slotInfo = slot.getFullInfo();
+            String homeAndGuest = match.getHomeAndGuest();
+
+            slotsSignificationService.signifySlot(matchForm.getId(), slotId,
+                    httpServletRequest.getUserPrincipal().getName());
+
+            slotSignificationEmailService.setSignified(true);
+            slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
+            slotSignificationEmailService.setSlotInfo(slotInfo);
+            slotSignificationEmailService.setStadiumName(stadiumName);
+            slotSignificationEmailService.send(guestEmail);
+
         }
         return "redirect:/stadium/" + id;
     }
 
     @RequestMapping(value = "stadium/{id}/reject/{slotId}", method = RequestMethod.GET)
     public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId, HttpServletRequest httpServletRequest) {
+        Slot slot = slotService.findById(slotId);
+        Match match = slot.getMatch();
+        String homeAndGuest = match.getHomeAndGuest();
+        String stadiumName = slot.getStadium().getName();
+        String guestEmail = match.getGuestTeam().getUser().getEmail();
+        String slotInfo = slot.getFullInfo();
         slotsSignificationService.rejectSlot(slotId, httpServletRequest.getUserPrincipal().getName());
+
+        slotSignificationEmailService.setSignified(false);
+        slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
+        slotSignificationEmailService.setSlotInfo(slotInfo);
+        slotSignificationEmailService.setStadiumName(stadiumName);
+        slotSignificationEmailService.send(guestEmail);
+
         return "redirect:/stadium/" + id;
     }
 

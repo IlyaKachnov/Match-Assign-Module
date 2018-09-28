@@ -48,7 +48,7 @@ public class UserController {
     public String showCreateForm(Model model, User user) {
 
         model.addAttribute("user", user);
-        model.addAttribute("teamList", teamService.findAll());
+        model.addAttribute("teamList", teamService.findAllOrderByName());
 
         return "users/create";
 
@@ -97,7 +97,7 @@ public class UserController {
         User user = userService.findById(id);
 
         model.addAttribute("user", user);
-        model.addAttribute("teamList", teamService.findAll());
+        model.addAttribute("teamList", teamService.findAllOrderByName());
         return "users/edit";
     }
 

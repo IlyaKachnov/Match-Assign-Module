@@ -15,4 +15,6 @@ public interface TeamService {
 
     Team findByName(String name);
 
+    List<Team> findAllOrderByName();
+
 }

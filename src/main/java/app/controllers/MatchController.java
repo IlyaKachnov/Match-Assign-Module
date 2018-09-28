@@ -49,7 +49,7 @@ public class MatchController {
 
     @RequestMapping(value = "/matches/create", method = RequestMethod.GET)
     public String showCreateForm(Model model, Match match) {
-        model.addAttribute("teams", teamService.findAll());
+        model.addAttribute("teams", teamService.findAllOrderByName());
         model.addAttribute("match", match);
         model.addAttribute("leagueList", leagueService.findAll());
 
