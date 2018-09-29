@@ -8,11 +8,12 @@ var DatatableHtmlTableDemo = function() {
 
         var datatable = $('.m-datatable').mDatatable({
             data: {
-                saveState: {cookie: false},
+                saveState: {cookie: true},
             },
             search: {
                 input: $('#generalSearch'),
             },
+            order: [[1, "asc"]],
             pagination: true,
             translate: {
                 records: {

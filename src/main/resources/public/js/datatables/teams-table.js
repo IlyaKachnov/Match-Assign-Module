@@ -6,7 +6,6 @@ var SweetAlertTable = function () {
             var href = $(this).attr("data-href");
             var nRow = $(this).closest('tr');
             var token = $("meta[name='_csrf']").attr("content");
-
             swal({
                 title: 'Удалить запись?',
                 type: 'warning',
@@ -24,7 +23,7 @@ var SweetAlertTable = function () {
                         type: "POST",
                         url: href,
                         success: function () {
-                            nRow.find('td').remove();
+                            nRow.find('td').remove().draw();
                             swal(
                                 'Удалено!',
                                 'Запись была успешно удалена',
@@ -58,6 +57,7 @@ var DatatableHtmlTableDemo = function() {
             search: {
                 input: $('#generalSearch'),
             },
+            order: [[1, "asc"]],
             pagination: true,
             translate: {
                 records: {

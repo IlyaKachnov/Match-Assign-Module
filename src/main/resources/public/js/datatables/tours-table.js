@@ -74,11 +74,12 @@ var DatatableHtmlTableDemo = function() {
                 }
             },
             data: {
-                saveState: {cookie: false},
+                saveState: {cookie: true},
             },
             search: {
                 input: $('#generalSearch'),
             },
+            order: [[1, "asc"]],
             columns: [
                 {
                     field: "Действия",

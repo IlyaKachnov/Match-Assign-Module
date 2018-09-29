@@ -34,7 +34,7 @@ var DatatableDataLocalDemo = function () {
             search: {
                 input: $('#generalSearch')
             },
-
+            order: [[1, "asc"]],
             translate: {
                 records: {
                     processing: 'Загрузка...',

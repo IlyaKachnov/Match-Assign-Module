@@ -57,6 +57,7 @@ var DatatableHtmlTableDemo = function() {
             search: {
                 input: $('#generalSearch'),
             },
+            order: [[1, "asc"]],
             pagination: true,
             translate: {
                 records: {

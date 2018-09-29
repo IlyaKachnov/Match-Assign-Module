@@ -56,6 +56,7 @@ var DatatableHtmlTableDemo = function() {
                     processing: 'Загрузка...',
                     noRecords: 'Ничего не найдено'
                 },
+                order: [[1, "asc"]],
                 toolbar: {
                     pagination: {
                         items: {
@@ -74,7 +75,7 @@ var DatatableHtmlTableDemo = function() {
                 }
             },
             data: {
-                saveState: {cookie: false},
+                saveState: {cookie: true},
             },
             search: {
                 input: $('#generalSearch'),
