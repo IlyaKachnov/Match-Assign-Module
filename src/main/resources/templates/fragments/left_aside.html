@@ -138,6 +138,15 @@
             </li>
             <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover"
                 th:classappend="${#httpServletRequest.requestURI.equals('/all-stadiums')} ? 'm-menu__item--active' : ''">
+                <a sec:authorize="hasAuthority('Менеджер')" th:href="@{/my-teams}" class="m-menu__link m-menu__toggle">
+                    <i class="m-menu__link-icon flaticon-users"></i>
+                    <span class="m-menu__link-text">
+                        Мои команды
+                    </span>
+                </a>
+            </li>
+            <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" data-menu-submenu-toggle="hover"
+                th:classappend="${#httpServletRequest.requestURI.equals('/all-stadiums')} ? 'm-menu__item--active' : ''">
                 <a th:href="@{/all-stadiums}" class="m-menu__link m-menu__toggle">
                     <i class="m-menu__link-icon flaticon-map-location"></i>
                     <span class="m-menu__link-text">

@@ -1,9 +1,12 @@
 package app.controllers;
 
 import app.models.League;
+import app.models.Role;
 import app.models.Team;
+import app.models.User;
 import app.services.LeagueServiceImpl;
 import app.services.TeamServiceImpl;
+import app.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +14,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class TeamController {
 
-    @Resource
-    LeagueServiceImpl leagueService;
+    private LeagueServiceImpl leagueService;
+    private TeamServiceImpl teamService;
+    private UserServiceImpl userService;
 
     @Autowired
-    TeamServiceImpl teamService;
+    public TeamController(LeagueServiceImpl leagueService, TeamServiceImpl teamService, UserServiceImpl userService) {
+        this.leagueService = leagueService;
+        this.teamService = teamService;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/leagues/{id}/teams/create", method = RequestMethod.GET)
     public String showCreateForm(@PathVariable Long id, Model model, Team team) {
@@ -81,5 +92,16 @@ public class TeamController {
         teamService.delete(id);
 
         return "redirect:/leagues/" + leagueId + "/teams";
+    }
+
+    @GetMapping(value = "my-teams")
+    public String getCurrentUserTeams(Model model, Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        if(user.getRole().equals(Role.adminRole)) {
+            return "error/404";
+        }
+
+        model.addAttribute("teams", user.getTeamList());
+        return "teams/my_teams";
     }
 }
