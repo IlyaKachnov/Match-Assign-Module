@@ -89,4 +89,18 @@ public class SlotSignificationTime {
         return " - начало: " + dateFormat.format(this.startDate) + " " + timeFormat.format(this.startTime)
                 + " окончание: " + dateFormat.format(this.endDate)  + " " + timeFormat.format(this.endTime);
     }
+
+    public String getFormattedEndDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+        return dateFormat.format(this.endDate)  + "в " + timeFormat.format(this.endTime);
+    }
+
+    public String getFormattedStartDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+        return dateFormat.format(this.startDate)  + "в " + timeFormat.format(this.startTime);
+    }
 }

@@ -37,16 +37,16 @@ public class HomeController {
 
         User user = userService.findByEmail(principal.getName());
 
-        if (user.getRole().equals(Role.managerRole)) {
-            model.addAttribute("teamList", user.getTeamList());
-            model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
-            model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
-
-            return "index";
-        }
-
-        model.addAttribute("notifications", slotsSignificationService.getActualSessions());
-        model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions());
+//        if (user.getRole().equals(Role.managerRole)) {
+//            model.addAttribute("teamList", user.getTeamList());
+//            model.addAttribute("notifications", slotsSignificationService.getActualSessions(user));
+//            model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions(user));
+//
+//            return "index";
+//        }
+//
+//        model.addAttribute("notifications", slotsSignificationService.getActualSessions());
+//        model.addAttribute("futureSessions", slotsSignificationService.getFutureSessions());
 
         return "index";
     }

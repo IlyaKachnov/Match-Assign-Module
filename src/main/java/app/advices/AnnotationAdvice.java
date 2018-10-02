@@ -1,6 +1,7 @@
 package app.advices;
 
 import app.controllers.HomeController;
+import app.dto.NotificationDTO;
 import app.models.Role;
 import app.models.SlotSignificationTime;
 import app.models.User;
@@ -26,23 +27,34 @@ public class AnnotationAdvice {
         this.slotsSignificationService = slotsSignificationService;
     }
 
-    @ModelAttribute("futureSessions")
-    public List<SlotSignificationTime> getFutureSessions(Principal principal) {
-        User user  = userService.findByEmail(principal.getName());
-        if(user.getRole().equals(Role.adminRole)) {
-            return slotsSignificationService.getFutureSessions();
+//    @ModelAttribute("futureSessions")
+//    public List<SlotSignificationTime> getFutureSessions(Principal principal) {
+//        User user  = userService.findByEmail(principal.getName());
+//        if(user.getRole().equals(Role.adminRole)) {
+//            return slotsSignificationService.getFutureSessions();
+//        }
+//
+//        return slotsSignificationService.getFutureSessions(user);
+//    }
+//
+//    @ModelAttribute("actualSessions")
+//    public List<SlotSignificationTime> getActualSessions(Principal principal) {
+//        User user  = userService.findByEmail(principal.getName());
+//        if(user.getRole().equals(Role.adminRole)) {
+//            return slotsSignificationService.getActualSessions();
+//        }
+//
+//        return slotsSignificationService.getActualSessions(user);
+//    }
+
+    @ModelAttribute("notifications")
+    public List<NotificationDTO> getNotifications(Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        if (user.getRole().equals(Role.adminRole)) {
+            return slotsSignificationService.getNotifications();
         }
 
-        return slotsSignificationService.getFutureSessions(user);
-    }
 
-    @ModelAttribute("actualSessions")
-    public List<SlotSignificationTime> getActualSessions(Principal principal) {
-        User user  = userService.findByEmail(principal.getName());
-        if(user.getRole().equals(Role.adminRole)) {
-            return slotsSignificationService.getActualSessions();
-        }
-
-        return slotsSignificationService.getActualSessions(user);
+        return slotsSignificationService.getNotifications(user);
     }
 }

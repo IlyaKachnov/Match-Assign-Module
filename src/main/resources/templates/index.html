@@ -32,46 +32,25 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="m_widget2_tab1_content">
                                         <div class="m-widget2">
-                                            <div th:each="n:${notifications}"
+                                            <div
                                                  class="m-widget2__item m-widget2__item--danger">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">
-															<span class="m-widget2__text" th:inline="text">
-																Разбор слотов для лиги [[${n.league.name}]]
-                                                                начался. Окончание разбора [[${#dates.format(n.endDate, "dd.MM.YYYY")}]] в [[${#dates.format(n.endTime, "HH:mm")}]]
+															<span class="m-widget2__text">
 															</span>
                                                     <br></br>
-                                                    <span class="m-widget2__user-name">
-																<a th:href="@{'/all-stadiums'}" class="m-widget2__link">
-																	Перейти к разбору
-																</a>
-															</span>
                                                 </div>
                                             </div>
-                                            <div th:each="s:${futureSessions}"
+                                            <div
                                                  class="m-widget2__item m-widget2__item--primary">
                                                 <div class="m-widget2__checkbox">
                                                 </div>
                                                 <div class="m-widget2__desc">
-															<span class="m-widget2__text" th:inline="text">
-																Разбор слотов для лиги [[${s.league.name}]]
-                                                                начнется [[${#dates.format(s.startDate, "dd.MM.YYYY")}]] в [[${#dates.format(s.startTime, "HH:mm")}]]
+															<span class="m-widget2__text">
 															</span>
                                                     <br></br>
-                                                    <span class="m-widget2__user-name">
-																<a th:href="@{'/all-stadiums'}" class="m-widget2__link">
-																	Перейти к разбору
-																</a>
-															</span>
-                                                </div>
-                                            </div>
-                                            <div th:if="${futureSessions.isEmpty() and notifications.isEmpty()}">
-                                                <div class="m-widget2__desc">
-															<span class="m-widget2__text"
-                                                                  style="width: 100% !important; text-align: center !important; display: block">
-															Активных сессий не найдено
-															</span>
+
                                                 </div>
                                             </div>
                                         </div>

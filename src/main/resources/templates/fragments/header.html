@@ -60,7 +60,7 @@
                             </li>
                             <li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
                                 <a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
-                                    <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger" th:if="${!actualSessions.isEmpty() or !futureSessions.isEmpty()}"></span>
+                                    <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger" th:if="${!notifications.isEmpty()}"></span>
                                     <!--<span class="m-nav__link-icon">-->
                                     <i class="flaticon-time-1 notification-icon"></i>
                                     <!--</span>-->
@@ -81,14 +81,14 @@
                                                 <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
                                                     <li class="nav-item m-tabs__item">
                                                         <a class="nav-link m-tabs__link active" data-toggle="tab" href="#topbar_notifications_notifications" role="tab">
-                                                            Актуальные сессии
+                                                            Сессии
                                                         </a>
                                                     </li>
-                                                    <li class="nav-item m-tabs__item">
-                                                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_events" role="tab">
-                                                            Будущие сессии
-                                                        </a>
-                                                    </li>
+                                                    <!--<li class="nav-item m-tabs__item">-->
+                                                        <!--<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_events" role="tab">-->
+                                                            <!--Будущие сессии-->
+                                                        <!--</a>-->
+                                                    <!--</li>-->
                                                     <!--<li class="nav-item m-tabs__item">-->
                                                         <!--<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_logs" role="tab">-->
                                                             <!--Logs-->
@@ -99,44 +99,40 @@
                                                     <div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
                                                         <div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">
                                                             <div class="m-list-timeline m-list-timeline--skin-light">
-                                                                <div class="m-list-timeline__items" th:if="${actualSessions.isEmpty()}">
-                                                                    Актуальных сессий не найдено
+                                                                <div class="m-stack__item m-stack__item--center m-stack__item--middle" th:if="${notifications.isEmpty()}">
+                                                                    <span>Сессий не найдено</span>
                                                                 </div>
-                                                                <div class="m-list-timeline__items" th:each="s:${actualSessions}">
+                                                                <div class="m-list-timeline__items" th:each="n:${notifications}">
                                                                     <div class="m-list-timeline__item">
                                                                         <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
-                                                                        <span class="m-list-timeline__text" th:inline="text">
-																						Разбор слотов для лиги [[${s.league.name}]]
-                                                                начнется [[${#dates.format(s.startDate, "dd.MM.YYYY")}]] в [[${#dates.format(s.startTime, "HH:mm")}]]
+                                                                        <span class="m-list-timeline__text" th:if="${n.actual == true}" th:inline="text">
+																						Разбор для лиги [[${n.league}]] уже идет!
+                                                                Окочание: [[${n.endTime}]]
 																					</span>
-                                                                        <span class="m-list-timeline__time">
-																						Just now
-																					</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="topbar_notifications_events" role="tabpanel">
-                                                        <div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">
-                                                            <div class="m-list-timeline m-list-timeline--skin-light">
-                                                                <div class="m-list-timeline__items" th:if="${futureSessions.isEmpty()}">
-                                                                    Будущих сессий не найдено
-                                                                </div>
-                                                                <div class="m-list-timeline__items" th:each="n:${futureSessions}">
-                                                                    <div class="m-list-timeline__item">
-                                                                        <span class="m-list-timeline__badge m-list-timeline__badge--state-success">
-                                                                        </span>
-                                                                        <span class="m-list-timeline__text" th:inline="text">Разбор слотов для лиги [[${n.league.name}]]
-                                                                начался. Окончание [[${#dates.format(n.endDate, "dd.MM.YYYY")}]] в [[${#dates.format(n.endTime, "HH:mm")}]]</span>
-                                                                        <span class="m-list-timeline__time">
-																						Just now
+                                                                        <span class="m-list-timeline__text" th:inline="text" th:if="${n.actual == false}">
+																						Разбор для лиги [[${n.league}]] начнется в [[${n.startTime}]]
 																					</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <!--<div class="tab-pane" id="topbar_notifications_events" role="tabpanel">-->
+                                                        <!--<div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">-->
+                                                            <!--<div class="m-list-timeline m-list-timeline&#45;&#45;skin-light">-->
+                                                                <!--<div class="m-stack__item m-stack__item&#45;&#45;center m-stack__item&#45;&#45;middle" >-->
+                                                                    <!--<span>Актуальных сессий не найдено</span>-->
+                                                                <!--</div>-->
+                                                                <!--<div class="m-list-timeline__items" >-->
+                                                                    <!--<div class="m-list-timeline__item">-->
+                                                                        <!--<span class="m-list-timeline__badge m-list-timeline__badge&#45;&#45;state-success">-->
+                                                                        <!--</span>-->
+                                                                        <!--<span class="m-list-timeline__text" ></span>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
                                                     <!--<div class="tab-pane" id="topbar_notifications_logs" role="tabpanel">-->
                                                         <!--<div class="m-stack m-stack&#45;&#45;ver m-stack&#45;&#45;general" style="min-height: 180px;">-->
                                                             <!--<div class="m-stack__item m-stack__item&#45;&#45;center m-stack__item&#45;&#45;middle">-->

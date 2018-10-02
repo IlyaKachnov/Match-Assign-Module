@@ -1,5 +1,6 @@
 package app.services;
 
+import app.dto.NotificationDTO;
 import app.models.*;
 import app.repositories.*;
 import org.slf4j.Logger;
@@ -248,6 +249,35 @@ public class SlotsSignificationService {
 ////        return futureSessions;
 ////    }
 
+    public List<NotificationDTO> getNotifications(User user) {
+        List<SlotSignificationTime> times = slotSignificationTimeRepository.getUserSessions(user.getId());
+        if(times == null || times.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return buildNotifications(times);
+    }
+
+    public List<NotificationDTO> getNotifications() {
+        List<SlotSignificationTime> times = slotSignificationTimeRepository.findAll();
+        if(times == null || times.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return buildNotifications(times);
+    }
+
+    private List<NotificationDTO> buildNotifications(List<SlotSignificationTime> times) {
+        List<NotificationDTO> notifications = new ArrayList<>();
+        times.forEach(time -> {
+            NotificationDTO dto = new NotificationDTO(time);
+            dto.setActual(checkDateTime(time));
+            dto.setLeague(time.getLeague().getName());
+            notifications.add(dto);
+        });
+
+        return notifications;
+    }
+
     public List<SlotSignificationTime> getFutureSessions() {
 
         return slotSignificationTimeRepository.getFutureSessions();
@@ -319,7 +349,7 @@ public class SlotsSignificationService {
                         leagues.contains(slot.getMatch().getHomeTeam().getLeague()) &&
                         (slot.getMatch().getTour().getEndDate().after(currDate) || slot.getMatch().getDelayed()))
                         || currUser.getRole().equals(Role.adminRole)
-                        ) {
+                ) {
                     slotsJSON.append(addMatchTeams(slot.getMatch()))
                             .append(" <a class='m_sweetalert cancel' href='/stadium/").append(id).append("/reject/")
                             .append(slot.getId()).append("'>Отменить слот</a>")
