@@ -1,5 +1,6 @@
 package app.services;
 
+import app.comparators.NotificationComparator;
 import app.dto.NotificationDTO;
 import app.models.*;
 import app.repositories.*;
@@ -275,7 +276,12 @@ public class SlotsSignificationService {
             notifications.add(dto);
         });
 
-        return notifications;
+        List<NotificationDTO> filteredList = notifications.stream()
+                .filter(dto -> dto.getEndTime().isAfter(LocalDateTime.now()))
+                .sorted(new NotificationComparator())
+        .collect(Collectors.toList());
+
+        return filteredList;
     }
 
     public List<SlotSignificationTime> getFutureSessions() {

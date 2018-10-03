@@ -1,42 +1,45 @@
 package app.dto;
 
-import app.models.League;
 import app.models.SlotSignificationTime;
-
-import java.text.SimpleDateFormat;
+import java.time.*;
 
 public class NotificationDTO {
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String league;
     private boolean isActual;
 
     public NotificationDTO(SlotSignificationTime significationTime) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        this.startTime = timeFormat.format(significationTime.getStartTime()) + " "
-                + dateFormat.format(significationTime.getStartDate());
-        this.endTime = timeFormat.format(significationTime.getEndTime()) + " "
-                + dateFormat.format(significationTime.getEndDate());
+
+        LocalDate startLocalDate = Instant.ofEpochMilli(significationTime.getStartDate().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endLocalDate = Instant.ofEpochMilli(significationTime.getEndDate().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalTime startLocalTime = Instant.ofEpochMilli(significationTime.getStartTime().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalTime();
+        LocalTime endLocalTime = Instant.ofEpochMilli(significationTime.getEndTime().getTime())
+                .atZone(ZoneId.systemDefault()).toLocalTime();
+        this.startTime = LocalDateTime.of(startLocalDate, startLocalTime);
+        this.endTime = LocalDateTime.of(endLocalDate, endLocalTime);
     }
 
     public void setActual(boolean actual) {
         isActual = actual;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
