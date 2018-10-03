@@ -77,9 +77,12 @@
     font-size: 1.5rem;
     vertical-align: middle;
 }
-.m-dropdown.m-dropdown--align-center.m-dropdown--large .m-dropdown__wrapper {
-    margin-left: -305px;
+@media (min-width: 769px) {
+    .m-dropdown.m-dropdown--align-center.m-dropdown--large .m-dropdown__wrapper {
+        margin-left: -340px;
+    }
+    .m-dropdown.m-dropdown--arrow .m-dropdown__arrow, .m-dropdown.m-dropdown--arrow.m-dropdown--up .m-dropdown__arrow {
+        margin-left: 130px;
+    }
 }
-.m-dropdown.m-dropdown--arrow .m-dropdown__arrow, .m-dropdown.m-dropdown--arrow.m-dropdown--up .m-dropdown__arrow {
-    margin-left: 95px;
-}
+
