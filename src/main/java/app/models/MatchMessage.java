@@ -4,6 +4,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +27,14 @@ public class MatchMessage {
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isConsidered;
+
+    @Column(name = "is_read")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean isRead;
+
+    @Column(name = "timestamp")
+    @Basic
+    private Timestamp timestamp;
 
     public Long getId() {
         return id;
@@ -57,6 +66,22 @@ public class MatchMessage {
 
     public void setConsidered(Boolean considered) {
         isConsidered = considered;
+    }
+
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 
     public MatchMessage() {

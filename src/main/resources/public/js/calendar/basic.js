@@ -58,6 +58,7 @@ var CalendarBasic = function () {
                 eventLimit: true, // allow "more" link when too many events
                 navLinks: true,
                 events: eventsList,
+                defaultView:"listWeek",
 
                 eventRender: function (event, element) {
                     if (element.hasClass('fc-day-grid-event')) {

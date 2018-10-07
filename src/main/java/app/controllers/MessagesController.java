@@ -32,7 +32,9 @@ public class MessagesController {
     @RequestMapping(value = "/messages", method = RequestMethod.GET)
     public String getMessages(Model model, Principal principal) {
         User user = userService.findByEmail(principal.getName());
-
+        if (user.getRole().equals(Role.adminRole)) {
+            return "error/404";
+        }
         if (user.getRole().equals(Role.managerRole)) {
             List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
             List<MatchMessage> messages = new ArrayList<>();
@@ -42,7 +44,19 @@ public class MessagesController {
                                 matchMessage.getMatch().getMatchDate().after(new Date()))
                         .collect(Collectors.toList());
             }
-            model.addAttribute("messages", messages);
+            List<MatchMessage> oddMessages = new ArrayList<>();
+            List<MatchMessage> evenMessages = new ArrayList<>();
+            messages.forEach(matchMessage -> {
+                int index = matchMessages.indexOf(matchMessage);
+                if (index % 2 == 0) {
+                    evenMessages.add(matchMessage);
+                } else {
+                    oddMessages.add(matchMessage);
+                }
+            });
+//            model.addAttribute("messages", messages);
+            model.addAttribute("oddMessages", oddMessages);
+            model.addAttribute("evenMessages", evenMessages);
         }
         return "messages/index";
     }

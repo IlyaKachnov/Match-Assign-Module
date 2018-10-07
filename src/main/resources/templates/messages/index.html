@@ -16,47 +16,80 @@
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
                 <div class="row">
-                    <div class="col-xl-12" sec:authorize="hasAuthority('Менеджер')">
-                        <!--begin:: Widgets/Tasks -->
-                        <div class="m-portlet m-portlet--full-height ">
+
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
+                        <div class="m-portlet m-portlet--primary  m-portlet--head-solid-bg"
+                             th:each="message:${oddMessages}">
                             <div class="m-portlet__head">
                                 <div class="m-portlet__head-caption">
                                     <div class="m-portlet__head-title">
-                                        <h3 class="m-portlet__head-text">
-                                            Актуальные сообщения
+                                        <h3 class="m-portlet__head-text" th:inline="text">
+                                            Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>
                                         </h3>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="m-portlet__body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="m_widget3_tab1_content">
-                                        <div class="m-widget2">
-                                            <div th:if="${messages.isEmpty()}">
-                                                <div class="m-widget2__desc">
-															<span class="m-widget2__text"
-                                                                  style="width: 100% !important; text-align: center !important; display: block">
-															Актуальных сообщений не найдено
-															</span>
-                                                </div>
-                                            </div>
-                                            <div th:each="message:${messages}"
-                                                 class="m-widget2__item m-widget2__item--danger">
-                                                <div class="m-widget2__checkbox">
-                                                </div>
-                                                <div class="m-widget2__desc">
-															<span class="m-widget2__text" th:inline="text">
-                                                                <p>Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>:</p>
-                                                                <p>[[${message.message}]]</p>
-															</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="m-portlet__head-tools">
+                                    <ul class="m-portlet__nav">
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-close"></i>
+                                            </a>
+                                        </li>
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-refresh"></i>
+                                            </a>
+                                        </li>
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-circle"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
+                            <div class="m-portlet__body">
+                            <span class="m-widget2__text" th:inline="text">
+                                                                <p>[[${message.message}]]</p>
+															</span></div>
                         </div>
-                        <!--end:: Widgets/Tasks -->
+                    </div>
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
+                        <div class="m-portlet m-portlet--success  m-portlet--head-solid-bg"
+                             th:each="message:${evenMessages}">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text" th:inline="text">
+                                            Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="m-portlet__head-tools">
+                                    <ul class="m-portlet__nav">
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-close"></i>
+                                            </a>
+                                        </li>
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-refresh"></i>
+                                            </a>
+                                        </li>
+                                        <li class="m-portlet__nav-item">
+                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-circle"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="m-portlet__body">
+                            <span class="m-widget2__text" th:inline="text">
+                                                                <p>[[${message.message}]]</p>
+															</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
