@@ -15,47 +15,49 @@
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
-                <div class="row">
-                    <div th:class="${#authorization.expression('hasAuthority(''Менеджер'')')} ? 'col-xl-6' : 'col-xl-12'">
-                        <!--begin:: Widgets/Tasks -->
-                        <div class="m-portlet m-portlet--full-height ">
-                            <div class="m-portlet__head">
-                                <div class="m-portlet__head-caption">
-                                    <div class="m-portlet__head-title">
-                                        <h3 class="m-portlet__head-text">
-                                            Ближайшие сессии разбора
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="m-portlet__body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="m_widget2_tab1_content">
-                                        <div class="m-widget2">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end:: Widgets/Tasks -->
-                    </div>
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
-                        <!--begin:: Widgets/Support Tickets -->
-                        <div class="m-portlet m-portlet--full-height ">
-                            <div class="m-portlet__head">
-                                <div class="m-portlet__head-caption">
-                                    <div class="m-portlet__head-title">
-                                        <h3 class="m-portlet__head-text">
-                                            Мои команды
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="m-portlet__body">
-                            </div>
 
+                <div class="row">
+
+                    <div th:each="stadiumSlots:${stadiums}" class="col-xl-4">
+                        <div class="m-portlet m-portlet--mobile">
+                            <div class="m-portlet__head">
+                                <div class="m-portlet__head-caption">
+                                    <div class="m-portlet__head-title">
+                                        <h3 class="m-portlet__head-text" th:text="${stadiumSlots.stadium.name}">
+                                            Название стадиона
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__body">
+                                <!--begin: Datatable -->
+                                <div class="m_datatable m-datatable m-datatable--default m-datatable--loaded">
+
+
+                                    <table class="m-datatable__table" style="display: block; min-height: 100px; overflow-x: auto;">
+                                        <thead class="m-datatable__head">
+                                        <tr class="m-datatable__row">
+                                            <th data-field="date" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 62px;">Дата</span></th>
+                                            <th data-field="start" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 44px;">Начало</span></th>
+                                            <th data-field="end" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 40px;">Конец</span></th>
+                                            <th data-field="action" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 60px;">Действия</span></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body" style="">
+                                            <tr class="m-datatable__row">
+                                                <td data-field="date" class="m-datatable__cell"><span th:text="${slotDTO.slot.eventDate}" style="width: 66px;">Дата</span></td>
+                                                <td data-field="start" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.startTime, 'HH:mm')}" style="width: 44px;">Начало</span></td>
+                                                <td data-field="end" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}" style="width: 41px;">Конец</span></td>
+                                                <td data-field="action" class="m-datatable__cell"><span th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
+                                            </tr>
+                                            <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
+                                                <td class="m-datatable__cell"><b>Матч: </b> [[${slotDTO.slot.match.getHomeAndGuest()}]]<hr/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <!--end:: Widgets/Support Tickets -->
                     </div>
                 </div>
             </div>
@@ -64,7 +66,6 @@
     <footer th:replace="fragments/footer :: footer"></footer>
 </div>
 
-<!--<footer th:replace="layout :: site-footer" />-->
 <script src="/../../public/js/vendors.bundle.js" th:src="@{/js/vendors.bundle.js}" type="text/javascript"></script>
 <script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
 <script sec:authorize="hasAuthority('Менеджер')" src="/../../public/js/datatables/html-table.js"

@@ -1,9 +1,7 @@
 package app.advices;
 
-import app.controllers.HomeController;
 import app.dto.NotificationDTO;
 import app.models.Role;
-import app.models.SlotSignificationTime;
 import app.models.User;
 import app.services.SlotsSignificationService;
 import app.services.UserServiceImpl;
