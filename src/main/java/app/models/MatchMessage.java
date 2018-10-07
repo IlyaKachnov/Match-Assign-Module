@@ -1,10 +1,12 @@
 package app.models;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -23,18 +25,17 @@ public class MatchMessage {
     @JoinColumn(name = "match_id")
     private Match match;
 
-
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isConsidered;
 
     @Column(name = "is_read")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean isRead;
+    private Boolean isRead = false;
 
     @Column(name = "timestamp")
-    @Basic
-    private Timestamp timestamp;
+    @CreationTimestamp
+    private LocalDateTime localDateTime;
 
     public Long getId() {
         return id;
@@ -76,12 +77,12 @@ public class MatchMessage {
         isRead = read;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public MatchMessage() {

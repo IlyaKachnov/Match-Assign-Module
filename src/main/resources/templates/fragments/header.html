@@ -53,22 +53,20 @@
                 <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
                     <div class="m-stack__item m-topbar__nav-wrapper">
                         <ul class="m-topbar__nav m-nav m-nav--inline">
-                            <li sec:authorize="hasAuthority('Менеджер')" class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1">
-                                <a th:href="@{'/messages'}" class="m-nav__link">
-                                    <i class="flaticon-music-2 notification-icon"></i>
-                                </a>
-                            </li>
-                            <li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
+                            <li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width"
+                                data-dropdown-toggle="click" data-dropdown-persistent="true">
                                 <a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
-                                    <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger" th:if="${!notifications.isEmpty()}"></span>
+                                    <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"
+                                          th:if="${!notifications.isEmpty() or !allMessages.isEmpty()}"></span>
                                     <!--<span class="m-nav__link-icon">-->
-                                    <i class="flaticon-time-2 notification-icon"></i>
+                                    <i class="flaticon-music-2 notification-icon"></i>
                                     <!--</span>-->
                                 </a>
                                 <div class="m-dropdown__wrapper">
                                     <span class="m-dropdown__arrow m-dropdown__arrow--center"></span>
                                     <div class="m-dropdown__inner">
-                                        <div class="m-dropdown__header m--align-center" th:style="'background: url('+@{/img/notification_bg.jpg} + '); background-size: cover;'">
+                                        <div class="m-dropdown__header m--align-center"
+                                             th:style="'background: url('+@{/img/notification_bg.jpg} + '); background-size: cover;'">
 														<span class="m-dropdown__header-title">
                                                             Уведомления
 														</span>
@@ -78,38 +76,48 @@
                                         </div>
                                         <div class="m-dropdown__body">
                                             <div class="m-dropdown__content">
-                                                <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+                                                <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand"
+                                                    role="tablist">
                                                     <li class="nav-item m-tabs__item">
-                                                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#topbar_notifications_notifications" role="tab">
+                                                        <a class="nav-link m-tabs__link active" data-toggle="tab"
+                                                           href="#topbar_notifications_notifications" role="tab">
                                                             Сессии
                                                         </a>
                                                     </li>
+                                                    <li class="nav-item m-tabs__item">
+                                                        <a class="nav-link m-tabs__link" data-toggle="tab"
+                                                           href="#topbar_notifications_events" role="tab">
+                                                            Сообщения
+                                                        </a>
+                                                    </li>
                                                     <!--<li class="nav-item m-tabs__item">-->
-                                                        <!--<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_events" role="tab">-->
-                                                            <!--Будущие сессии-->
-                                                        <!--</a>-->
-                                                    <!--</li>-->
-                                                    <!--<li class="nav-item m-tabs__item">-->
-                                                        <!--<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_logs" role="tab">-->
-                                                            <!--Logs-->
-                                                        <!--</a>-->
+                                                    <!--<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_logs" role="tab">-->
+                                                    <!--Logs-->
+                                                    <!--</a>-->
                                                     <!--</li>-->
                                                 </ul>
                                                 <div class="tab-content">
-                                                    <div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
-                                                        <div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">
+                                                    <div class="tab-pane active" id="topbar_notifications_notifications"
+                                                         role="tabpanel">
+                                                        <div class="m-scrollable" data-scrollable="true"
+                                                             data-max-height="250" data-mobile-max-height="200">
                                                             <div class="m-list-timeline m-list-timeline--skin-light">
-                                                                <div class="m-stack__item m-stack__item--center m-stack__item--middle" th:if="${notifications.isEmpty()}">
+                                                                <div class="m-stack__item m-stack__item--center m-stack__item--middle"
+                                                                     th:if="${notifications.isEmpty()}">
                                                                     <span>Сессий не найдено</span>
                                                                 </div>
                                                                 <div class="m-list-timeline__items">
-                                                                    <div class="m-list-timeline__item" th:classappend="${n.actual} ? '' : 'm-list-timeline__item--read'" th:each="n:${notifications}">
+                                                                    <div class="m-list-timeline__item"
+                                                                         th:classappend="${n.actual} ? '' : 'm-list-timeline__item--read'"
+                                                                         th:each="n:${notifications}">
                                                                         <span class="m-list-timeline__badge"></span>
-                                                                        <span class="m-list-timeline__text" th:if="${n.actual}" th:inline="text">
+                                                                        <span class="m-list-timeline__text"
+                                                                              th:if="${n.actual}" th:inline="text">
 																						Разбор для лиги [[${n.league}]] уже идет!
                                                                 Окочание: [[${#temporals.format(n.endTime, 'dd.MM HH:mm')}]]
 																					</span>
-                                                                        <span class="m-list-timeline__text " th:inline="text" th:if="${!n.actual}">
+                                                                        <span class="m-list-timeline__text "
+                                                                              th:inline="text" th:if="${!n.actual}">
 																						Разбор для лиги [[${n.league}]] начнется в [[${#temporals.format(n.startTime, 'dd.MM HH:mm')}]]
 																					</span>
                                                                     </div>
@@ -117,32 +125,38 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--<div class="tab-pane" id="topbar_notifications_events" role="tabpanel">-->
-                                                        <!--<div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">-->
-                                                            <!--<div class="m-list-timeline m-list-timeline&#45;&#45;skin-light">-->
-                                                                <!--<div class="m-stack__item m-stack__item&#45;&#45;center m-stack__item&#45;&#45;middle" >-->
-                                                                    <!--<span>Актуальных сессий не найдено</span>-->
-                                                                <!--</div>-->
-                                                                <!--<div class="m-list-timeline__items" >-->
-                                                                    <!--<div class="m-list-timeline__item">-->
-                                                                        <!--<span class="m-list-timeline__badge m-list-timeline__badge&#45;&#45;state-success">-->
-                                                                        <!--</span>-->
-                                                                        <!--<span class="m-list-timeline__text" ></span>-->
-                                                                    <!--</div>-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
+                                                    <div sec:authorize="hasAuthority('Менеджер')" class="tab-pane" id="topbar_notifications_events"
+                                                         role="tabpanel">
+                                                        <div class="m-scrollable" data-scrollable="true"
+                                                             data-max-height="250" data-mobile-max-height="200">
+                                                            <div class="m-list-timeline m-list-timeline--skin-light">
+                                                                <div class="m-stack__item m-stack__item--center m-stack__item--middle"
+                                                                     th:if="${allMessages.isEmpty()}">
+                                                                    <span>Актуальных сообщений не найдено</span>
+                                                                </div>
+                                                                <div class="m-list-timeline__items">
+                                                                    <div class="m-list-timeline__item"
+                                                                         th:each="m:${allMessages}">
+                                                                        <span class="m-list-timeline__badge m-list-timeline__badge--state-success">
+                                                                        </span>
+                                                                        <span class="m-list-timeline__text" th:inline="text">
+                                                                            <a th:href="@{/messages}">Новое сообщение для матча <b>[[${m.match.getHomeAndGuest()}]]</b></a>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <!--<div class="tab-pane" id="topbar_notifications_logs" role="tabpanel">-->
-                                                        <!--<div class="m-stack m-stack&#45;&#45;ver m-stack&#45;&#45;general" style="min-height: 180px;">-->
-                                                            <!--<div class="m-stack__item m-stack__item&#45;&#45;center m-stack__item&#45;&#45;middle">-->
-																			<!--<span class="">-->
-																				<!--All caught up!-->
-																				<!--<br>-->
-																				<!--No new logs.-->
-																			<!--</span>-->
-                                                            <!--</div>-->
-                                                        <!--</div>-->
+                                                    <!--<div class="m-stack m-stack&#45;&#45;ver m-stack&#45;&#45;general" style="min-height: 180px;">-->
+                                                    <!--<div class="m-stack__item m-stack__item&#45;&#45;center m-stack__item&#45;&#45;middle">-->
+                                                    <!--<span class="">-->
+                                                    <!--All caught up!-->
+                                                    <!--<br>-->
+                                                    <!--No new logs.-->
+                                                    <!--</span>-->
+                                                    <!--</div>-->
+                                                    <!--</div>-->
                                                     <!--</div>-->
                                                 </div>
                                             </div>

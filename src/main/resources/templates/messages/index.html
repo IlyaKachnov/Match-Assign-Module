@@ -17,7 +17,7 @@
             <div class="m-content">
                 <div class="row">
 
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')" th:if="${!oddMessages.isEmpty()}">
                         <div class="m-portlet m-portlet--primary  m-portlet--head-solid-bg"
                              th:each="message:${oddMessages}">
                             <div class="m-portlet__head">
@@ -31,18 +31,8 @@
                                 <div class="m-portlet__head-tools">
                                     <ul class="m-portlet__nav">
                                         <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-close"></i>
-                                            </a>
-                                        </li>
-                                        <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-refresh"></i>
-                                            </a>
-                                        </li>
-                                        <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-circle"></i>
+                                            <a th:href="@{'/messages/' + ${message.id} + '/read'}" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-close" title="Отметить как прочитанное"></i>
                                             </a>
                                         </li>
                                     </ul>
@@ -54,8 +44,8 @@
 															</span></div>
                         </div>
                     </div>
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')">
-                        <div class="m-portlet m-portlet--success  m-portlet--head-solid-bg"
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')" th:if="${!evenMessages.isEmpty()}">
+                        <div class="m-portlet m-portlet--primary  m-portlet--head-solid-bg"
                              th:each="message:${evenMessages}">
                             <div class="m-portlet__head">
                                 <div class="m-portlet__head-caption">
@@ -68,18 +58,8 @@
                                 <div class="m-portlet__head-tools">
                                     <ul class="m-portlet__nav">
                                         <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-close"></i>
-                                            </a>
-                                        </li>
-                                        <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-refresh"></i>
-                                            </a>
-                                        </li>
-                                        <li class="m-portlet__nav-item">
-                                            <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-circle"></i>
+                                            <a th:href="@{'/messages/' + ${message.id} + '/read'}" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                                <i class="la la-close" title="Отметить как прочитанное"></i>
                                             </a>
                                         </li>
                                     </ul>
