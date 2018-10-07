@@ -1,6 +1,8 @@
 package app.services;
 
+import app.dto.StadiumSlotsDTO;
 import app.models.Stadium;
+import app.models.User;
 
 import java.util.List;
 
@@ -18,4 +20,7 @@ public interface StadiumService {
 
     List<Stadium> findAllWithSlots();
 
+    List<StadiumSlotsDTO> findAllWithSlotsByUser(User user);
+
+    List<Stadium> findAllWithSlotsByDate();
 }
