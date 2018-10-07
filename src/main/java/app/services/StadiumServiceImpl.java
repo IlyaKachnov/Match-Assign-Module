@@ -1,5 +1,6 @@
 package app.services;
 
+import app.comparators.SlotDTOComparator;
 import app.dto.SlotDTO;
 import app.dto.StadiumSlotsDTO;
 import app.models.*;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Primary
@@ -69,8 +71,10 @@ public class StadiumServiceImpl implements StadiumService {
     @Override
     public List<StadiumSlotsDTO> findAllWithSlotsByUser(User user) {
         List<Stadium> stadiumsWithAllSlots = findAllWithSlotsByDate();
+        List<StadiumSlotsDTO> stadiumSlotsDTOList;
         if (user.getRole().equals(Role.adminRole)) {
-            return convertToStadiumSlotsDTO(stadiumsWithAllSlots, user);
+            stadiumSlotsDTOList = sortStadiumSlotsDTOList(convertToStadiumSlotsDTO(stadiumsWithAllSlots, user));
+            return stadiumSlotsDTOList;
         }
         stadiumsWithAllSlots.forEach(stadium -> {
             List<Slot> resultSlotsForStadium = new ArrayList<>();
@@ -85,7 +89,8 @@ public class StadiumServiceImpl implements StadiumService {
                 stadium.setSlots(resultSlotsForStadium);
             });
         });
-        return convertToStadiumSlotsDTO(stadiumsWithAllSlots, user);
+        stadiumSlotsDTOList = sortStadiumSlotsDTOList(convertToStadiumSlotsDTO(stadiumsWithAllSlots, user));
+        return stadiumSlotsDTOList;
     }
 
     @Override
@@ -172,6 +177,12 @@ public class StadiumServiceImpl implements StadiumService {
             LocalDateTime localDateTime = LocalDateTime.now();
             return localDateTime.isAfter(startTime) && localDateTime.isBefore(endTime);
         });
+    }
+
+    private List<StadiumSlotsDTO> sortStadiumSlotsDTOList(List<StadiumSlotsDTO> stadiumSlotsDTOList) {
+        stadiumSlotsDTOList.forEach(stadiumSlotsDTO ->
+                stadiumSlotsDTO.setSlotDTO(stadiumSlotsDTO.getSlotDTO().stream().sorted(new SlotDTOComparator()).collect(Collectors.toList())));
+        return stadiumSlotsDTOList;
     }
 
 //    public List<Stadium> findAllWithSlots() {

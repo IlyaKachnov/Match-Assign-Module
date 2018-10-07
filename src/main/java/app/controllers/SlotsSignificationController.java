@@ -115,7 +115,7 @@ public class SlotsSignificationController {
         slotSignificationEmailService.setStadiumName(stadiumName);
         slotSignificationEmailService.send(guestEmail);
 
-        return "redirect:/stadium/" + id;
+        return "redirect:" + httpServletRequest.getHeader("referer");
     }
 
     @ResponseBody

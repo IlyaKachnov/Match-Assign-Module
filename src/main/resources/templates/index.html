@@ -43,12 +43,15 @@
                                             <th data-field="action" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 60px;">Действия</span></th>
                                         </tr>
                                         </thead>
-                                        <tbody class="m-datatable__body" style="">
-                                            <tr th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__row">
+                                        <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body" style="">
+                                            <tr class="m-datatable__row">
                                                 <td data-field="date" class="m-datatable__cell"><span th:text="${slotDTO.slot.eventDate}" style="width: 66px;">Дата</span></td>
                                                 <td data-field="start" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.startTime, 'HH:mm')}" style="width: 44px;">Начало</span></td>
                                                 <td data-field="end" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}" style="width: 41px;">Конец</span></td>
                                                 <td data-field="action" class="m-datatable__cell"><span th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
+                                            </tr>
+                                            <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
+                                                <td class="m-datatable__cell"><b>Матч: </b> [[${slotDTO.slot.match.getHomeAndGuest()}]]<hr/></td>
                                             </tr>
                                         </tbody>
                                     </table>
