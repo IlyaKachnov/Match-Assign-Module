@@ -72,6 +72,6 @@ public class MessagesController {
         MatchMessage matchMessage = matchMessageService.findById(id);
         matchMessage.setRead(true);
         matchMessageService.save(matchMessage);
-        return "redirect:messages";
+        return "redirect:/messages";
     }
 }

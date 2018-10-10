@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice(annotations = Controller.class)
 public class AnnotationAdvice {
@@ -44,10 +46,16 @@ public class AnnotationAdvice {
     @ModelAttribute("allMessages")
     public List<MatchMessage> getMatchMessages(Principal principal) {
         User user = userService.findByEmail(principal.getName());
-        List<MatchMessage> matchMessages = new ArrayList<>();
+        List<MatchMessage> messages = new ArrayList<>();
         if (user.getRole().equals(Role.managerRole)) {
-            matchMessages = matchMessageService.getMessagesForUser(user);
+            List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
+            if (!matchMessages.isEmpty()) {
+                messages = matchMessages.stream().filter(matchMessage ->
+                        matchMessage.getMatch().getMatchDate() == null ||
+                                matchMessage.getMatch().getMatchDate().after(new Date()))
+                        .collect(Collectors.toList());
+            }
         }
-        return matchMessages;
+        return messages;
     }
 }
