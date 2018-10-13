@@ -102,7 +102,7 @@ public class TourController {
         return "redirect:/tours";
     }
 
-    @RequestMapping(value = "/tours/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/tours/{id}/delete", method = RequestMethod.GET)
     public String deleteTour(@PathVariable("id") Long id) {
         tourService.delete(id);
 

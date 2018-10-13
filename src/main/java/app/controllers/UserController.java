@@ -135,7 +135,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @RequestMapping(value = "/users/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/{id}/delete", method = RequestMethod.GET)
     public String deleteUser(@PathVariable("id") Long id, @ModelAttribute User user) {
         User userModel = userService.findById(id);
 

@@ -82,7 +82,7 @@ public class SlotTypeController {
         return "redirect:/slot-types";
     }
 
-    @RequestMapping(value = "/slot-types/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/slot-types/{id}/delete", method = RequestMethod.GET)
     public String deleteSlotType(@PathVariable Long id) {
 
         slotTypeService.delete(id);

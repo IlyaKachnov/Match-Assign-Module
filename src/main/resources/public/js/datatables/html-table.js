@@ -6,17 +6,11 @@ var SweetAlertTable = function () {
             e.preventDefault();
             var thisEl = $(this);
             var href = thisEl.attr("data-href");
-            var nRow = thisEl.closest('tr');
-            var token = $("meta[name='_csrf']").attr("content");
             var dataAction = thisEl.attr("data-action");
             var title = "Удалить запись?";
-            var type = "POST";
             var confirmButtonText = "Удалить";
-            var successHeader = 'Удалено!';
-            var successText = 'Запись была успешно удалена';
             if (dataAction == 1) {
                 title = "Отменить слот?";
-                type = "GET";
                 confirmButtonText = "Да";
             }
 
@@ -28,29 +22,7 @@ var SweetAlertTable = function () {
                 cancelButtonText: "Отмена",
             }).then(function (result) {
                 if (result.value) {
-                    $.ajaxSetup({
-                        headers: {
-                            "X-CSRF-TOKEN": token,
-                        },
-                    });
-                    $.ajax({
-                        type: type,
-                        url: href,
-                        success: function () {
-
-                            if (dataAction == 1) {
-                                location.reload();
-                            }
-                            else {
-                                nRow.find('td').remove();
-                                swal(
-                                    successHeader,
-                                    successText,
-                                    'success'
-                                )
-                            }
-                        }
-                    });
+                 window.location.href = href;
                 }
             });
         });

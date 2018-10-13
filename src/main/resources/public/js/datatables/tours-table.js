@@ -15,23 +15,7 @@ var SweetAlertTable = function () {
                 cancelButtonText: "Отмена",
             }).then(function(result) {
                 if (result.value) {
-                    $.ajaxSetup({
-                        headers: {
-                            "X-CSRF-TOKEN": token,
-                        },
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: href,
-                        success: function () {
-                            nRow.find('td').remove();
-                            swal(
-                                'Удалено!',
-                                'Запись была успешно удалена',
-                                'success'
-                            )
-                        }
-                    });
+                    window.location.href = href;
                 }
             });
         });

@@ -67,7 +67,7 @@ public class StadiumController {
         return "redirect:/stadiums";
     }
 
-    @RequestMapping(value = "stadiums/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "stadiums/{id}/delete", method = RequestMethod.GET)
     public String deleteStadium(@PathVariable Long id) {
         stadiumService.delete(id);
 

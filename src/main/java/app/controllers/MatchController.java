@@ -91,7 +91,7 @@ public class MatchController {
 
     }
 
-    @RequestMapping(value = "/matches/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/matches/{id}/delete", method = RequestMethod.GET)
     public String deleteMatch(@PathVariable("id") Long id) {
         if(matchService.findById(id).getSlot()!= null){
             Slot slot = slotService.findById(matchService.findById(id).getSlot().getId());

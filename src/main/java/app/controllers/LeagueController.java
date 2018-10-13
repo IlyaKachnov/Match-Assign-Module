@@ -81,7 +81,7 @@ public class LeagueController {
         return "redirect:/leagues";
     }
 
-    @RequestMapping(value = "/leagues/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/leagues/{id}/delete", method = RequestMethod.GET)
     public String deleteLeague(@PathVariable("id") Long id, @ModelAttribute League league) {
         leagueService.delete(id);
 

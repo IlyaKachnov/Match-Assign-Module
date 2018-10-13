@@ -95,8 +95,8 @@ public class SlotController {
         return "redirect:/stadiums/" + id + "/slots";
     }
 
-    @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.POST)
-    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId, @ModelAttribute Slot slot) {
+    @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.GET)
+    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId) {
         Match match = matchService.findById(slotService.findById(slotId).getMatch().getId());
         match.setSlot(null);
         slotService.delete(slotId);
