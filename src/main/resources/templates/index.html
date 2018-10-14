@@ -37,7 +37,7 @@
                                     <table class="m-datatable__table" style="display: block; min-height: 100px; overflow-x: auto;">
                                         <thead class="m-datatable__head">
                                         <tr class="m-datatable__row">
-                                            <th data-field="date" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 62px;">Дата</span></th>
+                                            <th data-field="date" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 42px;">Дата</span></th>
                                             <th data-field="start" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 44px;">Начало</span></th>
                                             <th data-field="end" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 40px;">Конец</span></th>
                                             <th data-field="action" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 60px;">Действия</span></th>
@@ -45,7 +45,7 @@
                                         </thead>
                                         <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body" style="">
                                             <tr class="m-datatable__row">
-                                                <td data-field="date" class="m-datatable__cell"><span th:text="${slotDTO.slot.eventDate}" style="width: 66px;">Дата</span></td>
+                                                <td data-field="date" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.eventDate, 'dd.MM')}" style="width: 42px;">Дата</span></td>
                                                 <td data-field="start" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.startTime, 'HH:mm')}" style="width: 44px;">Начало</span></td>
                                                 <td data-field="end" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}" style="width: 41px;">Конец</span></td>
                                                 <td data-field="action" class="m-datatable__cell"><span th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
