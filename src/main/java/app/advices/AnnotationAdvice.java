@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,13 +51,25 @@ public class AnnotationAdvice {
         User user = userService.findByEmail(principal.getName());
         List<MatchMessage> messages = new ArrayList<>();
         if (user.getRole().equals(Role.managerRole)) {
-            List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
-            if (!matchMessages.isEmpty()) {
-                messages = matchMessages.stream().filter(matchMessage ->
-                        matchMessage.getMatch().getMatchDate() == null ||
-                                matchMessage.getMatch().getMatchDate().after(new Date()))
-                        .collect(Collectors.toList());
-            }
+            return matchMessageService.getMessagesForUser(user);
+//            List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
+//            if (!matchMessages.isEmpty()) {
+//                try {
+//
+//
+//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                Date today = new Date();
+//                Date todayWithZeroTime = formatter.parse(formatter.format(today));
+//
+//                messages = matchMessages.stream().filter(matchMessage ->
+//                        matchMessage.getMatch().getMatchDate() == null ||
+//                                matchMessage.getMatch().getMatchDate().after(todayWithZeroTime)
+//                        || matchMessage.getMatch().getMatchDate().after(todayWithZeroTime))
+//                        .collect(Collectors.toList());
+//                } catch (ParseException e) {
+//                    e.getErrorOffset();
+//                }
+//            }
         }
         return messages;
     }

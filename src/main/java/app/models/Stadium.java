@@ -15,6 +15,7 @@ public class Stadium {
 
     @OneToMany(targetEntity = Slot.class, mappedBy = "stadium",
             cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @org.hibernate.annotations.OrderBy(clause = "event_date desc ")
     private List<Slot> slots;
 
     public List<Slot> getSlots() {

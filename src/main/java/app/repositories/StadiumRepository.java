@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StadiumRepository extends JpaRepository<Stadium, Long> {
     Stadium findByName(String name);
-    @Query("select distinct s from Stadium s inner join s.slots sl")
+    @Query("select distinct s from Stadium s inner join s.slots sl ")
     List<Stadium> findAllWithSlots();
 
 }

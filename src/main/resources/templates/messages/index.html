@@ -17,36 +17,9 @@
             <div class="m-content">
                 <div class="row">
 
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')" th:if="${!oddMessages.isEmpty()}">
+                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')" th:if="${!messages.isEmpty()}"  th:each="message:${messages}">
                         <div class="m-portlet m-portlet--primary  m-portlet--head-solid-bg"
-                             th:each="message:${oddMessages}">
-                            <div class="m-portlet__head">
-                                <div class="m-portlet__head-caption">
-                                    <div class="m-portlet__head-title">
-                                        <h3 class="m-portlet__head-text" th:inline="text">
-                                            Новое сообщение для матча <b>[[${message.match.getHomeAndGuest()}]]</b>
-                                        </h3>
-                                    </div>
-                                </div>
-                                <div class="m-portlet__head-tools">
-                                    <ul class="m-portlet__nav">
-                                        <li class="m-portlet__nav-item">
-                                            <a th:href="@{'/messages/' + ${message.id} + '/read'}" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                                <i class="la la-close" title="Отметить как прочитанное"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="m-portlet__body">
-                            <span class="m-widget2__text" th:inline="text">
-                                                                <p>[[${message.message}]]</p>
-															</span></div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6" sec:authorize="hasAuthority('Менеджер')" th:if="${!evenMessages.isEmpty()}">
-                        <div class="m-portlet m-portlet--primary  m-portlet--head-solid-bg"
-                             th:each="message:${evenMessages}">
+                            >
                             <div class="m-portlet__head">
                                 <div class="m-portlet__head-caption">
                                     <div class="m-portlet__head-title">
