@@ -34,7 +34,7 @@ var DatatableDataLocalDemo = function () {
             search: {
                 input: $('#generalSearch')
             },
-            order: [[1, "asc"]],
+            order: [[2, "asc"]],
             translate: {
                 records: {
                     processing: 'Загрузка...',
@@ -74,7 +74,7 @@ var DatatableDataLocalDemo = function () {
                     title: "Дата матча",
                     type: "date",
                     format: "DD.MM.YYYY",
-                    sortable: true
+                    order: "desc"
 
                 },
                 {
