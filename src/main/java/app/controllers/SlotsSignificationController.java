@@ -65,6 +65,8 @@ public class SlotsSignificationController {
                                  Model model, HttpServletRequest httpServletRequest,
                                  MatchForm matchForm) {
         List<Match> actualMatches = slotsSignificationService.getActualMatches(httpServletRequest, slotId);
+        matchForm = new MatchForm();
+        matchForm.setUrlToRedirect(httpServletRequest.getHeader("referer"));
 
         model.addAttribute("matches", actualMatches);
         model.addAttribute("id", id);
@@ -96,7 +98,8 @@ public class SlotsSignificationController {
             slotSignificationEmailService.send(guestEmail);
 
         }
-        return "redirect:/stadium/" + id;
+        return "redirect:" + matchForm.getUrlToRedirect();
+        //return "redirect:/stadium/" + id;
     }
 
     @RequestMapping(value = "stadium/{id}/reject/{slotId}", method = RequestMethod.GET)

@@ -56,6 +56,10 @@
                                     <span class="m-form__help">
 												Выберите матч
 											</span>
+
+                                    <select style="visibility: hidden" class="form-control m-select2" name="matches" th:field="*{urlToRedirect}">
+                                        <option style="visibility: hidden" th:value="${matchForm.urlToRedirect}" th:text="${matchForm.urlToRedirect}"></option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +68,7 @@
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
                                         <input type="submit" value="Занять слот" class="btn btn-info m-btn--square"/>
-                                        <a class="btn btn-secondary m-btn--square" th:href="@{'/stadium/'+${id}}">Отмена</a>
+                                        <a class="btn btn-secondary m-btn--square" th:href="${matchForm.urlToRedirect}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

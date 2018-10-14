@@ -96,13 +96,14 @@ public class StadiumServiceImpl implements StadiumService {
     @Override
     public List<Stadium> findAllWithSlotsByDate() {
         LocalDate date = LocalDate.now();
+        LocalDateTime currDateTime = LocalDateTime.now();
         DayOfWeek curDayOfWeek = date.getDayOfWeek();
         LocalDate startDate = date.minusDays(curDayOfWeek.getValue() - 1);
         LocalDate endDate = startDate.plusDays(Calendar.DAY_OF_WEEK - 1);
         List<Stadium> stadiums = stadiumRepository.findAll();
         stadiums.forEach(stadium ->
                 stadium.setSlots(slotRepository.findAllSlotsByStadiumAndDate(stadium,
-                        Date.from(startDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),
+                        Date.from(currDateTime.atZone(ZoneId.systemDefault()).toInstant()),
                         Date.from(endDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))));
         List<Stadium> resultStadiums = new ArrayList<>();
         stadiums.forEach(stadium -> {
