@@ -53,7 +53,7 @@ var DatatableHtmlTableDemo = function() {
 
         var datatable = $('.m-datatable').mDatatable({
             data: {
-                saveState: {cookie: false},
+                saveState: {cookie: false}
             },
             search: {
                 input: $('#generalSearch'),

@@ -15,9 +15,19 @@
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
-
+                <div th:if="${stadiums.isEmpty()}" class="m-alert m-alert--icon alert alert-info" role="alert">
+                    <div class="m-alert__icon">
+                        <i class="la la-warning"></i>
+                    </div>
+                    <div class="m-alert__text">
+                        <strong>Нет сообытий для отображения</strong>
+                    </div>
+                    <div class="m-alert__close">
+                        <button type="button" class="close" data-close="alert" aria-label="Hide">
+                        </button>
+                    </div>
+                </div>
                 <div class="row">
-
                     <div th:each="stadiumSlots:${stadiums}" class="col-xl-4">
                         <div class="m-portlet m-portlet--mobile">
                             <div class="m-portlet__head">
@@ -34,25 +44,41 @@
                                 <div class="m_datatable m-datatable m-datatable--default m-datatable--loaded">
 
 
-                                    <table class="m-datatable__table" style="display: block; min-height: 100px; overflow-x: auto;">
+                                    <table class="m-datatable__table"
+                                           style="display: block; min-height: 100px; overflow-x: auto;">
                                         <thead class="m-datatable__head">
                                         <tr class="m-datatable__row">
-                                            <th data-field="date" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 42px;">Дата</span></th>
-                                            <th data-field="start" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 44px;">Начало</span></th>
-                                            <th data-field="end" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 40px;">Конец</span></th>
-                                            <th data-field="action" class="m-datatable__cell m-datatable__cell--sort"><span style="width: 60px;">Действия</span></th>
+                                            <th data-field="date" class="m-datatable__cell m-datatable__cell--sort">
+                                                <span style="width: 42px;">Дата</span></th>
+                                            <th data-field="start" class="m-datatable__cell m-datatable__cell--sort">
+                                                <span style="width: 44px;">Начало</span></th>
+                                            <th data-field="end" class="m-datatable__cell m-datatable__cell--sort"><span
+                                                    style="width: 40px;">Конец</span></th>
+                                            <th data-field="action" class="m-datatable__cell m-datatable__cell--sort">
+                                                <span style="width: 60px;">Действия</span></th>
                                         </tr>
                                         </thead>
-                                        <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body" style="">
-                                            <tr class="m-datatable__row">
-                                                <td data-field="date" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.eventDate, 'dd.MM')}" style="width: 42px;">Дата</span></td>
-                                                <td data-field="start" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.startTime, 'HH:mm')}" style="width: 44px;">Начало</span></td>
-                                                <td data-field="end" class="m-datatable__cell"><span th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}" style="width: 41px;">Конец</span></td>
-                                                <td data-field="action" class="m-datatable__cell"><span th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
-                                            </tr>
-                                            <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
-                                                <td class="m-datatable__cell"><b>Матч: </b> [[${slotDTO.slot.match.getHomeAndGuest()}]]<hr/></td>
-                                            </tr>
+                                        <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body"
+                                               style="">
+                                        <tr class="m-datatable__row">
+                                            <td data-field="date" class="m-datatable__cell"><span
+                                                    th:text="${#dates.format(slotDTO.slot.eventDate, 'dd.MM')}"
+                                                    style="width: 42px;">Дата</span></td>
+                                            <td data-field="start" class="m-datatable__cell"><span
+                                                    th:text="${#dates.format(slotDTO.slot.startTime, 'HH:mm')}"
+                                                    style="width: 44px;">Начало</span></td>
+                                            <td data-field="end" class="m-datatable__cell"><span
+                                                    th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}"
+                                                    style="width: 41px;">Конец</span></td>
+                                            <td data-field="action" class="m-datatable__cell"><span
+                                                    th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
+                                        </tr>
+                                        <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
+                                            <td class="m-datatable__cell"><b>Матч: </b>
+                                                [[${slotDTO.slot.match.getHomeAndGuest()}]]
+                                                <hr/>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

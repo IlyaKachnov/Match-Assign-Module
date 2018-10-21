@@ -61,7 +61,7 @@
                                     Имя *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <input type="text" class="form-control m-input--square" name="firstname"
+                                    <input type="text" class="form-control m-input" name="firstname"
                                            placeholder="Введите имя" th:field="*{firstname}"/>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                     Фамилия *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <input type="text" class="form-control m-input--square" name="lastname"
+                                    <input type="text" class="form-control m-input" name="lastname"
                                            placeholder="Введите фамилию" th:field="*{lastname}"/>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                     Email *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <input type="text" class="form-control m-input--square" name="email" th:field="*{email}"
+                                    <input type="text" class="form-control m-input" name="email" th:field="*{email}"
                                            placeholder="Введите email"/>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                     Пароль *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <input type="password" class="form-control m-input--square" name="password"
+                                    <input type="password" class="form-control m-input" name="password"
                                            th:field="*{password}"
                                            placeholder="Введите пароль"/>
                                 </div>
@@ -127,8 +127,8 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Создать" class="btn btn-info m-btn--square"/>
-                                        <a class="btn btn-secondary m-btn--square" th:href="@{'/users/'}">Отмена</a>
+                                        <input type="submit" value="Создать" class="btn btn-info m-btn"/>
+                                        <a class="btn btn-secondary m-btn" th:href="@{'/users/'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

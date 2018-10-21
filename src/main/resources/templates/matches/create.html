@@ -89,7 +89,7 @@
                                 <label class="col-form-label col-lg-3 col-sm-12">Переносимый матч?</label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class="m-checkbox-inline">
-                                        <label class="m-checkbox m-checkbox--square">
+                                        <label class="m-checkbox m-checkbox">
                                             <input type="checkbox" name="isDelayed" th:field="*{delayed}"/>Да
                                             <span></span>
                                         </label>
@@ -101,8 +101,8 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Создать" class="btn btn-info m-btn--square"/>
-                                        <a class="btn btn-secondary m-btn--square" th:href="@{'/matches/'}">Отмена</a>
+                                        <input type="submit" value="Создать" class="btn btn-info m-btn"/>
+                                        <a class="btn btn-secondary m-btn" th:href="@{'/matches/'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

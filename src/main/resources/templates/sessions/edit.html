@@ -74,7 +74,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input--square" name="eventDate"
+                                        <input type='text' class="form-control m-input" name="eventDate"
                                                th:field="*{startDate}" placeholder="Дата события" id='startDate'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -90,7 +90,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group date'>
-                                        <input type='text' class="form-control m-input--square" id='startTime'
+                                        <input type='text' class="form-control m-input" id='startTime'
                                                placeholder="Select time" name="startTime" th:field="*{startTime}"/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -106,7 +106,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input--square" name="eventDate"
+                                        <input type='text' class="form-control m-input" name="eventDate"
                                                th:field="*{endDate}" placeholder="Дата события" id='endDate'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -122,7 +122,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group date'>
-                                        <input type='text' class="form-control m-input--square" id='endTime'
+                                        <input type='text' class="form-control m-input" id='endTime'
                                                placeholder="Select time" name="endTime" th:field="*{endTime}"/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -149,8 +149,8 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Обновить" class="btn btn-info m-btn--square"/>
-                                        <a class="btn btn-secondary m-btn--square" th:href="@{'/sessions'}">Отмена</a>
+                                        <input type="submit" value="Обновить" class="btn btn-info m-btn"/>
+                                        <a class="btn btn-secondary m-btn" th:href="@{'/sessions'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

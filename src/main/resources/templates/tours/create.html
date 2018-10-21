@@ -61,7 +61,7 @@
                                     Название *
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <input type="text" class="form-control m-input--square" name="name"
+                                    <input type="text" class="form-control m-input" name="name"
                                            placeholder="Введите название" th:field="*{name}"/>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input--square" name="startDate"
+                                        <input type='text' class="form-control m-input" name="startDate"
                                                th:field="*{startDate}" placeholder="Дата начала" id='startDate'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -99,7 +99,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input--square" name="endDate"
+                                        <input type='text' class="form-control m-input" name="endDate"
                                                th:field="*{endDate}" placeholder="Дата окончания" id='endDate'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -114,8 +114,8 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Создать" class="btn btn-info m-btn--square"/>
-                                        <a class="btn btn-secondary m-btn--square m-btn--square" th:href="@{'/tours/'}">Отмена</a>
+                                        <input type="submit" value="Создать" class="btn btn-info m-btn"/>
+                                        <a class="btn btn-secondary m-btn m-btn" th:href="@{'/tours/'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

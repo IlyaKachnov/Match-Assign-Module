@@ -64,7 +64,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group'>
-                                        <input type='text' class="form-control m-input--square" name="eventDate"
+                                        <input type='text' class="form-control m-input" name="eventDate"
                                                th:field="*{eventDate}" placeholder="Дата события" id='m_datepicker'/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -80,7 +80,7 @@
                                 </label>
                                 <div class="col-lg-4 col-md-9 col-sm-12">
                                     <div class='input-group date'>
-                                        <input type='text' class="form-control m-input--square" id='startTime'
+                                        <input type='text' class="form-control m-input" id='startTime'
                                                placeholder="Select time" name="startTime" th:field="*{startTime}"/>
                                         <div class="input-group-append">
 													<span class="input-group-text">
@@ -95,8 +95,8 @@
                             <div class="m-form__actions m-form__actions">
                                 <div class="row">
                                     <div class="col-lg-9 ml-lg-auto">
-                                        <input type="submit" value="Обновить" class="btn m-btn--square btn-info"/>
-                                        <a class="btn m-btn--square btn-secondary" th:href="@{'/stadiums/'+${stadium.id}+'/slots'}">Отмена</a>
+                                        <input type="submit" value="Обновить" class="btn m-btn btn-info"/>
+                                        <a class="btn m-btn btn-secondary" th:href="@{'/stadiums/'+${stadium.id}+'/slots'}">Отмена</a>
                                     </div>
                                 </div>
                             </div>

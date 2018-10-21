@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&amp;subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=cyrillic" rel="stylesheet">
     <link href="../public/css/style.bundle.css" th:href="@{/css/style.bundle.css}" rel="stylesheet" type="text/css"/>
     <link href="../public/css/vendors.bundle.css" th:href="@{/css/vendors.bundle.css}" rel="stylesheet"
           type="text/css"/>
@@ -43,11 +43,11 @@
                     <!--</div>-->
                     <form class="m-login__form m-form" th:action="@{/login}" method="post">
                         <div class="form-group m-form__group">
-                            <input class="form-control m-input--square" type="text" id="username" placeholder="Email"
+                            <input class="form-control m-input" type="text" id="username" placeholder="Email"
                                    name="username" autocomplete="off"/>
                         </div>
                         <div class="form-group m-form__group">
-                            <input class="form-control m-input--square m-login__form-input--last" id="password" type="password"
+                            <input class="form-control m-input m-login__form-input--last" id="password" type="password"
                                    placeholder="Пароль" name="password"/>
                         </div>
                         <div class="row m-login__form-sub">
