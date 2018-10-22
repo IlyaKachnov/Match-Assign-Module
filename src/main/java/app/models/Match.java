@@ -91,7 +91,7 @@ public class Match {
             return "Не назначен";
         }
 
-        return (new SimpleDateFormat("dd.MM.YYYY")).format(matchDate);
+        return (new SimpleDateFormat("dd.MM")).format(matchDate);
     }
 
     public void setMatchDate(Date matchDate) {

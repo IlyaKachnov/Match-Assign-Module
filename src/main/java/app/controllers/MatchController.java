@@ -41,7 +41,7 @@ public class MatchController {
 
     @RequestMapping(value = "/matches", method = RequestMethod.GET)
     public String index(Model model) {
-        model.addAttribute("matches", matchService.findAll());
+        model.addAttribute("matches", matchService.getMatchDTOList());
         model.addAttribute("teams", teamService.findAll());
 
         return "matches/index";

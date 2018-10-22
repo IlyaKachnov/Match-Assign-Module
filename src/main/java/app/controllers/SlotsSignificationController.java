@@ -81,21 +81,23 @@ public class SlotsSignificationController {
                               @ModelAttribute MatchForm matchForm, HttpServletRequest httpServletRequest) {
         if (matchForm.getId() != null) {
             Match match = matchRepository.getOne(matchForm.getId());
-            String guestEmail = match.getGuestTeam().getUser().getEmail();
-            Slot slot = slotService.findById(slotId);
-            Stadium stadium = stadiumService.findById(id);
-            String stadiumName = stadium.getName();
-            String slotInfo = slot.getFullInfo();
-            String homeAndGuest = match.getHomeAndGuest();
+
+            if (match.getGuestTeam().getUser() != null) {
+                String guestEmail = match.getGuestTeam().getUser().getEmail();
+                String homeAndGuest = match.getHomeAndGuest();
+                Slot slot = slotService.findById(slotId);
+                Stadium stadium = stadiumService.findById(id);
+                String stadiumName = stadium.getName();
+                String slotInfo = slot.getFullInfo();
+                slotSignificationEmailService.setSignified(true);
+                slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
+                slotSignificationEmailService.setSlotInfo(slotInfo);
+                slotSignificationEmailService.setStadiumName(stadiumName);
+                slotSignificationEmailService.send(guestEmail);
+            }
 
             slotsSignificationService.signifySlot(matchForm.getId(), slotId,
                     httpServletRequest.getUserPrincipal().getName());
-
-            slotSignificationEmailService.setSignified(true);
-            slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
-            slotSignificationEmailService.setSlotInfo(slotInfo);
-            slotSignificationEmailService.setStadiumName(stadiumName);
-            slotSignificationEmailService.send(guestEmail);
 
         }
         return "redirect:" + matchForm.getUrlToRedirect();
@@ -106,17 +108,20 @@ public class SlotsSignificationController {
     public String rejectSlot(@PathVariable Long id, @PathVariable Long slotId, HttpServletRequest httpServletRequest) {
         Slot slot = slotService.findById(slotId);
         Match match = slot.getMatch();
-        String homeAndGuest = match.getHomeAndGuest();
-        String stadiumName = slot.getStadium().getName();
-        String guestEmail = match.getGuestTeam().getUser().getEmail();
-        String slotInfo = slot.getFullInfo();
+        if (match.getHomeTeam().getUser() != null) {
+
+            String homeAndGuest = match.getHomeAndGuest();
+            String stadiumName = slot.getStadium().getName();
+            String guestEmail = match.getGuestTeam().getUser().getEmail();
+            String slotInfo = slot.getFullInfo();
+            slotSignificationEmailService.setSignified(false);
+            slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
+            slotSignificationEmailService.setSlotInfo(slotInfo);
+            slotSignificationEmailService.setStadiumName(stadiumName);
+            slotSignificationEmailService.send(guestEmail);
+        }
         slotsSignificationService.rejectSlot(slotId, httpServletRequest.getUserPrincipal().getName());
 
-        slotSignificationEmailService.setSignified(false);
-        slotSignificationEmailService.setHomeAndGuest(homeAndGuest);
-        slotSignificationEmailService.setSlotInfo(slotInfo);
-        slotSignificationEmailService.setStadiumName(stadiumName);
-        slotSignificationEmailService.send(guestEmail);
 
         return "redirect:" + httpServletRequest.getHeader("referer");
     }
@@ -141,11 +146,10 @@ public class SlotsSignificationController {
             messageEmailService.setMatch(match.get());
             messageEmailService.setHomeAndGuest(homeAndGuest);
 
-            if(user.getRole().equals(Role.adminRole)) {
+            if (user.getRole().equals(Role.adminRole)) {
                 messageEmailService.send(match.get().getHomeTeam().getUser().getEmail());
                 messageEmailService.send(match.get().getGuestTeam().getUser().getEmail());
-            }
-            else if (user.getRole().equals(Role.managerRole)) {
+            } else if (user.getRole().equals(Role.managerRole)) {
                 if (message.getConsidered() || match.get().getHomeTeam().getUser().getEmail().equals(username)) {
                     email = message.getMatch().getGuestTeam().getUser().getEmail();
                 } else {

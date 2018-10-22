@@ -6,13 +6,46 @@
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
 <div class="m-grid m-grid--hor m-grid--root m-page">
     <header th:replace="fragments/header :: header"></header>
-
     <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
         <button class="m-aside-left-close  m-aside-left-close--skin-dark " id="m_aside_left_close_btn">
             <i class="la la-close"></i>
         </button>
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <div class="m-subheader ">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                            <li class="m-nav__item">
+                                <a th:href="@{'/'}" class="m-nav__link">
+                                    	<span class="m-nav__link-text">
+												Главная
+											</span>
+                                </a>
+                            </li>
+                            <li class="m-nav__separator">
+                                -
+                            </li>
+                            <li class="m-nav__item">
+                                <a th:href="@{'/leagues'}" class="m-nav__link">
+											<span class="m-nav__link-text">
+												Лиги
+											</span>
+                                </a>
+                            </li>
+                            <li class="m-nav__separator">
+                                -
+                            </li>
+                            <li class="m-nav__item">
+                                <a th:href="@{'/leagues/' + ${league.id} + '/teams'}" class="m-nav__link">
+											<span th:text="${league.name}" class="m-nav__link-text">
+											</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="m-content">
                 <div th:if="${error != null}" class="m-alert m-alert--icon alert alert-danger" role="alert">
                     <div class="m-alert__icon">

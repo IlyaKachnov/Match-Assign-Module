@@ -2,31 +2,28 @@ package app.dto;
 
 import app.models.Match;
 
-import java.text.SimpleDateFormat;
-
 public class MatchDTO {
+    private Long id;
     private String home;
     private String guest;
     private String league;
     private String tour;
-    private String formattedDate;
-    private String status;
+    private String matchDate;
+    private String stadium;
     private String delayed;
+    private String message;
+    private boolean status;
 
-//    public MatchDTO(Match match) {
-//        this.home = match.getHomeTeam().getName();
-//        this.guest = match.getGuestTeam().getName();
-//        this.league = match.getTour().getLeague().getName();
-//        this.tour = match.getTour().getFullInfo();
-//        this.formattedDate = match.getMatchDate()
-//        if (matchDate == null) {
-//            return "Не назначен";
-//        }
-//
-//        return (new SimpleDateFormat("dd.MM.YYYY")).format(matchDate);
-//        this.status = match.getSlot() != null ? match.getSlot().getStadium().getName() : "Не назначен";
-//        this.delayed = match.getDelayed() ? "Да" : "Нет";
-//    }
+    public MatchDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getHome() {
         return home;
@@ -60,20 +57,28 @@ public class MatchDTO {
         this.tour = tour;
     }
 
-    public String getFormattedDate() {
-        return formattedDate;
+    public String getMatchDate() {
+        return matchDate;
     }
 
-    public void setFormattedDate(String formattedDate) {
-        this.formattedDate = formattedDate;
+    public void setMatchDate(String matchDate) {
+        this.matchDate = matchDate;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStadium() {
+        return stadium;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getDelayed() {
@@ -82,5 +87,13 @@ public class MatchDTO {
 
     public void setDelayed(String delayed) {
         this.delayed = delayed;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

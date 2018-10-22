@@ -60,14 +60,14 @@
 /*.bootstrap-select.btn-group>.dropdown-toggle.btn-default, .bootstrap-select.btn-group>.dropdown-toggle.btn-secondary {*/
     /*border-radius: 0 !important;*/
 /*}*/
-.fc-content {
-    padding-top: .05rem !important;
-}
-.fc-unthemed .fc-description {
-     font-size: .75rem;
-     margin-top: .1rem;
-     font-weight: 300;
- }
+/*.fc-content {*/
+    /*padding-top: .05rem !important;*/
+/*}*/
+/*.fc-unthemed .fc-description {*/
+     /*font-size: .75rem;*/
+     /*margin-top: .1rem;*/
+     /*font-weight: 300;*/
+ /*}*/
 .select2-container--default .select2-results__option .select2-results__group {
     font-weight: 600;
 }

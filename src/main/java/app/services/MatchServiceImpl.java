@@ -1,5 +1,6 @@
 package app.services;
 
+import app.dto.MatchDTO;
 import com.google.gson.Gson;
 import app.models.*;
 import app.repositories.MatchRepository;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +35,34 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
+    public List<MatchDTO> getMatchDTOList(){
+        List<Match> matches = matchRepository.findAll();
+        List<MatchDTO> matchDTOList = new ArrayList<>();
+        if (!matches.isEmpty()) {
+            matches.forEach(match -> {
+                MatchDTO matchDTO = new MatchDTO();
+                Tour tour = match.getTour();
+                String isDelayed = match.getDelayed() ? "Да" : "Нет";
+                Slot slot = match.getSlot();
+                String stadium = (slot != null) ? slot.getStadium().getName() : "Не назначен";
+                boolean status = (slot != null);
+                matchDTO.setId(match.getId());
+                matchDTO.setHome(match.getHomeTeam().getName());
+                matchDTO.setGuest(match.getGuestTeam().getName());
+                matchDTO.setTour(tour.getFullInfo());
+                matchDTO.setLeague(tour.getLeague().getName());
+                matchDTO.setDelayed(isDelayed);
+                matchDTO.setStadium(stadium);
+                matchDTO.setMatchDate(getFormattedMatchDate(match));
+                matchDTO.setStatus(status);
+
+                matchDTOList.add(matchDTO);
+            });
+        }
+        return matchDTOList;
+    }
+
+    @Override
     public Match findById(Long id) {
         return matchRepository.findById(id).orElse(null);
     }
@@ -50,32 +81,30 @@ public class MatchServiceImpl implements MatchService {
     public String generateJSON(String userEmail) {
         User currUser = userRepository.findByEmail(userEmail);
         boolean isAdmin = currUser.getRole().equals(Role.adminRole);
-
         List<Match> matches = matchRepository.findAll();
-        if (matches.isEmpty()) {
-            return "[]";
-        }
+        List<MatchDTO> matchDTOList = new ArrayList<>();
         List<Team> userTeams = currUser.getTeamList();
+        if (!matches.isEmpty()) {
+            matches.forEach(match -> {
+                MatchDTO matchDTO = new MatchDTO();
+                Tour tour = match.getTour();
+                String isDelayed = match.getDelayed() ? "Да" : "Нет";
+                String stadium = (match.getSlot() != null) ? match.getSlot().getStadium().getName() : "Не назначен";
 
-        StringBuilder json = new StringBuilder("[");
+                matchDTO.setHome(match.getHomeTeam().getName());
+                matchDTO.setGuest(match.getGuestTeam().getName());
+                matchDTO.setTour(tour.getFullInfo());
+                matchDTO.setLeague(tour.getLeague().getName());
+                matchDTO.setDelayed(isDelayed);
+                matchDTO.setStadium(stadium);
+                matchDTO.setMessage(getMessage(match, userTeams, isAdmin));
+                matchDTO.setMatchDate(getFormattedMatchDate(match));
 
-        matches.forEach(match -> {
-            String isDelayed = match.getDelayed() ? "Да" : "Нет";
-            String stadium = (match.getSlot() != null) ? match.getSlot().getStadium().getName() : "Не назначен";
+                matchDTOList.add(matchDTO);
+            });
+        }
 
-            json.append("{\"home\": \"").append(match.getHomeTeam().getName()).append("\",");
-            json.append("\"guest\": \"").append(match.getGuestTeam().getName()).append("\",");
-            json.append("\"matchDate\": \"").append(match.getFormattedDate()).append("\",");
-            json.append("\"delayed\": \"").append(isDelayed).append("\",");
-            json.append("\"stadium\": \"").append(stadium).append("\",");
-            json.append("\"league\": \"").append(match.getTour().getLeague().getName()).append("\",");
-            json.append("\"message\": \"").append(getMessage(match, userTeams, isAdmin)).append("\",");
-            json.append("\"tour\": \"").append(match.getTour().getFullInfo()).append("\"},");
-        });
-        json.deleteCharAt(json.lastIndexOf(","));
-        json.append("]");
-
-        return json.toString();
+        return gson.toJson(matchDTOList);
 
     }
 
@@ -108,4 +137,18 @@ public class MatchServiceImpl implements MatchService {
 
         return message;
     }
+
+    private String getFormattedMatchDate(Match match) {
+
+        if (match.getMatchDate() == null) {
+            return "Не назначен";
+        }
+        String matchDate = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        matchDate += dateFormat.format(match.getMatchDate()) + " / " +
+                timeFormat.format(match.getSlot().getStartTime());
+        return matchDate;
+    }
+
 }

@@ -13,6 +13,31 @@
         </button>
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
+            <div class="m-subheader ">
+                <div class="d-flex align-items-center">
+                    <div class="mr-auto">
+                        <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                            <li class="m-nav__item">
+                                <a th:href="@{'/'}" class="m-nav__link">
+                                    	<span class="m-nav__link-text">
+												Главная
+											</span>
+                                </a>
+                            </li>
+                            <li class="m-nav__separator">
+                                -
+                            </li>
+                            <li class="m-nav__item">
+                                <a th:href="@{'/matches'}" class="m-nav__link">
+											<span class="m-nav__link-text">
+												Матчи
+											</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="m-content">
                 <div th:if="${teams.isEmpty()}" class="m-alert m-alert--icon alert alert-warning" role="alert">
                     <div class="m-alert__icon">
@@ -100,19 +125,19 @@
                             </thead>
                             <tbody>
                             <tr th:each="match:${matches}">
-                                <td th:text="${match.homeTeam.name}"></td>
-                                <td th:text="${match.guestTeam.name}"></td>
-                                <td th:text="${match.formattedDate}"></td>
-                                <td th:text="${match.tour.league.name}"></td>
-                                <td th:text="${match.tour.fullInfo}"></td>
-                                <td th:text="${match.slot != null ? match.slot.stadium.name : 'Не назначен'}"></td>
-                                <td th:text="${match.delayed ? 'Да' : 'Нет'}"></td>
+                                <td th:text="${match.home}"></td>
+                                <td th:text="${match.guest}"></td>
+                                <td th:text="${match.matchDate}"></td>
+                                <td th:text="${match.league}"></td>
+                                <td th:text="${match.tour}"></td>
+                                <td th:text="${match.stadium}"></td>
+                                <td th:text="${match.delayed}"></td>
 
                                 <td>
-                                    <a th:if="${match.slot == null}" th:href="@{'/matches/'+${match.id}+'/signify'}"
+                                    <a th:if="${!match.status}" th:href="@{'/matches/'+${match.id}+'/signify'}"
                                        class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Занять слот"><i class="la la-plus-circle"></i></a>
-                                    <a th:if="${match.slot != null}" data-action="1"  href="#" th:attr="data-href=@{'/matches/'+${match.id}+'/reject'}"
+                                    <a th:if="${match.status}" data-action="1"  href="#" th:attr="data-href=@{'/matches/'+${match.id}+'/reject'}"
                                        class="m_sweetalert m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Отменить слот"><i class="la la-times-circle"></i></a>
                                     <a th:href="@{'/matches/'+${match.id}+'/edit'}"
