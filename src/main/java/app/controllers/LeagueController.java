@@ -1,6 +1,8 @@
 package app.controllers;
 
 import app.models.League;
+import app.models.Team;
+import app.models.Tour;
 import app.services.LeagueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class LeagueController {
@@ -82,7 +86,21 @@ public class LeagueController {
     }
 
     @RequestMapping(value = "/leagues/{id}/delete", method = RequestMethod.GET)
-    public String deleteLeague(@PathVariable("id") Long id, @ModelAttribute League league) {
+    public String deleteLeague(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        League league = leagueService.findById(id);
+        List<Team> teamList = league.getTeams();
+        List<Tour> tourList = league.getTours();
+        List<String> errors = new ArrayList<>();
+        if(!teamList.isEmpty()){
+            errors.add("Невозможно удалить лигу, так как она имеет команды!");
+        }
+        if(!tourList.isEmpty()) {
+            errors.add("Невозможно удалить лигу, так как она имеет туры!");
+        }
+        if(!errors.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return "redirect:/leagues";
+        }
         leagueService.delete(id);
 
         return "redirect:/leagues";

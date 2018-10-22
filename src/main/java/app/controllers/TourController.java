@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Match;
 import app.models.Team;
 import app.models.Tour;
 import app.services.LeagueServiceImpl;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class TourController {
@@ -62,7 +65,7 @@ public class TourController {
         return "redirect:/tours";
     }
 
-    @RequestMapping(value = "tours/{id}/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/tours/{id}/edit", method = RequestMethod.GET)
     public String showEditForm(@PathVariable("id") Long id, Model model) {
 
         Tour tourForm = tourService.findById(id);
@@ -103,7 +106,14 @@ public class TourController {
     }
 
     @RequestMapping(value = "/tours/{id}/delete", method = RequestMethod.GET)
-    public String deleteTour(@PathVariable("id") Long id) {
+    public String deleteTour(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        Tour tour = tourService.findById(id);
+        List<Match> matchList = tour.getMatches();
+        if(!matchList.isEmpty()) {
+            String error = "Невозможно удалить тур, так как он имеет матчи!";
+            redirectAttributes.addFlashAttribute("error", error);
+            return "redirect:/tours";
+        }
         tourService.delete(id);
 
         return "redirect:/tours";

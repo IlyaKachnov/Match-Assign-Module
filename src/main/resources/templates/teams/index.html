@@ -14,6 +14,18 @@
         <div th:replace="fragments/left_aside :: left_aside"></div>
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
             <div class="m-content">
+                <div th:if="${error != null}" class="m-alert m-alert--icon alert alert-danger" role="alert">
+                    <div class="m-alert__icon">
+                        <i class="la la-warning"></i>
+                    </div>
+                    <div class="m-alert__text">
+                        <strong th:text="${error}"></strong>
+                    </div>
+                    <div class="m-alert__close">
+                        <button type="button" class="close" data-close="alert" aria-label="Hide">
+                        </button>
+                    </div>
+                </div>
                 <div class="m-portlet m-portlet--mobile">
                     <div class="m-portlet__head">
                         <div class="m-portlet__head-caption">

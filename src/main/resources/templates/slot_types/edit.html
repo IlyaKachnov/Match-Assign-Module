@@ -64,33 +64,6 @@
                                            placeholder="Введите имя" th:field="*{typeName}"/>
                                 </div>
                             </div>
-                            <div class="form-group m-form__group row">
-                                <label class="col-form-label col-lg-3 col-sm-12">
-                                    Длительность*
-                                </label>
-                                <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <div class='input-group date'>
-                                        <input type='text' class="form-control m-input" id='duration'
-                                               placeholder="Select time" name="duration" th:field="*{duration}"/>
-                                        <div class="input-group-append">
-													<span class="input-group-text">
-														<i class="la la-clock-o"></i>
-													</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group m-form__group row">
-                                <label class="col-form-label col-lg-3 col-sm-12">Можно занять? *</label>
-                                <div class="col-lg-4 col-md-9 col-sm-12">
-                                    <div class="m-checkbox-inline">
-                                        <label class="m-checkbox m-checkbox m-checkbox">
-                                            <input type="checkbox" name="isSignifiable" th:field="*{signifiable}"/>Да
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="m-portlet__foot m-portlet__foot--fit">
                             <div class="m-form__actions m-form__actions">

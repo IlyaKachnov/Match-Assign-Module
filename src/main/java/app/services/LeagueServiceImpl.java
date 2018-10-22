@@ -1,6 +1,5 @@
 package app.services;
 
-import app.dto.LeagueFilterDTO;
 import app.models.League;
 import app.models.Team;
 import app.repositories.LeagueRepository;
@@ -9,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,12 +65,17 @@ public class LeagueServiceImpl implements LeagueService {
     @Override
     public String generateLeagueFilterJSON() {
         List<League> leagues = leagueRepository.findWithMatches();
-        Set<LeagueFilterDTO> leagueFilterDTOList = new HashSet<>();
-        if (!leagues.isEmpty()) {
-            leagueFilterDTOList = LeagueFilterDTO.createLeagueList(leagues);
+        if (leagues.isEmpty()) {
+            return "{}";
         }
-
-        return gson.toJson(leagueFilterDTOList);
+        StringBuilder json = new StringBuilder("{");
+        leagues.forEach(l -> {
+            json.append("\"").append(l.getName()).append("\"").append(":");
+            json.append("{\"title\": \"").append(l.getName()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("}");
+        return json.toString();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Slot;
 import app.models.SlotType;
 import app.repositories.SlotTypeRepository;
 import app.services.SlotTypeServiceImpl;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class SlotTypeController {
@@ -74,16 +77,22 @@ public class SlotTypeController {
             return "redirect:/slot-types/{id}/edit";
         }
 
-        type.setDuration(slotType.getDuration());
         type.setTypeName(slotType.getTypeName());
-        type.setSignifiable(slotType.getSignifiable());
         slotTypeService.save(type);
 
         return "redirect:/slot-types";
     }
 
     @RequestMapping(value = "/slot-types/{id}/delete", method = RequestMethod.GET)
-    public String deleteSlotType(@PathVariable Long id) {
+    public String deleteSlotType(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        SlotType slotType = slotTypeService.findById(id);
+        List<Slot> slots = slotType.getSlots();
+        if(!slots.isEmpty()) {
+            String errorMsg = "Невозможно удалить тип слота, так как он имеет связанные слоты!";
+            redirectAttributes.addFlashAttribute("errorMsg", errorMsg);
+            return "redirect:/slot-types";
+        }
 
         slotTypeService.delete(id);
 

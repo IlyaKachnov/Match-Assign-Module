@@ -1,6 +1,5 @@
 package app.services;
 
-import app.dto.TourFilterDTO;
 import app.models.Tour;
 import app.repositories.TourRepository;
 import com.google.gson.Gson;
@@ -8,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Service
 @Primary
@@ -60,10 +57,16 @@ public class TourServiceImpl implements TourService {
     @Override
     public String generateTourFilterJSON() {
         List<Tour> tours = tourRepository.findWithMatches();
-        Set<TourFilterDTO> tourFilterDTOSet = new HashSet<>();
-        if(!tours.isEmpty()) {
-            tourFilterDTOSet = TourFilterDTO.createTourList(tours);
+        StringBuilder json = new StringBuilder("{");
+        if (tours.isEmpty()) {
+            return "{}";
         }
-        return gson.toJson(tourFilterDTOSet);
+        tours.forEach(s -> {
+            json.append("\"").append(s.getFullInfo()).append("\"").append(":");
+            json.append("{\"title\": \"").append(s.getFullInfo()).append("\"},");
+        });
+        json.deleteCharAt(json.lastIndexOf(","));
+        json.append("}");
+        return json.toString();
     }
 }

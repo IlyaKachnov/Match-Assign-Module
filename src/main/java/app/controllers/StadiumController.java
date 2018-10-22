@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Slot;
 import app.models.Stadium;
 import app.services.StadiumServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class StadiumController {
@@ -68,9 +71,15 @@ public class StadiumController {
     }
 
     @RequestMapping(value = "stadiums/{id}/delete", method = RequestMethod.GET)
-    public String deleteStadium(@PathVariable Long id) {
+    public String deleteStadium(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Stadium stadium = stadiumService.findById(id);
+        List<Slot> slots = stadium.getSlots();
+        if (!slots.isEmpty()) {
+            String error = "Невозможно удалить стадион, так как он имеет связанные слоты!";
+            redirectAttributes.addFlashAttribute("errorMsg", error);
+            return "redirect:/stadiums";
+        }
         stadiumService.delete(id);
-
         return "redirect:/stadiums";
     }
 

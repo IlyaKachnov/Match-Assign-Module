@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.models.Match;
 import app.models.Slot;
 import app.models.Stadium;
 import app.services.MatchServiceImpl;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Calendar;
-import java.util.Date;
 
 @Controller
 public class SlotController {
@@ -24,15 +23,13 @@ public class SlotController {
     private final SlotServiceImpl slotService;
     private final StadiumServiceImpl stadiumService;
     private final SlotTypeServiceImpl slotTypeService;
-    private final MatchServiceImpl matchService;
 
     @Autowired
     public SlotController(SlotServiceImpl slotService, StadiumServiceImpl stadiumService,
-                          SlotTypeServiceImpl slotTypeService, MatchServiceImpl matchService) {
+                          SlotTypeServiceImpl slotTypeService) {
         this.slotService = slotService;
         this.stadiumService = stadiumService;
         this.slotTypeService = slotTypeService;
-        this.matchService = matchService;
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots", method = RequestMethod.GET)
@@ -64,6 +61,9 @@ public class SlotController {
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/edit", method = RequestMethod.GET)
     public String showEditForm(@PathVariable Long id, @PathVariable Long slotId, Model model) {
         Slot slot = slotService.findById(slotId);
+        if (slot.getMatch() != null) {
+            return "slots/edit";
+        }
         model.addAttribute("slot", slot);
         model.addAttribute("stadium", stadiumService.findById(id));
         model.addAttribute("slotTypes", slotTypeService.findAll());
@@ -96,9 +96,14 @@ public class SlotController {
     }
 
     @RequestMapping(value = "/stadiums/{id}/slots/{slotId}/delete", method = RequestMethod.GET)
-    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId) {
-        Match match = matchService.findById(slotService.findById(slotId).getMatch().getId());
-        match.setSlot(null);
+    public String deleteSlot(@PathVariable("id") Long id, @PathVariable("slotId") Long slotId,
+                             RedirectAttributes redirectAttributes) {
+        Slot slot = slotService.findById(slotId);
+        if (slot.getMatch() != null) {
+            String error = "Невозможно удалить слот, так как он привязан к матчу!";
+            redirectAttributes.addFlashAttribute("error", error);
+            return "redirect:/stadiums/" + id + "/slots";
+        }
         slotService.delete(slotId);
 
         return "redirect:/stadiums/" + id + "/slots";

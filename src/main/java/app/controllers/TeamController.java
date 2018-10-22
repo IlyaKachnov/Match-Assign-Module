@@ -1,9 +1,6 @@
 package app.controllers;
 
-import app.models.League;
-import app.models.Role;
-import app.models.Team;
-import app.models.User;
+import app.models.*;
 import app.services.LeagueServiceImpl;
 import app.services.TeamServiceImpl;
 import app.services.UserServiceImpl;
@@ -87,8 +84,16 @@ public class TeamController {
     }
 
     @RequestMapping(value = "leagues/teams/{id}/delete", method = RequestMethod.GET)
-    public String deleteTeam(@PathVariable("id") Long id, @ModelAttribute Team team) {
+    public String deleteTeam(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         Long leagueId = teamService.findById(id).getLeague().getId();
+        Team team = teamService.findById(id);
+        List<Match> matchesAsHome = team.getMatchesAsHome();
+        List<Match> matchesAsGuest = team.getMatchAsGuest();
+        if(!matchesAsHome.isEmpty() || !matchesAsGuest.isEmpty()) {
+            String error = "Невозможно удалить команду, так как она имеет матчи!";
+            redirectAttributes.addFlashAttribute("error", error);
+            return "redirect:/leagues/" + leagueId + "/teams";
+        }
         teamService.delete(id);
 
         return "redirect:/leagues/" + leagueId + "/teams";
@@ -97,7 +102,7 @@ public class TeamController {
     @GetMapping(value = "my-teams")
     public String getCurrentUserTeams(Model model, Principal principal) {
         User user = userService.findByEmail(principal.getName());
-        if(user.getRole().equals(Role.adminRole)) {
+        if (user.getRole().equals(Role.adminRole)) {
             return "error/404";
         }
 
