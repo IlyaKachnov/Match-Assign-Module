@@ -82,8 +82,8 @@ public class StadiumServiceImpl implements StadiumService {
                 if (slot.getMatch() == null && slot.getSlotType().getSignifiable()) {
                     resultSlotsForStadium.add(slot);
                 } else if (slot.getMatch() != null &&
-                        (slot.getMatch().getHomeTeam().getUser().equals(user) ||
-                                slot.getMatch().getGuestTeam().getUser().equals(user))) {
+                       user.equals(slot.getMatch().getHomeTeam().getUser()) ||
+                        user.equals(slot.getMatch().getGuestTeam().getUser())) {
                     resultSlotsForStadium.add(slot);
                 }
                 stadium.setSlots(resultSlotsForStadium);
@@ -157,7 +157,7 @@ public class StadiumServiceImpl implements StadiumService {
                 slotDTO.setSlot(slot);
                 if (slot.getMatch() == null && isTimeToSignifySlots(user)) {
                     slotDTO.setUrl("<a href=\"/stadium/" + stadium.getId() + "/signify/" + slot.getId() + "\">Занять</a>");
-                } else if (isTimeToSignifySlots(user) && slot.getMatch().getHomeTeam().getUser().equals(user)) {
+                } else if (isTimeToSignifySlots(user) &&  user.equals(slot.getMatch().getHomeTeam().getUser())) {
                     slotDTO.setUrl("<a href=\"/stadium/" + stadium.getId() + "/reject/" + slot.getId() + "\">Отменить</a>");
                 }
                 slotDTOList.add(slotDTO);

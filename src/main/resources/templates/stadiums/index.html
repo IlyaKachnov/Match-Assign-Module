@@ -114,10 +114,10 @@
                                 <td th:text="${stadium.name}"></td>
                                 <td>
                                     <a th:href="@{'/stadiums/'+${stadium.id}+'/slots'}"
-                                       class="m-portlet__nav-link btn m-btn m-btn--hover-primary m-btn--icon m-btn--icon-only m-btn--pill"
+                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Перейти к слотам"><i class="la la-calendar-minus-o"></i></a>
                                     <a th:href="@{'/stadiums/'+${stadium.id}+'/edit'}"
-                                       class="m-portlet__nav-link btn m-btn m-btn--hover-info m-btn--icon m-btn--icon-only m-btn--pill"
+                                       class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill"
                                        title="Редактировать"><i class="la la-edit"></i></a>
                                     <form class="deleteForm" style="display: none;" method="post"
                                           th:action="@{'/stadiums/'+${stadium.id}+'/delete'}"></form>

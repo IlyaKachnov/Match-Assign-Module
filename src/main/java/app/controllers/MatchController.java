@@ -67,6 +67,9 @@ public class MatchController {
     @RequestMapping(value = "/matches/{id}/edit", method = RequestMethod.GET)
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Match match = matchService.findById(id);
+        if(match.getSlot() != null) {
+            return "redirect:/matches";
+        }
         List<Team> teams = match.getTour().getLeague().getTeams();
         model.addAttribute("teams", teams);
         model.addAttribute("match", match);

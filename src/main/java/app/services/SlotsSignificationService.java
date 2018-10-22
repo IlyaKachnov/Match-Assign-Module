@@ -252,7 +252,7 @@ public class SlotsSignificationService {
 
     public List<NotificationDTO> getNotifications(User user) {
         List<SlotSignificationTime> times = slotSignificationTimeRepository.getUserSessions(user.getId());
-        if(times == null || times.isEmpty()) {
+        if (times == null || times.isEmpty()) {
             return new ArrayList<>();
         }
         return buildNotifications(times);
@@ -260,7 +260,7 @@ public class SlotsSignificationService {
 
     public List<NotificationDTO> getNotifications() {
         List<SlotSignificationTime> times = slotSignificationTimeRepository.findAll();
-        if(times == null || times.isEmpty()) {
+        if (times == null || times.isEmpty()) {
             return new ArrayList<>();
         }
 
@@ -279,7 +279,7 @@ public class SlotsSignificationService {
         List<NotificationDTO> filteredList = notifications.stream()
                 .filter(dto -> dto.getEndTime().isAfter(LocalDateTime.now()))
                 .sorted(new NotificationComparator())
-        .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
         return filteredList;
     }
