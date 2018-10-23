@@ -49,13 +49,13 @@
                                         <thead class="m-datatable__head">
                                         <tr class="m-datatable__row">
                                             <th data-field="date" class="m-datatable__cell m-datatable__cell--sort">
-                                                <span style="width: 42px;">Дата</span></th>
+                                                <span style="width: 40px;">Дата</span></th>
                                             <th data-field="start" class="m-datatable__cell m-datatable__cell--sort">
-                                                <span style="width: 44px;">Начало</span></th>
+                                                <span style="width: 50px;">Начало</span></th>
                                             <th data-field="end" class="m-datatable__cell m-datatable__cell--sort"><span
-                                                    style="width: 40px;">Конец</span></th>
+                                                    style="width: 45px;">Конец</span></th>
                                             <th data-field="action" class="m-datatable__cell m-datatable__cell--sort">
-                                                <span style="width: 60px;">Действия</span></th>
+                                                <span style="width: 70px;">Действия</span></th>
                                         </tr>
                                         </thead>
                                         <tbody th:each="slotDTO:${stadiumSlots.slotDTO}" class="m-datatable__body"
@@ -71,7 +71,7 @@
                                                     th:text="${#dates.format(slotDTO.slot.endTime, 'HH:mm')}"
                                                     style="width: 41px;">Конец</span></td>
                                             <td data-field="action" class="m-datatable__cell"><span
-                                                    th:utext="${slotDTO.url}" style="width: 60px;"></span></td>
+                                                    th:utext="${slotDTO.url}" style="width: 65px;"></span></td>
                                         </tr>
                                         <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
                                             <td class="m-datatable__cell"><b>Матч: </b>
