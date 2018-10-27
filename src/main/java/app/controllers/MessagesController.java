@@ -17,6 +17,8 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,47 +44,25 @@ public class MessagesController {
         }
         if (user.getRole().equals(Role.managerRole)) {
             List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
-//            List<MatchMessage> messages = new ArrayList<>();
-//            try {
-//
-//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//                Date today = new Date();
-//                Date todayWithZeroTime = formatter.parse(formatter.format(today));
-//
-//                messages = matchMessages.stream().filter(matchMessage ->
-//                        matchMessage.getMatch().getMatchDate() == null ||
-//                                matchMessage.getMatch().getMatchDate().after(todayWithZeroTime)
-//                                || matchMessage.getMatch().getMatchDate().after(todayWithZeroTime))
-//                        .collect(Collectors.toList());
-//            } catch (ParseException e) {
-//                e.getErrorOffset();
-//            }
-//            List<MatchMessage> oddMessages = new ArrayList<>();
-//            List<MatchMessage> evenMessages = new ArrayList<>();
-//            matchMessages.forEach(matchMessage -> {
-//                int index = matchMessages.indexOf(matchMessage);
-//                if (index % 2 == 0) {
-//                    evenMessages.add(matchMessage);
-//                } else {
-//                    oddMessages.add(matchMessage);
-//                }
-//            });
-//            model.addAttribute("messages", messages);
+            matchMessages = matchMessages.stream().filter(matchMessage ->
+                    matchMessage.getLocalDateTime().plus(2, ChronoUnit.DAYS).isAfter(LocalDateTime.now()
+                    )).collect(Collectors.toList());
+
             model.addAttribute("messages", matchMessages);
-//            model.addAttribute("evenMessages", evenMessages);
         }
         return "messages/index";
     }
 
-    @GetMapping(value = "messages/{id}/read")
-    public String setReadStatus(@PathVariable("id") Long id, Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        if (user.getRole().equals(Role.adminRole)) {
-            return "error/404";
-        }
-        MatchMessage matchMessage = matchMessageService.findById(id);
-        matchMessage.setRead(true);
-        matchMessageService.save(matchMessage);
-        return "redirect:/messages";
-    }
+    //TODO:система нотификаций в будущей версии
+//    @GetMapping(value = "messages/{id}/read")
+//    public String setReadStatus(@PathVariable("id") Long id, Principal principal) {
+//        User user = userService.findByEmail(principal.getName());
+//        if (user.getRole().equals(Role.adminRole)) {
+//            return "error/404";
+//        }
+//        MatchMessage matchMessage = matchMessageService.findById(id);
+//        matchMessage.setRead(true);
+//        matchMessageService.save(matchMessage);
+//        return "redirect:/messages";
+//    }
 }

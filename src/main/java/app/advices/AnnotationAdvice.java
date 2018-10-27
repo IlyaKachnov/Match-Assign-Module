@@ -16,6 +16,8 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,25 +53,10 @@ public class AnnotationAdvice {
         User user = userService.findByEmail(principal.getName());
         List<MatchMessage> messages = new ArrayList<>();
         if (user.getRole().equals(Role.managerRole)) {
-            return matchMessageService.getMessagesForUser(user);
-//            List<MatchMessage> matchMessages = matchMessageService.getMessagesForUser(user);
-//            if (!matchMessages.isEmpty()) {
-//                try {
-//
-//
-//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//                Date today = new Date();
-//                Date todayWithZeroTime = formatter.parse(formatter.format(today));
-//
-//                messages = matchMessages.stream().filter(matchMessage ->
-//                        matchMessage.getMatch().getMatchDate() == null ||
-//                                matchMessage.getMatch().getMatchDate().after(todayWithZeroTime)
-//                        || matchMessage.getMatch().getMatchDate().after(todayWithZeroTime))
-//                        .collect(Collectors.toList());
-//                } catch (ParseException e) {
-//                    e.getErrorOffset();
-//                }
-//            }
+            messages = matchMessageService.getMessagesForUser(user);
+            messages = messages.stream().filter(matchMessage ->
+                    matchMessage.getLocalDateTime().plus(2, ChronoUnit.DAYS).isAfter(LocalDateTime.now()
+                    )).collect(Collectors.toList());
         }
         return messages;
     }
