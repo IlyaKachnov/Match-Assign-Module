@@ -387,7 +387,7 @@ public class SlotsSignificationService {
             return true;
         }
 
-        if (eventDate.after(match.getTour().getStartDate()) && eventDate.before(match.getTour().getEndDate())) {
+        if (eventDate.after(match.getTour().getStartDate()) && !eventDate.after(match.getTour().getEndDate())) {
             return true;
         }
 

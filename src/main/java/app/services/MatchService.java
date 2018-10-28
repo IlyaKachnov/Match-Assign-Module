@@ -17,4 +17,6 @@ public interface MatchService {
     String generateJSON(String userEmail);
 
     List<MatchDTO> getMatchDTOList();
+
+    List<MatchDTO> getMatchDTOList(String userEmail);
 }

@@ -74,14 +74,56 @@
                                                     th:utext="${slotDTO.url}" style="width: 65px;"></span></td>
                                         </tr>
                                         <tr th:if="${slotDTO.slot.match != null}" class="m-datatable__row">
-                                            <td class="m-datatable__cell"><b>Матч: </b>
-                                                [[${slotDTO.slot.match.getHomeAndGuest()}]]
+                                            <td class="m-datatable__cell"><p><b>Матч: </b>
+                                                [[${slotDTO.slot.match.getHomeAndGuest()}]]</p>
+                                                <b>Тур: </b>
+                                                [[${slotDTO.slot.match.tour.getFullInfo()}]]
                                                 <hr/>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!--begin: MsgForm -->
+                                <div class="m_datatable" id="local_data"></div>
+
+                                <div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    Сообщение
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">
+												&times;
+											</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="message-form" method="post">
+                                                    <div class="form-group">
+                                                        <label for="message-text" class="form-control-label">
+                                                            Текст:
+                                                        </label>
+                                                        <textarea class="form-control" id="message-text" rows="8" name="text" th:required="required"></textarea>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Закрыть
+                                                </button>
+                                                <button id="submit-form" type="button" class="btn btn-primary">
+                                                    Создать
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end: MsgForm -->
+
                             </div>
                         </div>
                     </div>
@@ -96,5 +138,7 @@
 <script src="/../../public/js/scripts.bundle.js" th:src="@{/js/scripts.bundle.js}" type="text/javascript"></script>
 <script sec:authorize="hasAuthority('Менеджер')" src="/../../public/js/datatables/html-table.js"
         th:src="@{/js/datatables/html-table.js}" type="text/javascript"></script>
+<script src="/../../public/js/custom/send-email-home.js" th:src="@{/js/custom/send-email-home.js}"
+        type="text/javascript"></script>
 </body>
 </html>

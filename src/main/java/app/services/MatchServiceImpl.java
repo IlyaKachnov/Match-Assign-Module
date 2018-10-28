@@ -79,6 +79,13 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public String generateJSON(String userEmail) {
+        List<MatchDTO> matchDTOList = getMatchDTOList(userEmail);
+        return gson.toJson(matchDTOList);
+
+    }
+
+    @Override
+    public List<MatchDTO> getMatchDTOList(String userEmail) {
         User currUser = userRepository.findByEmail(userEmail);
         boolean isAdmin = currUser.getRole().equals(Role.adminRole);
         List<Match> matches = matchRepository.findAll();
@@ -91,6 +98,7 @@ public class MatchServiceImpl implements MatchService {
                 String isDelayed = match.getDelayed() ? "Да" : "Нет";
                 String stadium = (match.getSlot() != null) ? match.getSlot().getStadium().getName() : "Не назначен";
 
+                matchDTO.setId(match.getId());
                 matchDTO.setHome(match.getHomeTeam().getName());
                 matchDTO.setGuest(match.getGuestTeam().getName());
                 matchDTO.setTour(tour.getFullInfo());
@@ -103,9 +111,7 @@ public class MatchServiceImpl implements MatchService {
                 matchDTOList.add(matchDTO);
             });
         }
-
-        return gson.toJson(matchDTOList);
-
+        return matchDTOList;
     }
 
     private String getMessage(Match match, List<Team> userTeams, boolean isAdmin) {
