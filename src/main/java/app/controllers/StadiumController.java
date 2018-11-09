@@ -76,7 +76,7 @@ public class StadiumController {
         List<Slot> slots = stadium.getSlots();
         if (!slots.isEmpty()) {
             String error = "Невозможно удалить стадион, так как он имеет связанные слоты!";
-            redirectAttributes.addFlashAttribute("errorMsg", error);
+            redirectAttributes.addFlashAttribute("error", error);
             return "redirect:/stadiums";
         }
         stadiumService.delete(id);
